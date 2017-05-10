@@ -1,0 +1,81 @@
+<!--
+  Generated template for the Events page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <!--<ion-title>Events</ion-title>-->
+    <ion-segment [(ngModel)]="category" (ionChange)="updateEventList()">
+      <ion-segment-button value="upcoming">
+        Upcoming
+      </ion-segment-button>
+      <ion-segment-button value="attending">
+        Attending
+      </ion-segment-button>
+      <ion-segment-button value="past">
+        Past
+      </ion-segment-button>
+    </ion-segment>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list #eventList [hidden]="events && events.length === 0">
+
+    <ion-item-group *ngFor="let event of events">
+
+      <!--<ion-item-divider sticky>
+        <ion-label>
+          {{group.time}}
+        </ion-label>
+      </ion-item-divider>-->
+      <ion-item>
+
+        <button ion-item (click)="goToEventDetail(event)">
+          <h3>{{event.title}}</h3>
+          <p>
+            {{event.startTime}} &mdash;
+            {{event.endTime}}:
+            {{event.location}}
+          </p>
+        </button>
+
+        <!--<ion-item-options>
+          <button ion-button color="favorite" (click)="addFavorite(slidingItem, session)" *ngIf="segment === 'all'">
+            Favorite
+          </button>
+          <button ion-button color="danger" (click)="removeFavorite(slidingItem, session, 'Remove Favorite')" *ngIf="segment === 'favorites'">
+            Remove
+          </button>
+        </ion-item-options>-->
+
+      </ion-item>
+
+    </ion-item-group>
+
+  </ion-list>
+
+  <ion-list-header [hidden]="events && events.length > 0">
+    No events available
+  </ion-list-header>
+
+  <!--<ion-fab bottom right #fab>
+    <button ion-fab><ion-icon name="share"></ion-icon></button>
+    <ion-fab-list side="top">
+      <button ion-fab color="vimeo" (click)="openSocial('Vimeo', fab)"><ion-icon name="logo-vimeo"></ion-icon></button>
+      <button ion-fab color="google" (click)="openSocial('Google+', fab)"><ion-icon name="logo-googleplus"></ion-icon></button>
+      <button ion-fab color="twitter" (click)="openSocial('Twitter', fab)"><ion-icon name="logo-twitter"></ion-icon></button>
+      <button ion-fab color="facebook" (click)="openSocial('Facebook', fab)"><ion-icon name="logo-facebook"></ion-icon></button>
+    </ion-fab-list>
+  </ion-fab>-->
+</ion-content>
