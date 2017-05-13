@@ -6,7 +6,7 @@ import 'rxjs/add/observable/of';
 
 
 @Injectable()
-export class EventsData {
+export class AnnouncementsData {
   data: any;
 
   constructor(public http: Http) { }
@@ -15,7 +15,7 @@ export class EventsData {
     if (this.data) {
       return Observable.of(this.data);
     } else {
-      return this.http.get('assets/data/events-data.json')
+      return this.http.get('assets/data/announcements-data.json')
         .map(this.processData, this);
     }
   }
@@ -24,19 +24,19 @@ export class EventsData {
     // just some good 'ol JS fun with objects and arrays
     // build up the data by linking speakers to sessions
     this.data = data.json();
-    this.data.events = this.data && this.data.events;
-    this.data.subscriptions = this.data && this.data.subscriptions;
+    this.data.announcements = this.data && this.data.announcements;
     return this.data;
   }
 
-  public getEvents(category: string) {
-    if (category === "upcoming") {
-      return this.getUpcomingEvents();
-    } else if (category === "attending") {
-      return this.getAttendingEvents();
-    } else {
-      return this.getPastEvents();
-    }
+  public getAnnouncements() {
+    return this.load().map((items) => {
+      let announcements = [];
+      this.data.announcements.forEach((item) => {
+        announcements.push({ title: item.title, location: item.location, isRead: item.isRead
+        , description: item.description, category: item.category, color: item.color });
+      });
+      return announcements;
+    });
   }
 
   getPastEvents() {

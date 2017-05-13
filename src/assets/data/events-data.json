@@ -9,10 +9,26 @@
         "Mehaboob Shaik",
         "Firoz Shaik"
       ],
-      "startDate": "05-17",
-      "endDate": "05-17",
-      "startTime": "11:00 am",
-      "endTime": "11:45 am",
+      "startDateTime": "04/17/2017 11:00:00 AM",
+      "endDateTime": "04/17/2017 12:00:00 PM",
+      "allowRsvp": false,
+      "adultHeadCount": false,
+      "childrenHeadCount": false,
+      "picture": "",
+      "category": "",
+      "attending": false
+    },
+    {
+      "id":"100",
+      "title": "Ionic Workshop",
+      "location": "Room 2201",
+      "description": "Mobile devices and browsers are now advanced enough that developers can build native-quality mobile apps using open web technologies like HTML5, Javascript, and CSS. In this talk, we’ll provide background on why and how we created Ionic, the design decisions made as we integrated Ionic with Angular, and the performance considerations for mobile platforms that our team had to overcome. We’ll also review new and upcoming Ionic features, and talk about the hidden powers and benefits of combining mobile app development and Angular.",
+      "speakers": [
+        "Mehaboob Shaik",
+        "Firoz Shaik"
+      ],
+      "startDateTime": "05/17/2017 11:00:00 AM",
+      "endDateTime": "05/17/2017 12:00:00 PM",
       "allowRsvp": false,
       "adultHeadCount": false,
       "childrenHeadCount": false
@@ -25,10 +41,22 @@
       "speakers": [
         "Mufti Suhail"
       ],
-      "startDate": "05-17",
-      "endDate": "05-17",
-      "startTime": "11:00 am",
-      "endTime": "11:45 am",
+      "startDateTime": "05/12/2017 09:00:00 AM",
+      "endDateTime": "05/12/2017 10:00:00 AM",
+      "allowRsvp": true,
+      "adultHeadCount": true,
+      "childrenHeadCount": true
+    },
+    {
+      "id":"101",
+      "title": "Workshop",
+      "location": "Room 2201",
+      "description": "Mobile devices and browsers are now advanced enough that developers can build native-quality mobile apps using open web technologies like HTML5, Javascript, and CSS. In this talk, we’ll provide background on why and how we created Ionic, the design decisions made as we integrated Ionic with Angular, and the performance considerations for mobile platforms that our team had to overcome. We’ll also review new and upcoming Ionic features, and talk about the hidden powers and benefits of combining mobile app development and Angular.",
+      "speakers": [
+        "Mufti Suhail"
+      ],
+      "startDateTime": "05/12/2017 09:00:00 PM",
+      "endDateTime": "05/12/2017 10:00:00 PM",
       "allowRsvp": true,
       "adultHeadCount": true,
       "childrenHeadCount": true
@@ -42,10 +70,8 @@
         "Mehaboob Shaik",
         "Firoz Shaik"
       ],
-      "startDate": "05-17",
-      "endDate": "05-17",
-      "startTime": "11:00 am",
-      "endTime": "11:45 am",
+      "startDateTime": "05/11/2017 09:00:00 AM",
+      "endDateTime": "05/11/2017 10:00:00 AM",
       "allowRsvp": true,
       "adultHeadCount": true,
       "childrenHeadCount": false

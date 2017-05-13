@@ -1,0 +1,52 @@
+{
+    "announcements": [
+        {
+            "id": "99",
+            "title": "Barbeque event",
+            "location": "ICOR",
+            "description": "barbeque will be served on the opening ceremony of the masjid on 20th of May Insha allah.",
+            "createdDateTime": "04/17/2017 11:00:00 AM",
+            "isRead": false,
+            "category": "bonfire",
+            "picture": ""
+        },
+        {
+            "id": "100",
+            "title": "First day of Ramadan",
+            "location": "ICOR",
+            "description": "Please note that Ramadan in 2017 will begin from 27th of May Insha allah.",
+            "createdDateTime": "04/17/2017 11:00:00 AM",
+            "isRead": false,
+            "category": "ios-information-circle-outline",
+            "color": "blue"
+        },
+        {
+            "id": "101",
+            "title": "Isha salat time change",
+            "location": "ICOR",
+            "description": "New time will be 11 PM from tomorrow - 5/20/2017.",
+            "createdDateTime": "05/10/2017 11:00:00 AM",
+            "isRead": true,
+            "category": "ios-time-outline"
+        },
+        {
+            "id": "101",
+            "title": "Workshop recording available",
+            "location": "ICOR",
+            "description": "Recording are available at ..... for the workshop done on 5/20/2017.",
+            "createdDateTime": "05/10/2017 11:00:00 AM",
+            "isRead": true,
+            "category": "recording",
+            "color": "brown"
+        },
+        {
+            "id": "101",
+            "title": "Zuhr salat time change",
+            "location": "ICOR",
+            "description": "New time will be 11 PM from tomorrow - 5/20/2017.",
+            "createdDateTime": "05/10/2017 11:00:00 AM",
+            "isRead": true,
+            "category": "ios-time-outline"
+        }
+    ]
+}

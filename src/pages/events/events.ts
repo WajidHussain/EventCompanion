@@ -16,7 +16,7 @@ import { EventDetailPage } from '../event-detail/event-detail';
 })
 export class EventsPage {
   @ViewChild('eventList', { read: List }) eventList: List;
-  public events: EventsData;
+  public eventCollection: EventsData;
   public category: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public eventsData: EventsData) {
@@ -29,9 +29,19 @@ export class EventsPage {
 
   updateEventList() {
     this.eventsData.getEvents(this.category).subscribe((data: any) => {
-      this.events = data;
+      this.eventCollection = data;
     });
   }
+
+  doRefresh(refresher) {
+    this.eventsData.getEvents(this.category).subscribe((data: any) => {
+      this.eventCollection = data;
+      setTimeout(() => {
+        refresher.complete();
+      }, 500);
+    });
+  }
+
 
   goToEventDetail(event: Event) {
     // go to the session detail page

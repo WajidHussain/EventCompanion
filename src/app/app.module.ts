@@ -7,8 +7,10 @@ import { HttpModule } from '@angular/http';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { EventsPage } from '../pages/events/events';
+import { AnnouncementsPage } from '../pages/announcements/announcements';
 import { EventDetailPage } from '../pages/event-detail/event-detail';
 import { EventsData } from '../providers/events-data';
+import { AnnouncementsData } from '../providers/announcements-data';
 
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -20,7 +22,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     HomePage,
     TabsPage,
     EventsPage,
-    EventDetailPage
+    EventDetailPage,
+    AnnouncementsPage
   ],
   imports: [
     BrowserModule,
@@ -33,10 +36,12 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     HomePage,
     TabsPage,
     EventsPage,
-    EventDetailPage
+    EventDetailPage,
+    AnnouncementsPage
   ],
   providers: [
     EventsData,
+    AnnouncementsData,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
