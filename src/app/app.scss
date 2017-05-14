@@ -14,3 +14,62 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+.description-holder {
+    padding: 0 20px 0 15px;
+    font-size: 1.6rem;
+    margin-top: 0;
+}
+
+img {
+    width: 100%;
+}
+
+.icon-calendar {
+    color: steelblue;
+}
+
+.icon-person, .icon-people {
+    color: grey;
+}
+
+.icon-location {
+    color: green;
+}
+
+.icon-usd {
+    color: darkolivegreen;
+}
+
+.toolbar-title {
+    text-transform: uppercase;
+}
+
+$categories: (
+ potluck: #AC282B,
+ halaqa: #8E8D93,
+ visitingscholar: #FE4C52,
+ fundraiser: #69BB7B,
+ food: #3BC7C4,
+ workshop: #FD8B2D,
+ sports: #FED035,
+ service: #B16BE3,
+ school: #6600CC,
+);
+
+@function auxiliary-categories() {
+  @return map-remove($categories);
+}
+
+event-companion {
+  @each $track, $value in auxiliary-categories() {
+   ion-item[category=#{$track}] {
+     border-left: 4px solid $value;
+     padding-left: 10px;
+        i {
+            color: $value;
+            padding-top: 6px;
+        }
+   }
+  }
+}

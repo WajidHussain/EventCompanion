@@ -6,60 +6,67 @@
 
 <ion-content padding [hidden]="!event" class="page-event-detail">
   <ion-list no-lines>
-    <ion-item>
-      <ion-icon name="calendar" item-left></ion-icon>
-      <ion-label>{{event.startTime}} - {{event.endTime}}</ion-label>
-      <!--<ion-datetime displayFormat="h:mm A" [(ngModel)]="event.startTime"></ion-datetime>
-      <ion-datetime displayFormat="MMM DD" [(ngModel)]="event.endDate"></ion-datetime>
-      <ion-datetime displayFormat="h:mm A" [(ngModel)]="event.endTime"></ion-datetime>-->
+    <ion-item [hidden]="!event.picture">
+      <img src="{{event.picture}}">
     </ion-item>
     <ion-item>
-      <ion-icon name="pin" item-left></ion-icon>
+      <ion-icon class="icon-calendar" name="calendar" item-left></ion-icon>
+      <ion-label>{{event.startTime}} - {{event.endTime}}</ion-label>
+    </ion-item>
+    <ion-item [hidden]="!event.location">
+      <ion-icon class="icon-location" name="pin" item-left></ion-icon>
       <ion-label>{{event.location}}</ion-label>
     </ion-item>
     <ion-item [hidden]="event.speakers && event.speakers.length === 1">
-      <ion-icon name="people" item-left></ion-icon>
+      <ion-icon class="icon-people" name="people" item-left></ion-icon>
       <ion-label>{{event.speakers.join(', ')}}</ion-label>
     </ion-item>
     <ion-item [hidden]="event.speakers && event.speakers.length > 1">
-      <ion-icon name="person" item-left></ion-icon>
+      <ion-icon name="person" class="icon-person" item-left></ion-icon>
       <ion-label>{{event.speakers.join(', ')}}</ion-label>
     </ion-item>
+    <ion-item [hidden]="!event.fee">
+      <ion-icon class="icon-usd" name="logo-usd" item-left></ion-icon>
+      <ion-label>{{event.fee}}</ion-label>
+    </ion-item>
   </ion-list>
-  <p>{{event.description}}</p>
+  <p class="description-holder">{{event.description}}</p>
   <ion-list [hidden]="!event.allowRsvp" no-lines>
     <ion-item>
       <ion-label>RSVP</ion-label>
-      <ion-select [(ngModel)]="event.rsvpStatus"
-      [selectOptions]="selectOptions">
+      <ion-select [(ngModel)]="event.rsvpStatus" [selectOptions]="selectOptions" (ionChange)="onRsvpChange($event)">
         <ion-option value="yes">Yes</ion-option>
         <ion-option value="maybe">May be</ion-option>
         <ion-option value="no">No</ion-option>
       </ion-select>
     </ion-item>
-    <ion-item [hidden]="!event.adultHeadCount || event.rsvpStatus === 'no'">
+    <ion-item [hidden]="!event.adultHeadCount || !event.rsvpStatus || event.rsvpStatus === 'no'">
       <ion-label>Adults</ion-label>
-      <ion-buttons item-right>
-        <button ion-button icon-only (click)="incrementCounter('adult')">
-          <ion-icon name="add-circle"></ion-icon>
+      <ion-buttons item-right class="rsvp-buttons">
+        <button ion-button clear icon-only (click)="decrementCounter('adult')">
+          <ion-icon name="remove-circle"></ion-icon>
         </button>
         <span class="button-counter">{{event.adultCount}}</span>
-        <button ion-button icon-only (click)="decrementCounter('adult')">
-          <ion-icon name="remove-circle"></ion-icon>
-        </button>
-      </ion-buttons>
-    </ion-item>
-    <ion-item [hidden]="!event.childrenHeadCount || event.rsvpStatus === 'no'">
-      <ion-label>Children</ion-label>
-      <ion-buttons item-right>
-        <button ion-button icon-only (click)="incrementCounter('child')">
+        <button ion-button clear icon-only (click)="incrementCounter('adult')">
           <ion-icon name="add-circle"></ion-icon>
         </button>
+      </ion-buttons>
+    </ion-item>
+    <ion-item [hidden]="!event.childrenHeadCount || !event.rsvpStatus || event.rsvpStatus === 'no'">
+      <ion-label>Children</ion-label>
+      <ion-buttons item-right class="rsvp-buttons">
+        <button ion-button clear icon-only (click)="decrementCounter('child')">
+          <ion-icon name='remove-circle'></ion-icon>
+        </button>
         <span class="button-counter">{{event.childCount}}</span>
-        <button ion-button icon-only (click)="decrementCounter('child')">
-          <ion-icon name="remove-circle"></ion-icon>
+        <button ion-button clear icon-only (click)="incrementCounter('child')">
+          <ion-icon name="add-circle"></ion-icon>
         </button>
       </ion-buttons>
     </ion-item>
+
   </ion-list>
+  <p [hidden]="!isDirty" class="text-center">
+    <button color="secondary" ion-button round (click)="submitRsvp()">Update</button>
+  </p>
 </ion-content>

@@ -4,9 +4,31 @@
     align-self: flex-start;
     margin-top: 14px;
   }
+
+  ion-list {
+      i {
+          font-size: 2.5rem;
+      }
+      ion-item[read='false'], ion-item[read='undefined'] {
+        i, h2, p {
+            font-weight: bolder;
+        }
+        h2 {
+            font-size: 1.7rem;
+        }
+      }
+
+      ion-item[read='true'] {
+        i, h2, p {
+            font-weight: normal;
+        }
+      }
+  }
 }
 
 .no-content-text {
     padding-left: 25px;
     font-weight: 200;
 }
+
+

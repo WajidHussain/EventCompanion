@@ -2,7 +2,6 @@
 <ion-header>
 
   <ion-navbar>
-    <!--<ion-title>Events</ion-title>-->
     <ion-segment [(ngModel)]="category" (ionChange)="updateEventList()">
       <ion-segment-button value="upcoming">
         Upcoming
@@ -31,14 +30,16 @@
 
   <ion-list #eventList [hidden]="eventCollection && eventCollection.length === 0"
    *ngFor="let eventGroup of eventCollection">
-      <ion-list-header>
-        {{eventGroup.header}}
-      </ion-list-header>
+      <ion-item-divider sticky>
+        <ion-label>
+          {{eventGroup.header}}
+        </ion-label>
+      </ion-item-divider>
       <h6 class="no-content-text" [hidden]="eventGroup.events.length > 0">No Events</h6>
       <ion-list *ngFor="let event of eventGroup.events" inset>
-        <ion-item (click)="goToEventDetail(event)">
+        <ion-item (click)="goToEventDetail(event)" [attr.read]="event.read" [attr.category]="event.category | lowercase">
           <ion-avatar item-left>
-            <img src="assets/icon/favicon.ico">
+            <i class="fa" ngClass="{{event.font}}" aria-hidden="true"></i>
           </ion-avatar>
           <h2>{{event.title}}</h2>
           <p>{{event.startTime}} - {{event.endTime}}

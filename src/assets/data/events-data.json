@@ -2,8 +2,8 @@
   "events": [
     {
       "id":"100",
-      "title": "Ionic Workshop",
-      "location": "Room 2201",
+      "title": "Ramadan Workshop",
+      "location": "ICOR",
       "description": "Mobile devices and browsers are now advanced enough that developers can build native-quality mobile apps using open web technologies like HTML5, Javascript, and CSS. In this talk, we’ll provide background on why and how we created Ionic, the design decisions made as we integrated Ionic with Angular, and the performance considerations for mobile platforms that our team had to overcome. We’ll also review new and upcoming Ionic features, and talk about the hidden powers and benefits of combining mobile app development and Angular.",
       "speakers": [
         "Mehaboob Shaik",
@@ -14,12 +14,13 @@
       "allowRsvp": false,
       "adultHeadCount": false,
       "childrenHeadCount": false,
-      "picture": "",
-      "category": "",
-      "attending": false
+      "fee": "10",
+      "picture": "http://www.redmondmosque.org/wp-content/uploads/2017/05/JP-Fasting-300x232.jpg",
+      "category": "Workshop",
+      "read": false
     },
     {
-      "id":"100",
+      "id":"101",
       "title": "Ionic Workshop",
       "location": "Room 2201",
       "description": "Mobile devices and browsers are now advanced enough that developers can build native-quality mobile apps using open web technologies like HTML5, Javascript, and CSS. In this talk, we’ll provide background on why and how we created Ionic, the design decisions made as we integrated Ionic with Angular, and the performance considerations for mobile platforms that our team had to overcome. We’ll also review new and upcoming Ionic features, and talk about the hidden powers and benefits of combining mobile app development and Angular.",
@@ -29,12 +30,15 @@
       ],
       "startDateTime": "05/17/2017 11:00:00 AM",
       "endDateTime": "05/17/2017 12:00:00 PM",
+      "fee": "Free",
       "allowRsvp": false,
       "adultHeadCount": false,
-      "childrenHeadCount": false
+      "childrenHeadCount": false,
+      "category": "fundraiser",
+      "read": false
     },
     {
-      "id":"101",
+      "id":"102",
       "title": "Workshop",
       "location": "Room 2201",
       "description": "Mobile devices and browsers are now advanced enough that developers can build native-quality mobile apps using open web technologies like HTML5, Javascript, and CSS. In this talk, we’ll provide background on why and how we created Ionic, the design decisions made as we integrated Ionic with Angular, and the performance considerations for mobile platforms that our team had to overcome. We’ll also review new and upcoming Ionic features, and talk about the hidden powers and benefits of combining mobile app development and Angular.",
@@ -45,10 +49,12 @@
       "endDateTime": "05/12/2017 10:00:00 AM",
       "allowRsvp": true,
       "adultHeadCount": true,
-      "childrenHeadCount": true
+      "childrenHeadCount": true,
+      "category": "potluck",
+      "read": false
     },
     {
-      "id":"101",
+      "id":"103",
       "title": "Workshop",
       "location": "Room 2201",
       "description": "Mobile devices and browsers are now advanced enough that developers can build native-quality mobile apps using open web technologies like HTML5, Javascript, and CSS. In this talk, we’ll provide background on why and how we created Ionic, the design decisions made as we integrated Ionic with Angular, and the performance considerations for mobile platforms that our team had to overcome. We’ll also review new and upcoming Ionic features, and talk about the hidden powers and benefits of combining mobile app development and Angular.",
@@ -59,10 +65,11 @@
       "endDateTime": "05/12/2017 10:00:00 PM",
       "allowRsvp": true,
       "adultHeadCount": true,
-      "childrenHeadCount": true
+      "childrenHeadCount": true,
+      "category": "service"
     },
     {
-      "id":"103",
+      "id":"104",
       "title": "Testing workshop",
       "location": "Room 2201",
       "description": "Mobile devices and browsers are now advanced enough that developers can build native-quality mobile apps using open web technologies like HTML5, Javascript, and CSS. In this talk, we’ll provide background on why and how we created Ionic, the design decisions made as we integrated Ionic with Angular, and the performance considerations for mobile platforms that our team had to overcome. We’ll also review new and upcoming Ionic features, and talk about the hidden powers and benefits of combining mobile app development and Angular.",
@@ -74,15 +81,11 @@
       "endDateTime": "05/11/2017 10:00:00 AM",
       "allowRsvp": true,
       "adultHeadCount": true,
-      "childrenHeadCount": false
+      "childrenHeadCount": false,
+      "category": "food"
     }
   ],
-  "subscriptions": [
-    {
-      "id":"101",
-      "rsvpStatus": "yes",
-      "adultCount": "2",
-      "childCount": "1"
-    }
+  "eventSubscriptions": [
+    
   ]
 }

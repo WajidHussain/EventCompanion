@@ -24,6 +24,9 @@ export class EventsPage {
   }
 
   ionViewDidLoad() {
+  }
+
+  ionViewDidEnter(a: any) {
     this.updateEventList();
   }
 
