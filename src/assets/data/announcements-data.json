@@ -6,9 +6,8 @@
             "location": "ICOR",
             "description": "barbeque will be served on the opening ceremony of the masjid on 20th of May Insha allah.",
             "createdDateTime": "04/17/2017 11:00:00 AM",
-            "isRead": false,
-            "category": "bonfire",
-            "picture": ""
+            "category": "food",
+            "picture": "http://www.redmondmosque.org/wp-content/uploads/2017/05/JP-Fasting-300x232.jpg"
         },
         {
             "id": "100",
@@ -16,9 +15,8 @@
             "location": "ICOR",
             "description": "Please note that Ramadan in 2017 will begin from 27th of May Insha allah.",
             "createdDateTime": "04/17/2017 11:00:00 AM",
-            "isRead": false,
-            "category": "ios-information-circle-outline",
-            "color": "blue"
+            "category": "moonsight",
+            "picture": ""
         },
         {
             "id": "101",
@@ -26,27 +24,37 @@
             "location": "ICOR",
             "description": "New time will be 11 PM from tomorrow - 5/20/2017.",
             "createdDateTime": "05/10/2017 11:00:00 AM",
-            "isRead": true,
-            "category": "ios-time-outline"
+            "category": "timechange"
         },
         {
-            "id": "101",
+            "id": "102",
             "title": "Workshop recording available",
             "location": "ICOR",
             "description": "Recording are available at ..... for the workshop done on 5/20/2017.",
             "createdDateTime": "05/10/2017 11:00:00 AM",
-            "isRead": true,
-            "category": "recording",
-            "color": "brown"
+            "category": "videorecording"
         },
         {
-            "id": "101",
+            "id": "103",
             "title": "Zuhr salat time change",
             "location": "ICOR",
             "description": "New time will be 11 PM from tomorrow - 5/20/2017.",
             "createdDateTime": "05/10/2017 11:00:00 AM",
-            "isRead": true,
-            "category": "ios-time-outline"
+            "category": "timechange"
+        },
+        {
+            "id": "103",
+            "title": "Zuhr salat time change",
+            "location": "ICOR",
+            "description": "New time will be 11 PM from tomorrow - 5/20/2017.",
+            "createdDateTime": "05/10/2017 11:00:00 AM",
+            "category": "info"
+        }
+    ],
+    "myAnnouncements": [
+        {
+            "announcementId": "99",
+            "read": true
         }
     ]
 }

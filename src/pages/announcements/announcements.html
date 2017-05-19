@@ -1,51 +1,33 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Annoucements</ion-title>
+    <ion-title>Announcements</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content class="list-avatar-page">
 
   <ion-refresher (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content
-      pullingIcon="arrow-dropdown"
-      pullingText="Pull to refresh"
-      refreshingSpinner="circles">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles">
     </ion-refresher-content>
   </ion-refresher>
-
-  <!--<ion-list #eventList [hidden]="announcementList && announcementList.length === 0" *ngFor="let announcement of announcementList">
-    <ion-item (click)="goToAnnouncementDetail(announcement)">
-      <ion-avatar item-left>
-        <img src="assets/icon/favicon.ico">
-      </ion-avatar>
-      <h2>{{announcement.title}}</h2>
-      <p>{{announcement.startTime}} - {{announcement.endTime}}
-      </p>
-      <ion-note item-right>{{announcement.location}}</ion-note>
-    </ion-item>
-  </ion-list>-->
-
-  <ion-list #eventList [hidden]="announcementList && announcementList.length === 0">
+  <ion-list #announcementCollection [hidden]="(announcementList && announcementList.length === 0)  || dataLoading">
     <ion-item-group>
-      <ion-item *ngFor="let announcement of announcementList">
+      <ion-item *ngFor="let announcement of announcementList" [attr.read]="announcement.read" [attr.category]="announcement.category | lowercase">
         <button ion-item (click)="goToAnnouncementDetail(announcement)">
           <ion-avatar item-left>
-            <ion-icon [name]="announcement.category"
-            [style.color]="announcement.color || 'black'" item-left></ion-icon>
+            <i class="fa" ngClass="{{announcement.font}}" aria-hidden="true"></i>
           </ion-avatar>
-          <h2 [ngClass]="{'bold-font': !announcement.isRead}">{{announcement.title}}</h2>
+          <h2>{{announcement.title}}</h2>
           <p>
             {{announcement.description}}
           </p>
+          <ion-note item-right>{{announcement.timestamp}}</ion-note>
         </button>
       </ion-item>
-
     </ion-item-group>
-
   </ion-list>
 
-  <ion-list-header [hidden]="announcementList && announcementList.length > 0">
-    No announcementList available
+  <ion-list-header [hidden]="(announcementList && announcementList.length > 0) || dataLoading">
+    No announcements available
   </ion-list-header>
 </ion-content>

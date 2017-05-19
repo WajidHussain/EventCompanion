@@ -1,88 +1,80 @@
 {
   "events": [
     {
-      "id":"100",
-      "title": "Ramadan Workshop",
+      "id": "100",
+      "title": "Ramadan Workshop on fasting",
       "location": "ICOR",
-      "description": "Mobile devices and browsers are now advanced enough that developers can build native-quality mobile apps using open web technologies like HTML5, Javascript, and CSS. In this talk, we’ll provide background on why and how we created Ionic, the design decisions made as we integrated Ionic with Angular, and the performance considerations for mobile platforms that our team had to overcome. We’ll also review new and upcoming Ionic features, and talk about the hidden powers and benefits of combining mobile app development and Angular.",
+      "description": "Ramadan workshop on May 21 after Zuhr, at ICOR by Mufti Sohail. Discuss many different fiqh aspects related to Ramadan.",
       "speakers": [
-        "Mehaboob Shaik",
-        "Firoz Shaik"
+        "Mufti Suhail"
       ],
-      "startDateTime": "04/17/2017 11:00:00 AM",
-      "endDateTime": "04/17/2017 12:00:00 PM",
+      "startDateTime": "05/21/2017 02:00:00 PM",
+      "endDateTime": "05/21/2017 06:00:00 PM",
+      "allowRsvp": false,
+      "adultHeadCount": false,
+      "childrenHeadCount": false,
+      "fee": "FREE",
+      "picture": "http://www.redmondmosque.org/wp-content/uploads/2017/05/JP-Fasting-300x232.jpg",
+      "category": "Workshop"
+    },
+    {
+      "id": "101",
+      "title": "AMJA finance workshop",
+      "location": "ICOR",
+      "description": "This work shop by Dr. Main Al-Qudah teach us how to purify our wealth",
+      "speakers": [
+        "Dr. Main Al-Qudah"
+      ],
+      "startDateTime": "05/27/2017 1:30:00 PM",
+      "endDateTime": "05/27/2017   3:30:00 PM",
       "allowRsvp": false,
       "adultHeadCount": false,
       "childrenHeadCount": false,
       "fee": "10",
-      "picture": "http://www.redmondmosque.org/wp-content/uploads/2017/05/JP-Fasting-300x232.jpg",
-      "category": "Workshop",
-      "read": false
+      "picture": "http://www.amjaonline.org/en/dr-main-al-qudah",
+      "category": "Workshop"
     },
     {
-      "id":"101",
-      "title": "Ionic Workshop",
-      "location": "Room 2201",
-      "description": "Mobile devices and browsers are now advanced enough that developers can build native-quality mobile apps using open web technologies like HTML5, Javascript, and CSS. In this talk, we’ll provide background on why and how we created Ionic, the design decisions made as we integrated Ionic with Angular, and the performance considerations for mobile platforms that our team had to overcome. We’ll also review new and upcoming Ionic features, and talk about the hidden powers and benefits of combining mobile app development and Angular.",
-      "speakers": [
-        "Mehaboob Shaik",
-        "Firoz Shaik"
-      ],
-      "startDateTime": "05/17/2017 11:00:00 AM",
-      "endDateTime": "05/17/2017 12:00:00 PM",
-      "fee": "Free",
+      "id": "102",
+      "title": "Open House and community BBQ",
+      "location": "ICOR",
+      "description": "This is an Open house with Barbecue lunch , Graduation cermony , kids activities and Bazaar",
+      "startDateTime": "05/20/2017 11:30:00 AM",
+      "endDateTime": "05/20/2017   5:30:00 PM",
+      "allowRsvp": true,
+      "adultHeadCount": true,
+      "childrenHeadCount": true,
+      "fee": false,
+      "picture": false,
+      "category": "food"
+    },
+    {
+      "id": "103",
+      "title": "MAPS-MCRC: Ramadhan Food Drive",
+      "location": "MAPS",
+      "description": "MAPS-MCRC, in partnership with Masajids in the Seattle area, will be delivering care boxes of food to needy Muslim families in our community so that they can enjoy a blessed and peaceful Ramadan.Each box will include food staples such as rice, oil, lentils, dates, sugar, etc., sufficient for a family of 5 for one month.You can sponsor one or more boxes ($60/box)",
+      "startDateTime": "05/20/2017 10:00:00 AM",
+      "endDateTime": "05/20/2017   08:00:00 PM",
       "allowRsvp": false,
       "adultHeadCount": false,
       "childrenHeadCount": false,
-      "category": "fundraiser",
-      "read": false
-    },
-    {
-      "id":"102",
-      "title": "Workshop",
-      "location": "Room 2201",
-      "description": "Mobile devices and browsers are now advanced enough that developers can build native-quality mobile apps using open web technologies like HTML5, Javascript, and CSS. In this talk, we’ll provide background on why and how we created Ionic, the design decisions made as we integrated Ionic with Angular, and the performance considerations for mobile platforms that our team had to overcome. We’ll also review new and upcoming Ionic features, and talk about the hidden powers and benefits of combining mobile app development and Angular.",
-      "speakers": [
-        "Mufti Suhail"
-      ],
-      "startDateTime": "05/12/2017 09:00:00 AM",
-      "endDateTime": "05/12/2017 10:00:00 AM",
-      "allowRsvp": true,
-      "adultHeadCount": true,
-      "childrenHeadCount": true,
-      "category": "potluck",
-      "read": false
-    },
-    {
-      "id":"103",
-      "title": "Workshop",
-      "location": "Room 2201",
-      "description": "Mobile devices and browsers are now advanced enough that developers can build native-quality mobile apps using open web technologies like HTML5, Javascript, and CSS. In this talk, we’ll provide background on why and how we created Ionic, the design decisions made as we integrated Ionic with Angular, and the performance considerations for mobile platforms that our team had to overcome. We’ll also review new and upcoming Ionic features, and talk about the hidden powers and benefits of combining mobile app development and Angular.",
-      "speakers": [
-        "Mufti Suhail"
-      ],
-      "startDateTime": "05/12/2017 09:00:00 PM",
-      "endDateTime": "05/12/2017 10:00:00 PM",
-      "allowRsvp": true,
-      "adultHeadCount": true,
-      "childrenHeadCount": true,
+      "fee": "FREE",
+      "picture": "http://www.mapsredmond.org/wp-content/uploads/2017/05/food-drive.jpg",
       "category": "service"
     },
     {
-      "id":"104",
-      "title": "Testing workshop",
-      "location": "Room 2201",
-      "description": "Mobile devices and browsers are now advanced enough that developers can build native-quality mobile apps using open web technologies like HTML5, Javascript, and CSS. In this talk, we’ll provide background on why and how we created Ionic, the design decisions made as we integrated Ionic with Angular, and the performance considerations for mobile platforms that our team had to overcome. We’ll also review new and upcoming Ionic features, and talk about the hidden powers and benefits of combining mobile app development and Angular.",
-      "speakers": [
-        "Mehaboob Shaik",
-        "Firoz Shaik"
-      ],
-      "startDateTime": "05/11/2017 09:00:00 AM",
-      "endDateTime": "05/11/2017 10:00:00 AM",
-      "allowRsvp": true,
-      "adultHeadCount": true,
+      "id": "104",
+      "title": "MAPS MCRC Clinic",
+      "location": "MAPS",
+      "description": "The MAPS MCRC Clinic is now taking appointments for Sunday, May 21st, 2017. The services and providers for this month will be: Family Medicine Dr. Sadia Ali, Cardiology Dr. Humera Ali, Pediatrics Dr. Huma Siddiqui and Chiropractic Dr. Bruce Harris\",To schedule an appointment please email them at mapsmcrcclinic@gmail.com",
+      "startDateTime": "05/21/2017 10:00:00 AM",
+      "endDateTime": "05/21/2017   12:30:00 PM",
+      "allowRsvp": false,
+      "adultHeadCount": false,
       "childrenHeadCount": false,
-      "category": "food"
+      "fee": "Free",
+      "picture": "http://www.mapsredmond.org/wp-content/uploads/2017/03/clinic.jpg",
+      "category": "Clinic"
     }
   ],
   "eventSubscriptions": [

@@ -14,12 +14,8 @@
       </ion-segment-button>
     </ion-segment>
   </ion-navbar>
-
 </ion-header>
-
-
 <ion-content class="list-avatar-page">
-
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content
       pullingIcon="arrow-dropdown"
@@ -28,7 +24,7 @@
     </ion-refresher-content>
   </ion-refresher>
 
-  <ion-list #eventList [hidden]="eventCollection && eventCollection.length === 0"
+  <ion-list #eventList [hidden]="eventCollection && eventCollection.length === 0 || dataLoading"
    *ngFor="let eventGroup of eventCollection">
       <ion-item-divider sticky>
         <ion-label>
@@ -47,21 +43,9 @@
           <ion-note item-right>{{event.location}}</ion-note>
         </ion-item>
       </ion-list>
-    <!--</ion-item-group>-->
-
   </ion-list>
 
-  <ion-list-header [hidden]="eventCollection && eventCollection.length > 0">
+  <ion-list-header [hidden]="eventCollection && eventCollection.length > 0 || dataLoading">
     No events available
   </ion-list-header>
-
-  <!--<ion-fab bottom right #fab>
-    <button ion-fab><ion-icon name="share"></ion-icon></button>
-    <ion-fab-list side="top">
-      <button ion-fab color="vimeo" (click)="openSocial('Vimeo', fab)"><ion-icon name="logo-vimeo"></ion-icon></button>
-      <button ion-fab color="google" (click)="openSocial('Google+', fab)"><ion-icon name="logo-googleplus"></ion-icon></button>
-      <button ion-fab color="twitter" (click)="openSocial('Twitter', fab)"><ion-icon name="logo-twitter"></ion-icon></button>
-      <button ion-fab color="facebook" (click)="openSocial('Facebook', fab)"><ion-icon name="logo-facebook"></ion-icon></button>
-    </ion-fab-list>
-  </ion-fab>-->
 </ion-content>

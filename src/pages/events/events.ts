@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, List } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, List, LoadingController, ToastController } from 'ionic-angular';
 import { EventsData } from '../../providers/events-data';
 import { EventDetailPage } from '../event-detail/event-detail';
 
@@ -18,8 +18,11 @@ export class EventsPage {
   @ViewChild('eventList', { read: List }) eventList: List;
   public eventCollection: EventsData;
   public category: string;
+  public dataLoading: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public eventsData: EventsData) {
+  constructor(public navCtrl: NavController, public navParams: NavParams
+    , public loadingCtrl: LoadingController, public toastCtrl: ToastController, 
+    public eventsData: EventsData) {
     this.category = "upcoming";
   }
 
@@ -31,12 +34,28 @@ export class EventsPage {
   }
 
   updateEventList() {
+    this.dataLoading = true;
+    let loading = this.loadingCtrl.create({
+      content: "Loading.."
+    });
+    loading.present();
     this.eventsData.getEvents(this.category).subscribe((data: any) => {
       this.eventCollection = data;
+      loading.dismiss();
+      this.dataLoading = false;
+    }, () => {
+      this.dataLoading = false;  
+      loading.dismiss();    
+      this.toastCtrl.create({
+        message: 'There was a problem loading data, please try again!',
+        duration: 2000
+      }).present();
     });
   }
 
   doRefresh(refresher) {
+    // this should do a hard refresh?? test it when connected to server
+    // check if the getEvents call fails
     this.eventsData.getEvents(this.category).subscribe((data: any) => {
       this.eventCollection = data;
       setTimeout(() => {

@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{announcement.title}}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding [hidden]="!announcement" class="page-announcement-detail">
+  <ion-list no-lines>
+    <ion-item [hidden]="!announcement.picture">
+      <img src="{{announcement.picture}}">
+    </ion-item>
+    <ion-item>
+      <ion-icon class="icon-calendar" name="calendar" item-left></ion-icon>
+      <ion-label>{{announcement.timestamp}}</ion-label>
+    </ion-item>
+    <ion-item [hidden]="!announcement.location">
+      <ion-icon class="icon-location" name="pin" item-left></ion-icon>
+      <ion-label>{{announcement.location}}</ion-label>
+    </ion-item>
+    <ion-item [hidden]="!announcement.fee">
+      <ion-icon class="icon-usd" name="logo-usd" item-left></ion-icon>
+      <ion-label>{{announcement.fee}}</ion-label>
+    </ion-item>
+  </ion-list>
+  <p class="description-holder">{{announcement.description}}</p>
+</ion-content>

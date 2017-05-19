@@ -46,15 +46,23 @@ img {
 }
 
 $categories: (
- potluck: #AC282B,
+ potluck: #5c4a7a,
  halaqa: #8E8D93,
  visitingscholar: #FE4C52,
  fundraiser: #69BB7B,
  food: #3BC7C4,
  workshop: #FD8B2D,
+ ceremony: #28a394,
  sports: #FED035,
  service: #B16BE3,
+ clinic: #ef4545,
+ missing: #AC282B,
  school: #6600CC,
+ videorecording: #e268a5,
+ moonsight: #cececc,
+ volunteer: #999895,
+ timechange: #8c8c8c,
+ info: #282222
 );
 
 @function auxiliary-categories() {

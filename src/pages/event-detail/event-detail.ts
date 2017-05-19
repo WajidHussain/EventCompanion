@@ -17,7 +17,6 @@ export class EventDetailPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public eventsData: EventsData, public loadingCtrl: LoadingController, public toastCtrl: ToastController) {
-    // this.event = navParams.data.session;
     this.eventsData.getEventDetails(navParams.data.name).subscribe((data) => {
       this.event = Object.assign({}, data);
       this.selectOptions = { mode: 'md', buttons: [] };
@@ -40,6 +39,10 @@ export class EventDetailPage {
     }
   }
 
+  onAttendingChange(){
+    this.isDirty = true;
+  }
+
   decrementCounter(counterType: any) {
     if (counterType === "adult" && this.event.adultCount !== 0) {
       this.event.adultCount--;
@@ -55,16 +58,22 @@ export class EventDetailPage {
     this.isDirty = true;
   }
 
-  submitRsvp() {
+  submit() {
     // take back to home??
     let loading = this.loadingCtrl.create({
       content: "Updating your RSVP.."
     });
     loading.present();
-    this.eventsData.updateRsvp(this.event).then(() => {
+    this.eventsData.submit(this.event).then(() => {
       loading.dismiss();
       this.toastCtrl.create({
         message: 'Your response is recorded!',
+        duration: 2000
+      }).present();
+    }, () => {
+      loading.dismiss();
+      this.toastCtrl.create({
+        message: 'There was a problem reaching server. Please try again!',
         duration: 2000
       }).present();
     });

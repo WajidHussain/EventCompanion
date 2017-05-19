@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { Helper } from './helper';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
 import * as moment from 'moment';
@@ -11,7 +12,7 @@ import * as moment from 'moment';
 export class EventsData {
   data: any;
 
-  constructor(public http: Http) { }
+  constructor(public http: Http, public helper: Helper) { }
 
   load(): any {
     if (this.data) {
@@ -23,11 +24,22 @@ export class EventsData {
   }
 
   processData(data: any) {
-    // just some good 'ol JS fun with objects and arrays
-    // build up the data by linking speakers to sessions
     this.data = data.json();
     this.data.events = this.data && this.data.events;
-    this.data.subscriptions = this.data && this.data.subscriptions;
+    this.data.eventSubscriptions = this.data && this.data.eventSubscriptions;
+    this.data.events.forEach((event) => {
+      // merge subscription with actual event
+      event.read = false;
+      let matchedSubscription = this.findSubscriptionById(event.id);
+      if (event.allowRsvp) {
+        Object.assign(event, matchedSubscription);
+      }
+      event.read = matchedSubscription && matchedSubscription.read || false;
+      event.attending = matchedSubscription && matchedSubscription.attending || false;
+      event.rsvpStatus = matchedSubscription && matchedSubscription.rsvpStatus;
+      event.adultCount = matchedSubscription && matchedSubscription.adultCount || 0;
+      event.childCount = matchedSubscription && matchedSubscription.childCount || 0;
+    });
     return this.data;
   }
 
@@ -59,7 +71,7 @@ export class EventsData {
       { header: "This week", events: [] }, { header: "Next week", events: [] }, { header: "Future", events: [] }];
       items.events.forEach(item => {
         let subscription = this.findSubscriptionById(item.id);
-        if (subscription) {
+        if (subscription && subscription.attending) {
           this.categorizeEventsPerDay(item, eventList);
         }
       });
@@ -88,10 +100,10 @@ export class EventsData {
     else if (new Date(item.endDateTime).getDate() - new Date().getDate() == 1) {
       eventList[1].events.push(this.createEventListItem(item));
     }
-    else if (moment(item.startDateTime).week() === moment().week()) {
+    else if (moment(item.startDateTime).isoWeek() === moment().isoWeek()) {
       eventList[2].events.push(this.createEventListItem(item));
     }
-    else if (moment(item.startDateTime).week() - moment().week() == 1) {
+    else if (moment(item.startDateTime).isoWeek() - moment().isoWeek() == 1) {
       eventList[3].events.push(this.createEventListItem(item));
     }
     else {
@@ -108,59 +120,13 @@ export class EventsData {
       location: item.location,
       category: item.category,
       read: item.read === undefined ? false : item.read,
-      font: this.setFont(item.category)
+      font: this.helper.getFont(item.category)
     };
   }
-
-  setFont(category: string): string {
-    if (!category)
-      return "fa-info";
-    switch (category.toLowerCase()) {
-      case "potluck":
-        return "fa-pie-chart";
-      case "halaqa":
-        return "fa-users";
-      case "visitingscholar":
-        return "fa-graduation-cap";
-      case "fundraiser":
-        return "fa-money";
-      case "food":
-        return "fa-cutlery";
-      case "workshop":
-        return "fa-cogs";
-      case "ceremony":
-
-        break;
-      case "sports":
-        return "fa-trophy";
-      case "service":
-        return "fa-hand-peace-o";
-      case "missing":
-        break;
-      case "school":
-        return "fa-university";
-      case "videorecording":
-        return "fa-video-camera";
-      case "moonsight":
-        return "fa-moon-o";
-      case "volunteer":
-        return "fa-hand-paper-o";
-      default:
-        return "fa-info";
-    }
-  }
-
-  prependZero(value: number): string {
-    if (typeof value === "number" && value < 10 && value > -1) {
-      return "0" + value;
-    }
-    return value.toString();
-  };
 
   getEventDetails(eventId: string) {
     return this.load().map((items) => {
       let matchedEvent = this.findEventById(eventId);
-      let matchedSubscription = this.findSubscriptionById(eventId);
       if (moment(matchedEvent.startDateTime).format("D") === moment(matchedEvent.endDateTime).format("D")) {
         matchedEvent.startTime = moment(matchedEvent.startDateTime).format("ddd MMM Do hh:mm A");
         matchedEvent.endTime = moment(matchedEvent.endDateTime).format("hh:mm A");
@@ -168,19 +134,15 @@ export class EventsData {
         matchedEvent.startTime = moment(matchedEvent.startDateTime).format("MMM DD hh:mm A");
         matchedEvent.endTime = moment(matchedEvent.endDateTime).format("MMM DD hh:mm A");
       }
-      if (matchedEvent.allowRsvp) {
-        Object.assign(matchedEvent, matchedSubscription);
-        // set default status
-        matchedEvent.rsvpStatus = matchedEvent.rsvpStatus;
-        matchedEvent.adultCount = matchedEvent.adultCount ? matchedEvent.adultCount : 0;
-        matchedEvent.childCount = matchedEvent.adultCount ? matchedEvent.childCount : 0;
-      }
+
       return matchedEvent;
     });
   }
 
   updateEventRead(eventId: string) {
+    // database
     this.findEventById(eventId).read = true;
+    // this.findSubscriptionById(eventId).read = true;
   }
 
   findSubscriptionById(eventId: string) {
@@ -195,25 +157,47 @@ export class EventsData {
     });
   }
 
-  updateRsvp(event: any): Promise<boolean> {
+  submit(event: any): Promise<boolean> {
     return new Promise((resolve: any, reject: any) => {
       window.setTimeout(() => {
         let subscription = this.findSubscriptionById(event.id);
+        // database
         if (!subscription) {
           this.data.eventSubscriptions.push({
             id: event.id,
+            attending: event.attending,
             rsvpStatus: event.rsvpStatus,
             adultCount: event.adultCount,
             childCount: event.childCount
           });
         } else {
+          subscription.attending = event.attending;
           subscription.rsvpStatus = event.rsvpStatus;
           subscription.adultCount = event.adultCount;
           subscription.childCount = event.childCount;
         }
+
+        let matchedEvent = this.findEventById(event.id);
+        // update event locally
+        matchedEvent.rsvpStatus = matchedEvent.rsvpStatus;
+        matchedEvent.adultCount = matchedEvent.adultCount;
+        matchedEvent.childCount = matchedEvent.adultCount;
+        matchedEvent.attending = matchedEvent.attending;
         resolve();
       }, 2000);
     })
   }
 
 }
+// {
+//       "id":"102",
+//       "rsvpStatus": "yes",
+//       "adultCount": "2",
+//       "childCount": "1"
+//     },
+//     {
+//       "id":"104",
+//       "rsvpStatus": "maybe",
+//       "adultCount": "1",
+//       "childCount": "0"
+//     }
