@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController, LoadingController } from 'ionic-angular';
 import { EventsData } from '../../providers/events-data';
+import { Calendar } from '@ionic-native/calendar';
 
 @IonicPage()
 @Component({
@@ -15,7 +16,7 @@ export class EventDetailPage {
   // event: any;
   selectOptions: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
+  constructor(public navCtrl: NavController, public navParams: NavParams, private calendar: Calendar,
     public eventsData: EventsData, public loadingCtrl: LoadingController, public toastCtrl: ToastController) {
     this.eventsData.getEventDetails(navParams.data.name).subscribe((data) => {
       this.event = Object.assign({}, data);
@@ -39,7 +40,7 @@ export class EventDetailPage {
     }
   }
 
-  onAttendingChange(){
+  onAttendingChange() {
     this.isDirty = true;
   }
 
@@ -66,16 +67,45 @@ export class EventDetailPage {
     loading.present();
     this.eventsData.submit(this.event).then(() => {
       loading.dismiss();
-      this.toastCtrl.create({
-        message: 'Your response is recorded!',
-        duration: 2000
-      }).present();
+      this.presentToast('Your response is recorded!');
+      this.updateCalendar();
+      this.isDirty = false;
     }, () => {
       loading.dismiss();
-      this.toastCtrl.create({
-        message: 'There was a problem reaching server. Please try again!',
-        duration: 2000
-      }).present();
+      this.presentToast('There was a problem reaching server. Please try again!');
     });
+  }
+
+  updateCalendar() {
+    this.calendar.hasReadWritePermission().then((result) => {
+      if (result) {
+        this.createEvent();
+      } else {
+        this.calendar.requestReadWritePermission().then(() => {
+          this.createEvent();
+        }).catch(() => {
+          this.presentToast('Access denied!');
+        })
+      }
+    }).catch(() => {
+      this.presentToast('There was a problem updating your calendar.');
+    });
+  }
+
+  createEvent() {
+    this.calendar.createEvent(this.event.title, this.event.location, "",
+      new Date(this.event.startDateTime), new Date(this.event.endDateTime))
+      .then(() => {
+        this.presentToast('Calendar updated!');
+      }).catch(() => {
+        this.presentToast('There was a problem creating event in your calendar.');
+      });
+  }
+
+  presentToast(message: string, duration = 2000) {
+    this.toastCtrl.create({
+      message: message,
+      duration: duration
+    }).present();
   }
 }

@@ -179,10 +179,10 @@ export class EventsData {
 
         let matchedEvent = this.findEventById(event.id);
         // update event locally
-        matchedEvent.rsvpStatus = matchedEvent.rsvpStatus;
-        matchedEvent.adultCount = matchedEvent.adultCount;
-        matchedEvent.childCount = matchedEvent.adultCount;
-        matchedEvent.attending = matchedEvent.attending;
+        matchedEvent.rsvpStatus = event.rsvpStatus;
+        matchedEvent.adultCount = event.adultCount;
+        matchedEvent.childCount = event.adultCount;
+        matchedEvent.attending = event.attending;
         resolve();
       }, 2000);
     })
