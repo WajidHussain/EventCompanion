@@ -1,0 +1,7 @@
+{
+  "settings": {
+    "eventNotify": true,
+    "announcementNotify": true,
+    "calendarUpdate": true
+  }
+}

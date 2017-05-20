@@ -7,14 +7,18 @@ import { AboutPage } from '../about/about';
 
 
 @Component({
-  template: `
-    <ion-list inset>
-      <button ion-item (click)="openAbout()">About</button>
-      <button ion-item (click)="openSettings()">Settings</button>
-      <button ion-item (click)="openSupport()">Support</button>
-    </ion-list>
-  `
+  selector: 'home-popover',
+  templateUrl: 'home-popover.html'
 })
+// @Component({
+//   template: `
+//     <ion-list inset>
+//       <button ion-item (click)="openAbout()">About</button>
+//       <button ion-item (click)="openSettings()">Settings</button>
+//       <button ion-item (click)="openSupport()">Support</button>
+//     </ion-list>
+//   `
+// })
 export class PopoverPage {
 
   constructor(

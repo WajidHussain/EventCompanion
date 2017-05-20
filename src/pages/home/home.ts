@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, PopoverController, LoadingController, ToastController } from 'ionic-angular';
 import { HomeData } from '../../providers/home-data';
+import { UserData } from '../../providers/user-data';
 import { PopoverPage } from '../home-popover/home-popover';
 
 @Component({
@@ -13,9 +14,11 @@ export class HomePage {
   dataLoading: boolean;
 
   constructor(public navCtrl: NavController, public homeData: HomeData, public popoverCtrl: PopoverController
-    , public loadingCtrl: LoadingController, public toastCtrl: ToastController) {
+    , public loadingCtrl: LoadingController, public toastCtrl: ToastController,
+    public userData: UserData) {
     this.homePicture = "http://www.redmondmosque.org/wp-content/uploads/2015/11/Prophet-Muhammad.jpg";
     this.loadPrayerTimes();
+    this.userData.load().subscribe();
   }
 
   loadPrayerTimes() {

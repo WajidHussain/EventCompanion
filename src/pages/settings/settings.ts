@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AlertController, NavController, ToastController } from 'ionic-angular';
+import { UserData } from '../../providers/user-data';
 
 
 @Component({
@@ -8,35 +9,27 @@ import { AlertController, NavController, ToastController } from 'ionic-angular';
 })
 export class SettingsPage {
 
-  submitted: boolean = false;
-  supportMessage: string;
+  settings: any;
+  isDirty = false;
 
   constructor(
     public navCtrl: NavController,
     public alertCtrl: AlertController,
-    public toastCtrl: ToastController
-  ) {
-
+    public toastCtrl: ToastController, public userData: UserData) {
+    userData.getUserSettings().subscribe((data) => {
+      this.settings = data;
+    });
   }
 
-
+  onSettingChange() {
+    this.isDirty = true;
+  }
   // If the user enters text in the support question and then navigates
   // without submitting first, ask if they meant to leave the page
-  ionViewCanLeave(): boolean | Promise<boolean> {
+  ionViewCanLeave() {
     // If the support message is empty we should just navigate
-    if (!this.supportMessage || this.supportMessage.trim().length === 0) {
-      return true;
+    if (this.isDirty) {
+      this.userData.updateUserSettings(this.settings);
     }
-
-    return new Promise((resolve: any, reject: any) => {
-      let alert = this.alertCtrl.create({
-        title: 'Leave this page?',
-        message: 'Are you sure you want to leave this page? Your support message will not be submitted.'
-      });
-      alert.addButton({ text: 'Stay', handler: reject });
-      alert.addButton({ text: 'Leave', role: 'cancel', handler: resolve });
-
-      alert.present();
-    });
   }
 }

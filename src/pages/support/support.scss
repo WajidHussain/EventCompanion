@@ -1,3 +1,10 @@
-ion-icon {
-    margin: 0;
+app-support {
+    ion-icon {
+        margin: 0;
+        font-size: 2.8rem;
+    }
+
+    .label-md[stacked] {
+        font-size: 1.6rem;
+    }
 }

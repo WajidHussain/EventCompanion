@@ -14,6 +14,15 @@ export class HomeData {
 
   constructor(public http: Http, public helper: Helper) { }
 
+  load(): any {
+    if (this.data) {
+      return Observable.of(this.data);
+    } else {
+      return this.http.get('assets/data/prayer-data.json')
+        .map(this.processPrayerTimes, this);
+    }
+  }
+
   loadPrayerTimes(): any {
     let headers = new Headers();
     headers.append("Access-Control-Allow-Origin", "*");
@@ -33,30 +42,19 @@ export class HomeData {
     let todaysDate = moment().date();
     let thisMonth = moment().format("MMM");
     this.data = data.json();
-    this.data.forEach((element) => {
-      if (element.date === todaysDate && element.month === thisMonth) {
+    let times = this.data.find((element) => {
+      if (element.day === todaysDate && element.month === thisMonth) {
         return element;
       }
     });
+    return times;
   }
 
   getPrayerTimes() {
-    return this.loadPrayerTimes().map((items) => {
+    return this.load().map((items) => {
       return items;
     });
   }
 
 
 }
-// {
-//       "id":"102",
-//       "rsvpStatus": "yes",
-//       "adultCount": "2",
-//       "childCount": "1"
-//     },
-//     {
-//       "id":"104",
-//       "rsvpStatus": "maybe",
-//       "adultCount": "1",
-//       "childCount": "0"
-//     }

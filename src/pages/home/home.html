@@ -9,27 +9,107 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding  *ngIf="prayerData">
   <ion-item>
     <img src="{{homePicture}}">
   </ion-item>
-  <ion-item>
-    <ion-label>Prayer Times</ion-label>
+  <ion-item class="text-center header">
+    <ion-label>Today's Prayer Times</ion-label>
   </ion-item>
   <ion-item>
     <ion-grid>
       <ion-row>
-        <ion-col>
+        <ion-col class="col-header">
           Prayer
         </ion-col>
-        <ion-col>
+        <ion-col class="col-header">
           Adhan
         </ion-col>
-        <ion-col>
+        <ion-col class="col-header">
           Namaz
         </ion-col>
       </ion-row>
-      <ion-row *ngFor="let salat of namazTimes" inset>
+      <ion-row>
+        <ion-col>
+          Fajr
+        </ion-col>
+        <ion-col>
+          {{prayerData.fajrBegin}}
+        </ion-col>
+        <ion-col>
+          {{prayerData.fajr}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          Dhuhr
+        </ion-col>
+        <ion-col>
+          {{prayerData.dhuhrBegin}}
+        </ion-col>
+        <ion-col>
+          {{prayerData.dhuhr}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          Asr
+        </ion-col>
+        <ion-col>
+          {{prayerData.asrBegin}}
+        </ion-col>
+        <ion-col>
+          {{prayerData.asr}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          Asr (Hanafi)
+        </ion-col>
+        <ion-col>
+          {{prayerData.asrBeginHanafi}}
+        </ion-col>
+        <ion-col>
+          {{prayerData.asr}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          Maghrib
+        </ion-col>
+        <ion-col>
+          {{prayerData.maghribBegin}}
+        </ion-col>
+        <ion-col>
+          {{prayerData.maghrib}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          Isha
+        </ion-col>
+        <ion-col>
+          {{prayerData.ishaBegin}}
+        </ion-col>
+        <ion-col>
+          {{prayerData.isha}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          Jumu'ah
+        </ion-col>
+        <ion-col col-8>
+          1:30 (1st) & 3:30 (2nd)
+        </ion-col>        
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          Sunrise
+        </ion-col>
+        <ion-col>
+          {{prayerData.shuruq}}
+        </ion-col>        
       </ion-row>
     </ion-grid>
   </ion-item>

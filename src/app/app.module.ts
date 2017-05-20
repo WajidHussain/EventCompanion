@@ -15,6 +15,8 @@ import { EventsData } from '../providers/events-data';
 import { HomeData } from '../providers/home-data';
 import { Helper } from '../providers/helper'
 import { AnnouncementsData } from '../providers/announcements-data';
+import { UserData } from '../providers/user-data';
+
 import { PopoverPage } from '../pages/home-popover/home-popover';
 import { SupportPage } from '../pages/support/support';
 import { SettingsPage } from '../pages/settings/settings';
@@ -64,6 +66,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     StatusBar,
     SplashScreen,
     Calendar,
+    UserData,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })
