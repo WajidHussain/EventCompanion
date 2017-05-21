@@ -39,7 +39,7 @@
   <ion-list>
     <ion-item>
       <ion-label>Attending</ion-label>
-      <ion-toggle color="dark" [(ngModel)]="event.attending"
+      <ion-toggle color="dark" [(ngModel)]="event.attending" disabled="{{event.past}}"
       (ionChange)="onAttendingChange()"></ion-toggle>
     </ion-item>
   </ion-list>

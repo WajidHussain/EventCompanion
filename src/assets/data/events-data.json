@@ -75,6 +75,127 @@
       "fee": "Free",
       "picture": "http://www.mapsredmond.org/wp-content/uploads/2017/03/clinic.jpg",
       "category": "Clinic"
+    },
+    {
+      "id": "105",
+      "title": "Potluck dinner",
+      "location": "ICOR",
+      "description": "We'll have a potluck dinner program after maghrib insha allah. Everyone is requested to bring a dish to share.",
+      "startDateTime": "05/19/2017 07:00:00 PM",
+      "endDateTime": "05/19/2017   08:30:00 PM",
+      "allowRsvp": true,
+      "adultHeadCount": true,
+      "childrenHeadCount": true,
+      "fee": "Free",
+      "picture": "https://img.clipartfest.com/c4818cd05a05277e3e59d7b44486516e_pot-luck-clip-art-getbellhop-free-potluck-clipart_1300-614.jpeg",
+      "category": "potluck"
+    },
+    {
+      "id": "106",
+      "title": "Mihraab - Essentials of Islam course",
+      "location": "MAPS",
+      "description": "The tradition of Islam, as delivered to us by the Messenger of Allah ﷺ, has always furthered itself through the prophetic method of teaching and learning, heart to heart, from teacher to student. The very essence of our practice relies on sound understanding to guide our belief and acts of worship, drawing us closer to our Creator. There is no shortage of evidence that in today’s world, we are suffering profound deficiencies in our comprehension of the Prophetic Way, but by the grace and permission of Allah, for every ailment, there exists a cure and this cure is knowledge of faith. For more info, visit - http://www.mihraab.com/scholastic-branch/essentials-of-islam-course/",
+      "startDateTime": "05/20/2017 09:00:00 AM",
+      "endDateTime": "05/20/2017   12:30:00 PM",
+      "allowRsvp": true,
+      "adultHeadCount": true,
+      "childrenHeadCount": true,
+      "fee": "$60 per individual",
+      "picture": "http://www.mihraab.com/wp/wp-content/uploads/2016/09/EIC-2016-17-Spring-Term-Flyer-JPEG.jpg",
+      "category": "workshop",
+      "speakers": [
+        "Shaykh Qasim Hatem","Shaykh Syed Umair Ahmad"
+      ]
+    },
+    {
+      "id": "107",
+      "title": "Selections of Noble Hadith",
+      "location": "ICOR",
+      "description": "Happens every Thursday after Maghrib Salah.",
+      "startDateTime": "05/25/2017 08:40:00 PM",
+      "endDateTime": "05/25/2017   10:00:00 PM",
+      "allowRsvp": false,
+      "adultHeadCount": false,
+      "childrenHeadCount": false,
+      "fee": "Free",
+      "picture": "",
+      "category": "halaqa",
+      "speakers": [
+        "Shaykh Umar Bin Hafidth"
+      ]
+    },
+    {
+      "id": "108",
+      "title": "Visiting Scholar from Canada",
+      "location": "ICOR",
+      "description": "Mufti xxxxxxx will be visiting us next friday insha allah",
+      "startDateTime": "06/02/2017 07:30:00 PM",
+      "endDateTime": "06/02/2017   10:00:00 PM",
+      "allowRsvp": false,
+      "adultHeadCount": false,
+      "childrenHeadCount": false,
+      "fee": "Free",
+      "picture": "",
+      "category": "visitingscholar",
+      "speakers": [
+        "Shaykh xxxx"
+      ]
+    },
+    {
+      "id": "109",
+      "title": "Madeena masjid Fund raiser",
+      "location": "ICOR",
+      "description": "Fund raiser for madeena masjid insha allah.",
+      "startDateTime": "05/06/2017 07:30:00 PM",
+      "endDateTime": "05/06/2017   10:00:00 PM",
+      "allowRsvp": true,
+      "adultHeadCount": true,
+      "childrenHeadCount": true,
+      "fee": "$10",
+      "picture": "http://masjidmadina.com/wp-content/themes/Mosque/images/logo.png",
+      "category": "fundraiser",
+      "speakers": [
+        "Shaykh Fazal", "Mufti Suhail"
+      ]
+    },
+    {
+      "id": "110",
+      "title": "Mihraab Guys Soccer",
+      "location": "Marymoor Park",
+      "description": "Soccer program for youth at Marymoor park. For more details, visit - http://www.mihraab.com/",
+      "startDateTime": "05/21/2017 07:30:00 AM",
+      "endDateTime": "05/21/2017   10:00:00 PM",
+      "allowRsvp": true,
+      "adultHeadCount": true,
+      "fee": "$5",
+      "picture": "http://www.mihraab.com/wp/wp-content/uploads/2017/05/Mihraab-Guys-Youth-Soccer-Tournament-Social-2017.jpeg",
+      "category": "sports"
+    },
+    {
+      "id": "111",
+      "title": "Mihraab Girls Soccer",
+      "location": "Marymoor Park",
+      "description": "Soccer program for girls at Marymoor park. For more details, visit - http://www.mihraab.com/",
+      "startDateTime": "05/13/2017 01:30:00 PM",
+      "endDateTime": "05/13/2017   10:00:00 PM",
+      "allowRsvp": true,
+      "adultHeadCount": true,
+      "fee": "$5",
+      "picture": "http://www.mihraab.com/wp/wp-content/uploads/2017/05/Mihraab-Girls-Youth-Frisbee-Social-2017.png",
+      "category": "women"
+    },
+    {
+      "id": "112",
+      "title": "Aqeeqa ceremony",
+      "location": "ICOR",
+      "description": "Aqeeqa invitation from Brother xxxxx after Dhuhr salat insha allah.",
+      "startDateTime": "05/21/2017 01:30:00 PM",
+      "endDateTime": "05/21/2017   03:00:00 PM",
+      "allowRsvp": false,
+      "adultHeadCount": false,
+      "fee": "Free",
+      "picture": "",
+      "category": "ceremony"
     }
   ],
   "eventSubscriptions": [

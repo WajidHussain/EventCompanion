@@ -22,6 +22,11 @@ export class EventDetailPage {
     public toastCtrl: ToastController, public userData: UserData) {
     this.eventsData.getEventDetails(navParams.data.name).subscribe((data) => {
       this.event = Object.assign({}, data);
+      if (Date.now() - <any>(new Date(this.event.endDateTime)) > 0) {
+        this.event.past = true;
+      } else {
+        this.event.past = false;
+      }
       this.selectOptions = { mode: 'md', buttons: [] };
       this.isDirty = false;
       this.eventsData.updateEventRead(this.event.id);

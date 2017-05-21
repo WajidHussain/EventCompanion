@@ -29,7 +29,7 @@ export class Helper {
       return "fa-info-circle";
     switch (category.toLowerCase()) {
       case "potluck":
-        return "fa-pie-chart";
+        return "fa-cutlery";
       case "halaqa":
         return "fa-users";
       case "visitingscholar":
@@ -40,8 +40,10 @@ export class Helper {
         return "fa-cutlery";
       case "workshop":
         return "fa-cogs";
-      case "ceremony": // todo
-        return "fa-info-circle";
+      case "ceremony":
+        return "fa-snowflake-o";
+      case "women":
+        return "fa-female";
       case "sports":
         return "fa-trophy";
       case "service":
@@ -51,7 +53,7 @@ export class Helper {
       case "missing":
         break;
       case "school":
-        return "fa-university";
+        return "fa-graduation-cap";
       case "videorecording":
         return "fa-video-camera";
       case "moonsight":
@@ -65,17 +67,5 @@ export class Helper {
     }
   }
 
-  
+
 }
-// {
-//       "id":"102",
-//       "rsvpStatus": "yes",
-//       "adultCount": "2",
-//       "childCount": "1"
-//     },
-//     {
-//       "id":"104",
-//       "rsvpStatus": "maybe",
-//       "adultCount": "1",
-//       "childCount": "0"
-//     }

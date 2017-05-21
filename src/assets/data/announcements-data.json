@@ -1,22 +1,12 @@
 {
     "announcements": [
         {
-            "id": "99",
-            "title": "Barbeque event",
-            "location": "ICOR",
-            "description": "barbeque will be served on the opening ceremony of the masjid on 20th of May Insha allah.",
-            "createdDateTime": "04/17/2017 11:00:00 AM",
-            "category": "food",
-            "picture": "http://www.redmondmosque.org/wp-content/uploads/2017/05/JP-Fasting-300x232.jpg"
-        },
-        {
             "id": "100",
             "title": "First day of Ramadan",
             "location": "ICOR",
             "description": "Please note that Ramadan in 2017 will begin from 27th of May Insha allah.",
             "createdDateTime": "04/17/2017 11:00:00 AM",
-            "category": "moonsight",
-            "picture": ""
+            "category": "moonsight"
         },
         {
             "id": "101",
@@ -43,11 +33,35 @@
             "category": "timechange"
         },
         {
-            "id": "103",
+            "id": "104",
             "title": "Zuhr salat time change",
             "location": "ICOR",
             "description": "New time will be 11 PM from tomorrow - 5/20/2017.",
             "createdDateTime": "05/10/2017 11:00:00 AM",
+            "category": "timechange"
+        },
+        {
+            "id": "105",
+            "title": "Vacation at Nujoom ul islam",
+            "location": "ICOR",
+            "description": "School is going to reconvene on 06/12 insha allah.",
+            "createdDateTime": "05/10/2017 11:00:00 AM",
+            "category": "school"
+        },
+        {
+            "id": "106",
+            "title": "Ramadan preparation",
+            "location": "ICOR",
+            "description": "Volunteers needed for daily iftar arrangements. Please contact Brother xxxxx at adsa@asdsd.com to register.",
+            "createdDateTime": "05/20/2017 11:00:00 AM",
+            "category": "volunteer"
+        },
+        {
+            "id": "108",
+            "title": "Facility manager",
+            "location": "ICOR",
+            "description": "Brother Rasheed has accepted to serve the masjid as a Facility manager from today insha allah.",
+            "createdDateTime": "05/20/2017 11:00:00 AM",
             "category": "info"
         }
     ],
