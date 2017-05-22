@@ -49,7 +49,7 @@ export class AnnouncementsPage {
   }
 
   doRefresh(refresher) {
-    this.announcementsData.getAnnouncements().subscribe((data: any) => {
+    this.announcementsData.getAnnouncements(true).subscribe((data: any) => {
       this.announcementList = data;
       setTimeout(() => {
         refresher.complete();

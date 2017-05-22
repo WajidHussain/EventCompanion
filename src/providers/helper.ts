@@ -7,9 +7,22 @@ import * as moment from 'moment';
 
 @Injectable()
 export class Helper {
+
   data: any;
+    azureClient: any;
+
+  private AzureMobileServiceUrl: string = 'http://icorevents.azurewebsites.net';
+
+  public Mock = false;
 
   constructor() { }
+
+  loadProvider() {
+    if (!this.azureClient) {
+      this.azureClient = new WindowsAzure.MobileServiceClient(this.AzureMobileServiceUrl);
+    }
+    return this.azureClient;
+  }
 
   createEventListItem(item) {
     return {
@@ -66,6 +79,5 @@ export class Helper {
         return "fa-info-circle";
     }
   }
-
 
 }

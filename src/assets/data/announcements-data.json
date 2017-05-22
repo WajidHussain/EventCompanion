@@ -5,7 +5,7 @@
             "title": "First day of Ramadan",
             "location": "ICOR",
             "description": "Please note that Ramadan in 2017 will begin from 27th of May Insha allah.",
-            "createdDateTime": "04/17/2017 11:00:00 AM",
+            "createdAt": "04/17/2017 11:00:00 AM",
             "category": "moonsight"
         },
         {
@@ -13,7 +13,7 @@
             "title": "Isha salat time change",
             "location": "ICOR",
             "description": "New time will be 11 PM from tomorrow - 5/20/2017.",
-            "createdDateTime": "05/10/2017 11:00:00 AM",
+            "createdAt": "05/10/2017 11:00:00 AM",
             "category": "timechange"
         },
         {
@@ -21,7 +21,7 @@
             "title": "Workshop recording available",
             "location": "ICOR",
             "description": "Recording are available at ..... for the workshop done on 5/20/2017.",
-            "createdDateTime": "05/10/2017 11:00:00 AM",
+            "createdAt": "05/10/2017 11:00:00 AM",
             "category": "videorecording"
         },
         {
@@ -29,7 +29,7 @@
             "title": "Zuhr salat time change",
             "location": "ICOR",
             "description": "New time will be 11 PM from tomorrow - 5/20/2017.",
-            "createdDateTime": "05/10/2017 11:00:00 AM",
+            "createdAt": "05/10/2017 11:00:00 AM",
             "category": "timechange"
         },
         {
@@ -37,7 +37,7 @@
             "title": "Zuhr salat time change",
             "location": "ICOR",
             "description": "New time will be 11 PM from tomorrow - 5/20/2017.",
-            "createdDateTime": "05/10/2017 11:00:00 AM",
+            "createdAt": "05/10/2017 11:00:00 AM",
             "category": "timechange"
         },
         {
@@ -45,7 +45,7 @@
             "title": "Vacation at Nujoom ul islam",
             "location": "ICOR",
             "description": "School is going to reconvene on 06/12 insha allah.",
-            "createdDateTime": "05/10/2017 11:00:00 AM",
+            "createdAt": "05/10/2017 11:00:00 AM",
             "category": "school"
         },
         {
@@ -53,7 +53,7 @@
             "title": "Ramadan preparation",
             "location": "ICOR",
             "description": "Volunteers needed for daily iftar arrangements. Please contact Brother xxxxx at adsa@asdsd.com to register.",
-            "createdDateTime": "05/20/2017 11:00:00 AM",
+            "createdAt": "05/20/2017 11:00:00 AM",
             "category": "volunteer"
         },
         {
@@ -61,7 +61,7 @@
             "title": "Facility manager",
             "location": "ICOR",
             "description": "Brother Rasheed has accepted to serve the masjid as a Facility manager from today insha allah.",
-            "createdDateTime": "05/20/2017 11:00:00 AM",
+            "createdAt": "05/20/2017 11:00:00 AM",
             "category": "info"
         }
     ],

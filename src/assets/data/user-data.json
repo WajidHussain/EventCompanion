@@ -1,7 +1,5 @@
 {
-  "settings": {
-    "eventNotify": true,
-    "announcementNotify": true,
-    "calendarUpdate": true
-  }
+  "eventNotify": true,
+  "announcementNotify": true,
+  "calendarUpdate": true
 }

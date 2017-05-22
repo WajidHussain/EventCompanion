@@ -5,25 +5,65 @@ import { Observable } from 'rxjs/Observable';
 import { Helper } from './helper';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/forkJoin';
 import * as moment from 'moment';
 
 
 @Injectable()
 export class EventsData {
   data: any;
-
+  private eventsTableName: string = 'events';
+  private eventsTable: any;
+  private subscriptionsTableName: string = 'events_rsvp';
+  private subscriptionsTable: any;
   constructor(public http: Http, public helper: Helper) { }
 
   load(): any {
     if (this.data) {
       return Observable.of(this.data);
     } else {
-      return this.http.get('assets/data/events-data.json')
-        .map(this.processData, this);
+      if (this.helper.Mock) {
+        return this.http.get('assets/data/events-data.json')
+          .map(this.processDataMock, this);
+      } else {
+        this.eventsTable = this.helper.loadProvider().getTable(this.eventsTableName);
+        this.subscriptionsTable = this.helper.loadProvider().getTable(this.subscriptionsTableName);
+        let subs = Observable.fromPromise(this.subscriptionsTable
+          .where({ userId: "wajidhussain.m@gmail.com" })
+          .read()
+          .then((data) => {
+            this.data = {};
+            this.data.eventSubscriptions = data;
+          }));
+        let evs = Observable.fromPromise(this.eventsTable.read().then((data) => {
+          this.data.events = data;
+        }));
+        return Observable.forkJoin([subs, evs])
+          .map(this.processData, this);
+      }
     }
   }
 
-  processData(data: any) {
+  processData() {
+    if (this.data.eventSubscriptions && this.data.eventSubscriptions.length > 0) {
+      this.data.events.forEach((event) => {
+        // merge subscription with actual event
+        // event.read = false;
+        let matchedSubscription = this.findSubscriptionById(event.id);
+        // if (event.allowRsvp) {
+        //   Object.assign(event, matchedSubscription);
+        // }
+        event.read = matchedSubscription || false;
+        event.attending = matchedSubscription && matchedSubscription.attending || false;
+        event.rsvpStatus = matchedSubscription && matchedSubscription.rsvpStatus;
+        event.adultCount = matchedSubscription && matchedSubscription.adultCount || 0;
+        event.childCount = matchedSubscription && matchedSubscription.childCount || 0;
+      });
+    }
+    return this.data;
+  }
+
+  processDataMock(data: any) {
     this.data = data.json();
     this.data.events = this.data && this.data.events;
     this.data.eventSubscriptions = this.data && this.data.eventSubscriptions;
@@ -141,13 +181,24 @@ export class EventsData {
 
   updateEventRead(eventId: string) {
     // database
+    if (!this.findSubscriptionById(eventId)) {
+      // insert
+      this.subscriptionsTable.insert({
+        eventId: eventId,
+        read: true,
+        userId: "wajidhussain.m@gmail.com"
+      });
+      this.data.eventSubscriptions.push({
+        eventId: eventId,
+        read: true
+      });
+    }
     this.findEventById(eventId).read = true;
-    // this.findSubscriptionById(eventId).read = true;
   }
 
   findSubscriptionById(eventId: string) {
     return this.data.eventSubscriptions.find((item) => {
-      return item.id === eventId;
+      return item.eventId === eventId;
     });
   }
 
@@ -160,31 +211,31 @@ export class EventsData {
   submit(event: any): Promise<boolean> {
     return new Promise((resolve: any, reject: any) => {
       window.setTimeout(() => {
-        let subscription = this.findSubscriptionById(event.id);
         // database
-        if (!subscription) {
-          this.data.eventSubscriptions.push({
-            id: event.id,
-            attending: event.attending,
-            rsvpStatus: event.rsvpStatus,
-            adultCount: event.adultCount,
-            childCount: event.childCount
-          });
-        } else {
-          subscription.attending = event.attending;
-          subscription.rsvpStatus = event.rsvpStatus;
-          subscription.adultCount = event.adultCount;
-          subscription.childCount = event.childCount;
-        }
+        let subscription = this.findSubscriptionById(event.id);
+        this.subscriptionsTable.where({ userId: "wajidhussain.m@gmail.com", eventId: event.id })
+          .read().then((item) => {
+            this.subscriptionsTable.update({
+              id: item[0].id,
+              attending: event.attending,
+              rsvpStatus: event.rsvpStatus,
+              adultCount: event.adultCount,
+              childCount: event.childCount
+            });
+            subscription.attending = event.attending;
+            subscription.rsvpStatus = event.rsvpStatus;
+            subscription.adultCount = event.adultCount;
+            subscription.childCount = event.childCount;
 
-        let matchedEvent = this.findEventById(event.id);
-        // update event locally
-        matchedEvent.rsvpStatus = event.rsvpStatus;
-        matchedEvent.adultCount = event.adultCount;
-        matchedEvent.childCount = event.adultCount;
-        matchedEvent.attending = event.attending;
-        resolve();
-      }, 2000);
+            let matchedEvent = this.findEventById(event.id);
+            // update event locally
+            matchedEvent.rsvpStatus = event.rsvpStatus;
+            matchedEvent.adultCount = event.adultCount;
+            matchedEvent.childCount = event.adultCount;
+            matchedEvent.attending = event.attending;
+            resolve();
+          }, () => { reject(); });
+      }, 500);
     })
   }
 
