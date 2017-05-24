@@ -24,6 +24,20 @@ import { AboutPage } from '../pages/about/about';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+// Import the AF2 Module
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+
+// AF2 Settings
+export const firebaseConfig = {
+  apiKey: "AIzaSyBdspJiLkbPrNjOL_IVTaJPCmgzJpWpjv0",
+  authDomain: "masjid-companion.firebaseapp.com",
+  databaseURL: "https://masjid-companion.firebaseio.com",
+  projectId: "masjid-companion",
+  storageBucket: "masjid-companion.appspot.com",
+  messagingSenderId: "861672505274"
+};
 
 @NgModule({
   declarations: [
@@ -42,7 +56,10 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   imports: [
     BrowserModule,
     HttpModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireDatabaseModule,
+    AngularFireAuthModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

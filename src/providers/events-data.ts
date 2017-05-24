@@ -7,18 +7,38 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/forkJoin';
 import * as moment from 'moment';
-
+import { AngularFireDatabase } from 'angularfire2/database';
 
 @Injectable()
 export class EventsData {
   data: any;
-  private eventsTableName: string = 'events';
-  private eventsTable: any;
-  private subscriptionsTableName: string = 'events_rsvp';
-  private subscriptionsTable: any;
-  constructor(public http: Http, public helper: Helper) { }
+
+  constructor(public http: Http, public helper: Helper, private afDB: AngularFireDatabase
+    ) { }
+
+
+  create() {
+    this.helper.getToken().then(() => {
+
+      let k = this.afDB.list('/events');
+      k.push({
+      "title": "Open House and community BBQ",
+      "location": "ICOR",
+      "description": "This is an Open house with Barbecue lunch , Graduation cermony , kids activities and Bazaar",
+      "startDateTime": "05/26/2017 11:30:00 AM",
+      "endDateTime": "05/26/2017   5:30:00 PM",
+      "allowRsvp": true,
+      "adultHeadCount": true,
+      "childrenHeadCount": true,
+      "fee": false,
+      "picture": false,
+      "category": "food"
+    });
+    });
+  }
 
   load(): any {
+    // this.create();
     if (this.data) {
       return Observable.of(this.data);
     } else {
@@ -26,20 +46,26 @@ export class EventsData {
         return this.http.get('assets/data/events-data.json')
           .map(this.processDataMock, this);
       } else {
-        this.eventsTable = this.helper.loadProvider().getTable(this.eventsTableName);
-        this.subscriptionsTable = this.helper.loadProvider().getTable(this.subscriptionsTableName);
-        let subs = Observable.fromPromise(this.subscriptionsTable
-          .where({ userId: "wajidhussain.m@gmail.com" })
-          .read()
-          .then((data) => {
-            this.data = {};
-            this.data.eventSubscriptions = data;
-          }));
-        let evs = Observable.fromPromise(this.eventsTable.read().then((data) => {
-          this.data.events = data;
-        }));
-        return Observable.forkJoin([subs, evs])
-          .map(this.processData, this);
+        let prm = new Promise((resolve, reject) => {
+          this.helper.getToken().then(() => {
+            this.afDB.database.ref('events').once('value', (snapshot: any) => {
+              this.data = { events: [], eventSubscriptions: [] };
+              snapshot.forEach((childSnapshot) => {
+                this.data.events.push(childSnapshot.val());
+                this.data.events[this.data.events.length - 1].id = childSnapshot.key;
+              });
+              this.afDB.database.ref('events_rsvp').orderByChild("userId").equalTo("wajidhussain.m@gmail.com").once('value', (rsvpSS: any) => {
+                rsvpSS.forEach((rsvpChildSnapshot: any) => {
+                  this.data.eventSubscriptions.push(rsvpChildSnapshot.val());
+                  this.data.eventSubscriptions[this.data.eventSubscriptions.length - 1].id =
+                    rsvpChildSnapshot.key;
+                });
+                resolve();
+              });
+            });
+          });
+        });
+        return Observable.fromPromise(prm).map(this.processData, this);
       }
     }
   }
@@ -183,14 +209,18 @@ export class EventsData {
     // database
     if (!this.findSubscriptionById(eventId)) {
       // insert
-      this.subscriptionsTable.insert({
-        eventId: eventId,
-        read: true,
-        userId: "wajidhussain.m@gmail.com"
-      });
-      this.data.eventSubscriptions.push({
-        eventId: eventId,
-        read: true
+      this.helper.getToken().then(() => {
+        let k = this.afDB.list('/events_rsvp');
+        let item = k.push({
+          eventId: eventId,
+          read: true,
+          userId: "wajidhussain.m@gmail.com"
+        });
+        this.data.eventSubscriptions.push({
+          eventId: eventId,
+          read: true,
+          id: item.key
+        });
       });
     }
     this.findEventById(eventId).read = true;
@@ -213,42 +243,32 @@ export class EventsData {
       window.setTimeout(() => {
         // database
         let subscription = this.findSubscriptionById(event.id);
-        this.subscriptionsTable.where({ userId: "wajidhussain.m@gmail.com", eventId: event.id })
-          .read().then((item) => {
-            this.subscriptionsTable.update({
-              id: item[0].id,
-              attending: event.attending,
-              rsvpStatus: event.rsvpStatus,
-              adultCount: event.adultCount,
-              childCount: event.childCount
-            });
+        this.helper.getToken().then(() => {
+          this.afDB.database.ref('events_rsvp').child(subscription.id).update({
+            rsvpStatus: event.rsvpStatus || false,
+            adultCount: event.adultCount || 0,
+            childCount: event.childCount || 0,
+            attending: event.attending
+          }).then(() => {
             subscription.attending = event.attending;
-            subscription.rsvpStatus = event.rsvpStatus;
-            subscription.adultCount = event.adultCount;
-            subscription.childCount = event.childCount;
+            subscription.rsvpStatus = event.rsvpStatus || false;
+            subscription.adultCount = event.adultCount || 0;
+            subscription.childCount = event.childCount || 0;
 
             let matchedEvent = this.findEventById(event.id);
             // update event locally
-            matchedEvent.rsvpStatus = event.rsvpStatus;
-            matchedEvent.adultCount = event.adultCount;
-            matchedEvent.childCount = event.adultCount;
+            matchedEvent.rsvpStatus = event.rsvpStatus || false;
+            matchedEvent.adultCount = event.adultCount || 0;
+            matchedEvent.childCount = event.adultCount || 0;
             matchedEvent.attending = event.attending;
             resolve();
-          }, () => { reject(); });
-      }, 500);
+
+          });
+        }).catch((e) => {
+          reject();
+        });
+      }, 200);
     })
   }
 
 }
-// {
-//       "id":"102",
-//       "rsvpStatus": "yes",
-//       "adultCount": "2",
-//       "childCount": "1"
-//     },
-//     {
-//       "id":"104",
-//       "rsvpStatus": "maybe",
-//       "adultCount": "1",
-//       "childCount": "0"
-//     }

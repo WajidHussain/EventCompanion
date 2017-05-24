@@ -1,0 +1,186 @@
+[{
+    "title": "Ramadan Workshop on fasting",
+    "location": "ICOR",
+    "description": "Ramadan workshop on May 21 after Zuhr, at ICOR by Mufti Sohail. Discuss many different fiqh aspects related to Ramadan.",
+    "speakers": [
+        "Mufti Suhail"
+    ],
+    "startDateTime": "05/21/2017 02:00:00 PM",
+    "endDateTime": "05/21/2017 06:00:00 PM",
+    "allowRsvp": false,
+    "adultHeadCount": false,
+    "childrenHeadCount": false,
+    "fee": "FREE",
+    "picture": "http://www.redmondmosque.org/wp-content/uploads/2017/05/JP-Fasting-300x232.jpg",
+    "category": "Workshop"
+},
+{
+    "title": "AMJA finance workshop",
+    "location": "ICOR",
+    "description": "This work shop by Dr. Main Al-Qudah teach us how to purify our wealth",
+    "speakers": [
+        "Dr. Main Al-Qudah"
+    ],
+    "startDateTime": "05/27/2017 1:30:00 PM",
+    "endDateTime": "05/27/2017   3:30:00 PM",
+    "allowRsvp": false,
+    "adultHeadCount": false,
+    "childrenHeadCount": false,
+    "fee": "10",
+    "picture": "http://www.amjaonline.org/en/dr-main-al-qudah",
+    "category": "Workshop"
+},
+{
+    "title": "Open House and community BBQ",
+    "location": "ICOR",
+    "description": "This is an Open house with Barbecue lunch , Graduation cermony , kids activities and Bazaar",
+    "startDateTime": "05/20/2017 11:30:00 AM",
+    "endDateTime": "05/20/2017   5:30:00 PM",
+    "allowRsvp": true,
+    "adultHeadCount": true,
+    "childrenHeadCount": true,
+    "fee": false,
+    "picture": false,
+    "category": "food"
+},
+{
+    "title": "MAPS-MCRC: Ramadhan Food Drive",
+    "location": "MAPS",
+    "description": "MAPS-MCRC, in partnership with Masajids in the Seattle area, will be delivering care boxes of food to needy Muslim families in our community so that they can enjoy a blessed and peaceful Ramadan.Each box will include food staples such as rice, oil, lentils, dates, sugar, etc., sufficient for a family of 5 for one month.You can sponsor one or more boxes ($60/box)",
+    "startDateTime": "05/20/2017 10:00:00 AM",
+    "endDateTime": "05/20/2017   08:00:00 PM",
+    "allowRsvp": false,
+    "adultHeadCount": false,
+    "childrenHeadCount": false,
+    "fee": "FREE",
+    "picture": "http://www.mapsredmond.org/wp-content/uploads/2017/05/food-drive.jpg",
+    "category": "service"
+},
+{
+    "title": "MAPS MCRC Clinic",
+    "location": "MAPS",
+    "description": "The MAPS MCRC Clinic is now taking appointments for Sunday, May 21st, 2017. The services and providers for this month will be: Family Medicine Dr. Sadia Ali, Cardiology Dr. Humera Ali, Pediatrics Dr. Huma Siddiqui and Chiropractic Dr. Bruce Harris\",To schedule an appointment please email them at mapsmcrcclinic@gmail.com",
+    "startDateTime": "05/21/2017 10:00:00 AM",
+    "endDateTime": "05/21/2017   12:30:00 PM",
+    "allowRsvp": false,
+    "adultHeadCount": false,
+    "childrenHeadCount": false,
+    "fee": "Free",
+    "picture": "http://www.mapsredmond.org/wp-content/uploads/2017/03/clinic.jpg",
+    "category": "Clinic"
+},
+{
+    "title": "Potluck dinner",
+    "location": "ICOR",
+    "description": "We'll have a potluck dinner program after maghrib insha allah. Everyone is requested to bring a dish to share.",
+    "startDateTime": "05/19/2017 07:00:00 PM",
+    "endDateTime": "05/19/2017   08:30:00 PM",
+    "allowRsvp": true,
+    "adultHeadCount": true,
+    "childrenHeadCount": true,
+    "fee": "Free",
+    "picture": "https://img.clipartfest.com/c4818cd05a05277e3e59d7b44486516e_pot-luck-clip-art-getbellhop-free-potluck-clipart_1300-614.jpeg",
+    "category": "potluck"
+},
+{
+    "title": "Mihraab - Essentials of Islam course",
+    "location": "MAPS",
+    "description": "The tradition of Islam, as delivered to us by the Messenger of Allah ﷺ, has always furthered itself through the prophetic method of teaching and learning, heart to heart, from teacher to student. The very essence of our practice relies on sound understanding to guide our belief and acts of worship, drawing us closer to our Creator. There is no shortage of evidence that in today’s world, we are suffering profound deficiencies in our comprehension of the Prophetic Way, but by the grace and permission of Allah, for every ailment, there exists a cure and this cure is knowledge of faith. For more info, visit - http://www.mihraab.com/scholastic-branch/essentials-of-islam-course/",
+    "startDateTime": "05/20/2017 09:00:00 AM",
+    "endDateTime": "05/20/2017   12:30:00 PM",
+    "allowRsvp": true,
+    "adultHeadCount": true,
+    "childrenHeadCount": true,
+    "fee": "$60 per individual",
+    "picture": "http://www.mihraab.com/wp/wp-content/uploads/2016/09/EIC-2016-17-Spring-Term-Flyer-JPEG.jpg",
+    "category": "workshop",
+    "speakers": [
+        "Shaykh Qasim Hatem",
+        "Shaykh Syed Umair Ahmad"
+    ]
+},
+{
+    "title": "Selections of Noble Hadith",
+    "location": "ICOR",
+    "description": "Happens every Thursday after Maghrib Salah.",
+    "startDateTime": "05/25/2017 08:40:00 PM",
+    "endDateTime": "05/25/2017   10:00:00 PM",
+    "allowRsvp": false,
+    "adultHeadCount": false,
+    "childrenHeadCount": false,
+    "fee": "Free",
+    "picture": "",
+    "category": "halaqa",
+    "speakers": [
+        "Shaykh Umar Bin Hafidth"
+    ]
+},
+{
+    "title": "Visiting Scholar from Canada",
+    "location": "ICOR",
+    "description": "Mufti xxxxxxx will be visiting us next friday insha allah",
+    "startDateTime": "06/02/2017 07:30:00 PM",
+    "endDateTime": "06/02/2017   10:00:00 PM",
+    "allowRsvp": false,
+    "adultHeadCount": false,
+    "childrenHeadCount": false,
+    "fee": "Free",
+    "picture": "",
+    "category": "visitingscholar",
+    "speakers": [
+        "Shaykh xxxx"
+    ]
+},
+{
+    "title": "Madeena masjid Fund raiser",
+    "location": "ICOR",
+    "description": "Fund raiser for madeena masjid insha allah.",
+    "startDateTime": "05/06/2017 07:30:00 PM",
+    "endDateTime": "05/06/2017   10:00:00 PM",
+    "allowRsvp": true,
+    "adultHeadCount": true,
+    "childrenHeadCount": true,
+    "fee": "$10",
+    "picture": "http://masjidmadina.com/wp-content/themes/Mosque/images/logo.png",
+    "category": "fundraiser",
+    "speakers": [
+        "Shaykh Fazal",
+        "Mufti Suhail"
+    ]
+},
+{
+    "title": "Mihraab Guys Soccer",
+    "location": "Marymoor Park",
+    "description": "Soccer program for youth at Marymoor park. For more details, visit - http://www.mihraab.com/",
+    "startDateTime": "05/21/2017 07:30:00 AM",
+    "endDateTime": "05/21/2017   10:00:00 PM",
+    "allowRsvp": true,
+    "adultHeadCount": true,
+    "fee": "$5",
+    "picture": "http://www.mihraab.com/wp/wp-content/uploads/2017/05/Mihraab-Guys-Youth-Soccer-Tournament-Social-2017.jpeg",
+    "category": "sports"
+},
+{
+    "title": "Mihraab Girls Soccer",
+    "location": "Marymoor Park",
+    "description": "Soccer program for girls at Marymoor park. For more details, visit - http://www.mihraab.com/",
+    "startDateTime": "05/13/2017 01:30:00 PM",
+    "endDateTime": "05/13/2017   10:00:00 PM",
+    "allowRsvp": true,
+    "adultHeadCount": true,
+    "fee": "$5",
+    "picture": "http://www.mihraab.com/wp/wp-content/uploads/2017/05/Mihraab-Girls-Youth-Frisbee-Social-2017.png",
+    "category": "women"
+},
+{
+    "title": "Aqeeqa ceremony",
+    "location": "ICOR",
+    "description": "Aqeeqa invitation from Brother xxxxx after Dhuhr salat insha allah.",
+    "startDateTime": "05/21/2017 01:30:00 PM",
+    "endDateTime": "05/21/2017   03:00:00 PM",
+    "allowRsvp": false,
+    "adultHeadCount": false,
+    "fee": "Free",
+    "picture": "",
+    "category": "ceremony"
+}]

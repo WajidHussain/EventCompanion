@@ -5,6 +5,8 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
 import { Helper } from './helper';
 import 'rxjs/add/observable/fromPromise';
+import { AngularFireDatabase } from 'angularfire2/database';
+
 
 @Injectable()
 export class UserData {
@@ -13,7 +15,8 @@ export class UserData {
   userSettingsTable: any;
   private userSettingsTableName = 'user_settings';
 
-  constructor(public http: Http, private helper: Helper) {
+
+  constructor(public http: Http, private helper: Helper, private afDB: AngularFireDatabase) {
   }
 
 
@@ -25,9 +28,21 @@ export class UserData {
         return this.http.get('assets/data/user-data.json')
           .map(this.processDataMock, this);
       } else {
-        this.userSettingsTable = this.helper.loadProvider().getTable(this.userSettingsTableName);
-        return Observable.fromPromise(this.userSettingsTable.read({ id: "" }))
-          .map(this.processData, this);
+        let prm = new Promise((resolve, reject) => {
+          this.helper.getToken().then(() => {
+            this.afDB.database.ref(this.userSettingsTableName)
+              .orderByChild("userId").equalTo("wajidhussain.m@gmail.com").once('value', (snapshot: any) => {
+                this.data = {};
+                snapshot.forEach((childSnapshot) => {
+                  this.data = childSnapshot.val();
+                  this.data.id = childSnapshot.key;
+                });
+                resolve();
+
+              });
+          });
+        });
+        return Observable.fromPromise(prm).map(this.processData, this);
       }
     }
   }
@@ -42,7 +57,7 @@ export class UserData {
       return this.data = {
         eventNotify: false,
         announcementNotify: false,
-        calendarUpdate: true
+        calendarUpdate: false
       }
     } else {
       return this.data = data;
@@ -56,7 +71,25 @@ export class UserData {
   }
 
   updateUserSettings(data) {
-    // update database
+    if (!data.id) {
+      this.helper.getToken().then(() => {
+        let k = this.afDB.list(this.userSettingsTableName);
+        let item = k.push({
+          eventNotify: data.eventNotify,
+          announcementNotify: data.announcementNotify,
+          calendarUpdate: data.calendarUpdate,
+          userId: "wajidhussain.m@gmail.com"
+        });
+        this.data.id = item.key;
+      });
+    } else {
+      // update database
+      this.afDB.database.ref(this.userSettingsTableName).child(data.id).update({
+        eventNotify: data.eventNotify,
+        announcementNotify: data.announcementNotify,
+        calendarUpdate: data.calendarUpdate
+      })
+    }
     this.data = data;
   }
 }

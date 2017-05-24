@@ -5,20 +5,32 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
 import { Helper } from './helper';
 import * as moment from 'moment';
-
+import { AngularFireDatabase } from 'angularfire2/database';
 
 
 @Injectable()
 export class AnnouncementsData {
   data: any;
   private announcementsTableName: string = 'announcements';
-  private announcementsTable: any;
   private announcementSubsTableName: string = 'announcements_read';
-  private announcementSubsTable: any;
 
-  constructor(public http: Http, public helper: Helper) { }
+  constructor(public http: Http, public helper: Helper, private afDB: AngularFireDatabase) { }
+
+  create() {
+    this.helper.getToken().then(() => {
+      let k = this.afDB.list('/announcements');
+      k.push({
+        "title": "Workshop recording available",
+        "location": "ICOR",
+        "description": "Recording are available at ..... for the workshop done on 5/20/2017.",
+        "createdAt": "05/10/2017 11:00:00 AM",
+        "category": "videorecording"
+      });
+    });
+  }
 
   load(forceRefresh?: boolean): any {
+    //this.create();
     if (this.data && !forceRefresh) {
       return Observable.of(this.data);
     } else {
@@ -26,19 +38,26 @@ export class AnnouncementsData {
         return this.http.get('assets/data/announcements-data.json')
           .map(this.processDataMock, this);
       } else {
-        this.announcementsTable = this.helper.loadProvider().getTable(this.announcementsTableName);
-        this.announcementSubsTable = this.helper.loadProvider().getTable(this.announcementSubsTableName);
-        let subs = Observable.fromPromise(this.announcementSubsTable.where({ userId: "wajidhussain.m@gmail.com" })
-          .read().then((data) => {
-            this.data = {};
-            this.data.myAnnouncements = data;
-          }));
-        let anns = Observable.fromPromise(this.announcementsTable
-          .orderByDescending('updatedAt').read().then((data) => {
-            this.data.announcements = data;
-          }));
-        return Observable.forkJoin([subs, anns])
-          .map(this.processData, this);
+        let prm = new Promise((resolve, reject) => {
+          this.helper.getToken().then(() => {
+            this.afDB.database.ref(this.announcementsTableName).once('value', (snapshot: any) => {
+              this.data = { announcements: [], myAnnouncements: [] };
+              snapshot.forEach((childSnapshot) => {
+                this.data.announcements.push(childSnapshot.val());
+                this.data.announcements[this.data.announcements.length - 1].id = childSnapshot.key;
+              });
+              this.afDB.database.ref(this.announcementSubsTableName).orderByChild("userId").equalTo("wajidhussain.m@gmail.com").once('value', (rsvpSS: any) => {
+                rsvpSS.forEach((rsvpChildSnapshot: any) => {
+                  this.data.myAnnouncements.push(rsvpChildSnapshot.val());
+                  this.data.myAnnouncements[this.data.myAnnouncements.length - 1].id =
+                    rsvpChildSnapshot.key;
+                });
+                resolve();
+              });
+            });
+          });
+        });
+        return Observable.fromPromise(prm).map(this.processData, this);
       }
     }
   }
@@ -85,13 +104,21 @@ export class AnnouncementsData {
     // database
     if (!this.findMyAnnouncementById(announcementId)) {
       // insert
-      this.announcementSubsTable.insert({
-        announcementId: announcementId,
-        userId: "wajidhussain.m@gmail.com"
+      this.helper.getToken().then(() => {
+        let k = this.afDB.list(this.announcementSubsTableName);
+        let item = k.push({
+          announcementId: announcementId,
+          read: true,
+          userId: "wajidhussain.m@gmail.com"
+        });
+        this.data.myAnnouncements.push({
+          announcementId: announcementId,
+          read: true,
+          id: item.key
+        });
       });
     }
     this.findAnnouncementById(announcementId).read = true;
-    // this.findSubscriptionById(eventId).read = true;
   }
 
   getAnnouncementDetails(announcementId: string) {

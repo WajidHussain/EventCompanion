@@ -3,25 +3,18 @@ import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
 import * as moment from 'moment';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 
 @Injectable()
 export class Helper {
 
-  data: any;
-    azureClient: any;
-
-  private AzureMobileServiceUrl: string = 'http://icorevents.azurewebsites.net';
-
   public Mock = false;
 
-  constructor() { }
+  constructor(private afAuth: AngularFireAuth) { }
 
-  loadProvider() {
-    if (!this.azureClient) {
-      this.azureClient = new WindowsAzure.MobileServiceClient(this.AzureMobileServiceUrl);
-    }
-    return this.azureClient;
+  getToken(): any {
+    return this.afAuth.app.auth()..signInAnonymously();
   }
 
   createEventListItem(item) {

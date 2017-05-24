@@ -16,7 +16,7 @@
 // automatically applied to the <body> element in the app.
 
 .description-holder {
-    padding: 0 20px 0 15px;
+    padding: 0 20px 20px 15px;
     font-size: 1.6rem;
     margin-top: 0;
 }
@@ -87,6 +87,11 @@ event-companion {
     }
 
     ion-label {
-        white-space: normal;
+        h2 {
+            text-overflow: ellipsis;
+    word-break: normal;
+    overflow: hidden;
+        }
+        // white-space: normal;
     }
 }
