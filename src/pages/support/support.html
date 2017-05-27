@@ -7,7 +7,7 @@
 
 <ion-content>
 	<form #submitForm="ngForm" novalidate (ngSubmit)="submit(submitForm)">
-		<ion-list>
+		<ion-list no-border>
 			<ion-item>
 				<ion-icon name="ios-mail" item-left></ion-icon>
 				<ion-label stacked>Enter your support message below</ion-label>
@@ -17,7 +17,7 @@
 			</ion-item>
 		</ion-list>
 
-		<p ion-text [hidden]="supportQuestion.valid || submitted === false" color="danger" padding-left>
+		<p ion-text [hidden]="supportQuestion.valid" color="danger" padding-left>
 			Support message is required
 		</p>
 

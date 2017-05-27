@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, List, LoadingController, ToastController } from 'ionic-angular';
 import { EventsData } from '../../providers/events-data';
 import { EventDetailPage } from '../event-detail/event-detail';
+import { Helper } from '../../providers/helper';
 
 /**
  * Generated class for the Events page.
@@ -21,13 +22,11 @@ export class EventsPage {
   public dataLoading: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams
-    , public loadingCtrl: LoadingController, public toastCtrl: ToastController, 
-    public eventsData: EventsData) {
+    , public loadingCtrl: LoadingController, public toastCtrl: ToastController,
+    public eventsData: EventsData, public helper: Helper) {
     this.category = "upcoming";
   }
 
-  ionViewDidLoad() {
-  }
 
   ionViewDidEnter(a: any) {
     this.updateEventList();
@@ -44,8 +43,8 @@ export class EventsPage {
       loading.dismiss();
       this.dataLoading = false;
     }, () => {
-      this.dataLoading = false;  
-      loading.dismiss();    
+      this.dataLoading = false;
+      loading.dismiss();
       this.toastCtrl.create({
         message: 'There was a problem loading data, please try again!',
         duration: 2000
@@ -68,10 +67,17 @@ export class EventsPage {
   goToEventDetail(event: Event) {
     // go to the session detail page
     // and pass in the session data
-    this.navCtrl.push(EventDetailPage, {
-      name: event.id,
-      session: event
-    });
+    if (this.helper.isUserSignedIn()) {
+      this.navCtrl.push(EventDetailPage, {
+        name: event.id,
+        session: event
+      });
+    } else {
+      this.toastCtrl.create({
+        message: 'Please sign in to continue..',
+        duration: 2000
+      }).present();
+    }
   }
 
 }

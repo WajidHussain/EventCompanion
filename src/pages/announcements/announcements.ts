@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, List, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 import { AnnouncementsData } from '../../providers/announcements-data';
+import { Helper } from '../../providers/helper';
 import { AnnouncementDetailPage } from '../announcement-detail/announcement-detail';
 
 
@@ -15,7 +16,8 @@ export class AnnouncementsPage {
   public dataLoading: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    public announcementsData: AnnouncementsData, public loadingCtrl: LoadingController, public toastCtrl: ToastController) {
+    public announcementsData: AnnouncementsData, public loadingCtrl: LoadingController,
+    public toastCtrl: ToastController, public helper: Helper) {
   }
 
   ionViewDidEnter() {
@@ -43,9 +45,16 @@ export class AnnouncementsPage {
   }
 
   goToAnnouncementDetail(item: any) {
-    this.navCtrl.push(AnnouncementDetailPage, {
-      name: item.id
-    });
+    if (this.helper.isUserSignedIn()) {
+      this.navCtrl.push(AnnouncementDetailPage, {
+        name: item.id
+      });
+    } else {
+      this.toastCtrl.create({
+        message: 'Please sign in to continue..',
+        duration: 2000
+      }).present();
+    }
   }
 
   doRefresh(refresher) {

@@ -1,4 +1,15 @@
 div.about-content {
         margin: 2rem;
     line-height: 2.2rem;
+    font-size: 1.7rem;
+
+    .about-q {
+        font-size: 1.9rem;
+    }
+}
+
+ion-item.about-logo {
+    img {
+        height: 350px;
+    }
 }

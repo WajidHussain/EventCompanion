@@ -14,7 +14,7 @@ export class EventsData {
   data: any;
 
   constructor(public http: Http, public helper: Helper, private afDB: AngularFireDatabase
-    ) { }
+  ) { }
 
 
   create() {
@@ -22,18 +22,18 @@ export class EventsData {
 
       let k = this.afDB.list('/events');
       k.push({
-      "title": "Open House and community BBQ",
-      "location": "ICOR",
-      "description": "This is an Open house with Barbecue lunch , Graduation cermony , kids activities and Bazaar",
-      "startDateTime": "05/26/2017 11:30:00 AM",
-      "endDateTime": "05/26/2017   5:30:00 PM",
-      "allowRsvp": true,
-      "adultHeadCount": true,
-      "childrenHeadCount": true,
-      "fee": false,
-      "picture": false,
-      "category": "food"
-    });
+        "title": "Open House and community BBQ",
+        "location": "ICOR",
+        "description": "This is an Open house with Barbecue lunch , Graduation cermony , kids activities and Bazaar",
+        "startDateTime": "05/26/2017 11:30:00 AM",
+        "endDateTime": "05/26/2017   5:30:00 PM",
+        "allowRsvp": true,
+        "adultHeadCount": true,
+        "childrenHeadCount": true,
+        "fee": false,
+        "picture": false,
+        "category": "food"
+      });
     });
   }
 
@@ -47,21 +47,25 @@ export class EventsData {
           .map(this.processDataMock, this);
       } else {
         let prm = new Promise((resolve, reject) => {
-          this.helper.getToken().then(() => {
+          this.helper.getToken().then((uid) => {
             this.afDB.database.ref('events').once('value', (snapshot: any) => {
               this.data = { events: [], eventSubscriptions: [] };
               snapshot.forEach((childSnapshot) => {
                 this.data.events.push(childSnapshot.val());
                 this.data.events[this.data.events.length - 1].id = childSnapshot.key;
               });
-              this.afDB.database.ref('events_rsvp').orderByChild("userId").equalTo("wajidhussain.m@gmail.com").once('value', (rsvpSS: any) => {
-                rsvpSS.forEach((rsvpChildSnapshot: any) => {
-                  this.data.eventSubscriptions.push(rsvpChildSnapshot.val());
-                  this.data.eventSubscriptions[this.data.eventSubscriptions.length - 1].id =
-                    rsvpChildSnapshot.key;
+              if (uid) {
+                this.afDB.database.ref('events_rsvp').orderByChild("userId").equalTo(uid).once('value', (rsvpSS: any) => {
+                  rsvpSS.forEach((rsvpChildSnapshot: any) => {
+                    this.data.eventSubscriptions.push(rsvpChildSnapshot.val());
+                    this.data.eventSubscriptions[this.data.eventSubscriptions.length - 1].id =
+                      rsvpChildSnapshot.key;
+                  });
+                  resolve();
                 });
+              } else {
                 resolve();
-              });
+              }
             });
           });
         });
@@ -209,12 +213,12 @@ export class EventsData {
     // database
     if (!this.findSubscriptionById(eventId)) {
       // insert
-      this.helper.getToken().then(() => {
+      this.helper.getToken().then((uid) => {
         let k = this.afDB.list('/events_rsvp');
         let item = k.push({
           eventId: eventId,
           read: true,
-          userId: "wajidhussain.m@gmail.com"
+          userId: uid
         });
         this.data.eventSubscriptions.push({
           eventId: eventId,

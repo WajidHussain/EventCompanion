@@ -4,21 +4,13 @@ import { App, NavController, ModalController, ViewController } from 'ionic-angul
 import { SupportPage } from '../support/support';
 import { SettingsPage } from '../settings/settings';
 import { AboutPage } from '../about/about';
-
+import { LoginPage } from '../login/login';
 
 @Component({
   selector: 'home-popover',
   templateUrl: 'home-popover.html'
 })
-// @Component({
-//   template: `
-//     <ion-list inset>
-//       <button ion-item (click)="openAbout()">About</button>
-//       <button ion-item (click)="openSettings()">Settings</button>
-//       <button ion-item (click)="openSupport()">Support</button>
-//     </ion-list>
-//   `
-// })
+
 export class PopoverPage {
 
   constructor(
@@ -40,6 +32,11 @@ export class PopoverPage {
 
   openAbout(pageName) {
     this.app.getRootNav().push(AboutPage);
+    this.viewCtrl.dismiss();
+  }
+
+  openLogin() {
+    this.app.getRootNav().push(LoginPage);
     this.viewCtrl.dismiss();
   }
 

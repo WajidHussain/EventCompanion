@@ -21,6 +21,7 @@ import { PopoverPage } from '../pages/home-popover/home-popover';
 import { SupportPage } from '../pages/support/support';
 import { SettingsPage } from '../pages/settings/settings';
 import { AboutPage } from '../pages/about/about';
+import { LoginPage } from '../pages/login/login';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -28,6 +29,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+import { Facebook } from '@ionic-native/facebook';
+
 
 // AF2 Settings
 export const firebaseConfig = {
@@ -51,7 +54,8 @@ export const firebaseConfig = {
     PopoverPage,
     SupportPage,
     SettingsPage,
-    AboutPage
+    AboutPage,
+    LoginPage
   ],
   imports: [
     BrowserModule,
@@ -73,7 +77,8 @@ export const firebaseConfig = {
     PopoverPage,
     SupportPage,
     SettingsPage,
-    AboutPage
+    AboutPage,
+    LoginPage
   ],
   providers: [
     Helper,
@@ -84,6 +89,7 @@ export const firebaseConfig = {
     SplashScreen,
     Calendar,
     UserData,
+    Facebook,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })

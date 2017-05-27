@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
-
+import { UserData } from '../../providers/user-data';
 import { AlertController, NavController, ToastController } from 'ionic-angular';
 
 
@@ -16,23 +16,28 @@ export class SupportPage {
   constructor(
     public navCtrl: NavController,
     public alertCtrl: AlertController,
-    public toastCtrl: ToastController
+    public toastCtrl: ToastController, public userData: UserData
   ) {
 
   }
 
   submit(form: NgForm) {
-    this.submitted = true;
 
     if (form.valid) {
-      this.supportMessage = '';
-      this.submitted = false;
-
-      let toast = this.toastCtrl.create({
-        message: 'Your support request has been sent.',
-        duration: 3000
+      this.userData.updateSupportQuery(this.supportMessage).then(() => {
+        let toast = this.toastCtrl.create({
+          message: 'Your support request has been sent.',
+          duration: 3000
+        });
+        toast.present();
+        this.navCtrl.popToRoot();
+      }).catch(() => {
+        let toast = this.toastCtrl.create({
+          message: 'There was a problem sending the request, please try again.',
+          duration: 3000
+        });
+        toast.present();
       });
-      toast.present();
     }
   }
 

@@ -31,6 +31,7 @@ export class AnnouncementsData {
 
   load(forceRefresh?: boolean): any {
     //this.create();
+   // this.helper.isUserSignedIn();
     if (this.data && !forceRefresh) {
       return Observable.of(this.data);
     } else {
@@ -39,14 +40,15 @@ export class AnnouncementsData {
           .map(this.processDataMock, this);
       } else {
         let prm = new Promise((resolve, reject) => {
-          this.helper.getToken().then(() => {
+          this.helper.getToken().then((uid) => {
             this.afDB.database.ref(this.announcementsTableName).once('value', (snapshot: any) => {
               this.data = { announcements: [], myAnnouncements: [] };
               snapshot.forEach((childSnapshot) => {
                 this.data.announcements.push(childSnapshot.val());
                 this.data.announcements[this.data.announcements.length - 1].id = childSnapshot.key;
               });
-              this.afDB.database.ref(this.announcementSubsTableName).orderByChild("userId").equalTo("wajidhussain.m@gmail.com").once('value', (rsvpSS: any) => {
+              
+              this.afDB.database.ref(this.announcementSubsTableName).orderByChild("userId").equalTo(uid).once('value', (rsvpSS: any) => {
                 rsvpSS.forEach((rsvpChildSnapshot: any) => {
                   this.data.myAnnouncements.push(rsvpChildSnapshot.val());
                   this.data.myAnnouncements[this.data.myAnnouncements.length - 1].id =
@@ -104,12 +106,12 @@ export class AnnouncementsData {
     // database
     if (!this.findMyAnnouncementById(announcementId)) {
       // insert
-      this.helper.getToken().then(() => {
+      this.helper.getToken().then((uid) => {
         let k = this.afDB.list(this.announcementSubsTableName);
         let item = k.push({
           announcementId: announcementId,
           read: true,
-          userId: "wajidhussain.m@gmail.com"
+          userId: uid
         });
         this.data.myAnnouncements.push({
           announcementId: announcementId,

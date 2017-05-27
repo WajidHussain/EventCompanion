@@ -14,6 +14,7 @@ export class UserData {
   azureClient: any;
   userSettingsTable: any;
   private userSettingsTableName = 'user_settings';
+  private userQueryTableName = 'user_query';
 
 
   constructor(public http: Http, private helper: Helper, private afDB: AngularFireDatabase) {
@@ -29,9 +30,9 @@ export class UserData {
           .map(this.processDataMock, this);
       } else {
         let prm = new Promise((resolve, reject) => {
-          this.helper.getToken().then(() => {
+          this.helper.getToken().then((uid) => {
             this.afDB.database.ref(this.userSettingsTableName)
-              .orderByChild("userId").equalTo("wajidhussain.m@gmail.com").once('value', (snapshot: any) => {
+              .orderByChild("userId").equalTo(uid).once('value', (snapshot: any) => {
                 this.data = {};
                 snapshot.forEach((childSnapshot) => {
                   this.data = childSnapshot.val();
@@ -72,13 +73,13 @@ export class UserData {
 
   updateUserSettings(data) {
     if (!data.id) {
-      this.helper.getToken().then(() => {
+      this.helper.getToken().then((uid) => {
         let k = this.afDB.list(this.userSettingsTableName);
         let item = k.push({
           eventNotify: data.eventNotify,
           announcementNotify: data.announcementNotify,
           calendarUpdate: data.calendarUpdate,
-          userId: "wajidhussain.m@gmail.com"
+          userId: uid
         });
         this.data.id = item.key;
       });
@@ -91,5 +92,16 @@ export class UserData {
       })
     }
     this.data = data;
+  }
+
+  updateSupportQuery(query: string) {
+    return this.helper.getToken().then((uid) => {
+      let k = this.afDB.list(this.userQueryTableName);
+      k.push({
+        query: query,
+        userId: uid,
+        email: this.helper.loggedInUser.email
+      });
+    });
   }
 }
