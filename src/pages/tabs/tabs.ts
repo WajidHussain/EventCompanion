@@ -8,12 +8,12 @@ import { AnnouncementsPage } from '../announcements/announcements'
   templateUrl: 'tabs.html'
 })
 export class TabsPage {
-
+  currentIndex: number;
   tab1Root = HomePage;
   tab2Root = EventsPage;
   tab3Root = AnnouncementsPage
 
   constructor() {
-
+    this.currentIndex = 0;
   }
 }
