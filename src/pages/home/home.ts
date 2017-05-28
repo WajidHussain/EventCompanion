@@ -27,11 +27,11 @@ export class HomePage {
       content: "Loading.."
     });
     loading.present();
-    this.homeData.getPrayerTimes().subscribe((data) => {
+    this.homeData.readPrayerTimes().then((data) => {
       this.prayerData = data;
       loading.dismiss();
       this.dataLoading = false;
-    }, () => {
+    }).catch(() => {
       loading.dismiss();
       this.dataLoading = false;
       this.toastCtrl.create({

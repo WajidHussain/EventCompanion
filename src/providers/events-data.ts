@@ -145,6 +145,9 @@ export class EventsData {
           this.categorizeEventsPerDay(item, eventList);
         }
       });
+      eventList = eventList.filter((item) => {
+        return item.events.length > 0;
+      });
       return eventList;
     });
   }
@@ -158,6 +161,9 @@ export class EventsData {
         if (Date.now() - <any>(new Date(item.endDateTime)) <= 0) {
           this.categorizeEventsPerDay(item, eventList);
         }
+      });
+      eventList = eventList.filter((item) => {
+        return item.events.length > 0;
       });
       return eventList;
     });

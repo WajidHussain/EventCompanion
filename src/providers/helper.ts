@@ -31,6 +31,7 @@ export class Helper {
       } else {
         // No user is signed in.
       }
+  
     });
 
   }
