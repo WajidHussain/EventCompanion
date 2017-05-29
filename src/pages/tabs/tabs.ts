@@ -15,5 +15,11 @@ export class TabsPage {
 
   constructor() {
     this.currentIndex = 0;
+    
+  }
+
+  ionViewDidLoad() {
+    document.querySelector('div.tabbar').className = 'tabbar show-tabbar';
+    (<any>document.querySelector('div.tabbar')).style.bottom = "0px";
   }
 }
