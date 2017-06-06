@@ -12,8 +12,10 @@ export class AnnouncementDetailPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public announcementData: AnnouncementsData) {
     this.announcementData.getAnnouncementDetails(navParams.data.name).subscribe((data) => {
-      this.announcement = Object.assign({}, data);
-      this.announcementData.updateEventRead(this.announcement.id);
+      if (data) {
+        this.announcement = Object.assign({}, data);
+        this.announcementData.updateEventRead(this.announcement.id);
+      }
     });
   }
 

@@ -42,7 +42,12 @@ img {
 }
 
 .toolbar-title {
-    text-transform: uppercase;
+    text-transform: capitalize;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.toolbar-background-md {
+    background: #f0f0ed;
 }
 
 $categories: (

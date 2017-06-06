@@ -21,19 +21,35 @@ export class AnnouncementsPage {
   }
 
   ionViewDidEnter() {
-    this.updateList();
+    // if (this.navParams.get('refresh')) {
+    //   this.navParams.data["refresh"] = undefined;
+    if (this.navParams.get('id')) {
+      this.updateList(true);
+      this.goToAnnouncementDetail({ id: this.navParams.get('id') });
+    } else if (this.navParams.get('refresh')) {
+      this.updateList(true);
+    }
+    else {
+      this.updateList();
+    }
+    this.navParams.data["id"] = undefined;
+    this.navParams.data["refresh"] = undefined;
   }
 
-  updateList() {
-    this.dataLoading = true;
+  updateList(defaultRefresh = false) {
     let loading = this.loadingCtrl.create({
       content: "Loading.."
     });
-    loading.present();
-    this.announcementsData.getAnnouncements().subscribe((data: any) => {
+    if (!this.announcementList) {
+      this.dataLoading = true;
+      loading.present();
+    }
+    this.announcementsData.getAnnouncements(defaultRefresh).subscribe((data: any) => {
+      if (!this.announcementList) {
+        loading.dismiss();
+        this.dataLoading = false;
+      }
       this.announcementList = data;
-      loading.dismiss();
-      this.dataLoading = false;
     }, () => {
       this.dataLoading = false;
       loading.dismiss();
@@ -51,7 +67,7 @@ export class AnnouncementsPage {
       });
     } else {
       this.toastCtrl.create({
-        message: 'Please sign in to continue..',
+        message: 'Please sign in from Home tab to continue..',
         duration: 2000
       }).present();
     }

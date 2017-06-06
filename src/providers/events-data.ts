@@ -37,9 +37,9 @@ export class EventsData {
     });
   }
 
-  load(): any {
+  load(refresh): any {
     // this.create();
-    if (this.data) {
+    if (this.data && !refresh) {
       return Observable.of(this.data);
     } else {
       if (this.helper.Mock) {
@@ -113,18 +113,18 @@ export class EventsData {
     return this.data;
   }
 
-  public getEvents(category: string) {
+  public getEvents(category: string, refresh: boolean) {
     if (category === "upcoming") {
-      return this.getUpcomingEvents();
+      return this.getUpcomingEvents(refresh);
     } else if (category === "attending") {
-      return this.getAttendingEvents();
+      return this.getAttendingEvents(refresh);
     } else {
-      return this.getPastEvents();
+      return this.getPastEvents(refresh);
     }
   }
 
-  getPastEvents() {
-    return this.load().map((items) => {
+  getPastEvents(refresh: boolean) {
+    return this.load(refresh).map((items) => {
       let eventList = [{ header: "", events: [] }];
       items.events.forEach(item => {
         if (Date.now() - <any>(new Date(item.endDateTime)) > 0) {
@@ -135,8 +135,8 @@ export class EventsData {
     });
   }
 
-  getAttendingEvents() {
-    return this.load().map((items) => {
+  getAttendingEvents(refresh: boolean) {
+    return this.load(refresh).map((items) => {
       let eventList = [{ header: "Today", events: [] }, { header: "Tomorrow", events: [] },
       { header: "This week", events: [] }, { header: "Next week", events: [] }, { header: "Future", events: [] }];
       items.events.forEach(item => {
@@ -152,8 +152,8 @@ export class EventsData {
     });
   }
 
-  getUpcomingEvents() {
-    return this.load().map((items) => {
+  getUpcomingEvents(refresh: boolean) {
+    return this.load(refresh).map((items) => {
       let eventList = [{ header: "Today", events: [] }, { header: "Tomorrow", events: [] },
       { header: "This week", events: [] }, { header: "Next week", events: [] }, { header: "Future", events: [] }];
       // assuming events are sorted on server
@@ -201,7 +201,7 @@ export class EventsData {
   }
 
   getEventDetails(eventId: string) {
-    return this.load().map((items) => {
+    return this.load(false).map((items) => {
       let matchedEvent = this.findEventById(eventId);
       if (moment(matchedEvent.startDateTime).format("D") === moment(matchedEvent.endDateTime).format("D")) {
         matchedEvent.startTime = moment(matchedEvent.startDateTime).format("ddd MMM Do hh:mm A");

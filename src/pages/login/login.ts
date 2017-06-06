@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 import { Helper } from '../../providers/helper';
+import { UserData } from '../../providers/user-data';
 import * as firebase from 'firebase/app';
 
 /**
@@ -20,7 +21,7 @@ export class LoginPage {
   private email: string;
   private password: string;
   private errorMsg: string;
-  constructor(public navCtrl: NavController, public navParams: NavParams,
+  constructor(public navCtrl: NavController, public navParams: NavParams, private userData: UserData,
     private helper: Helper, public loadingCtrl: LoadingController, public toastCtrl: ToastController) {
     if (this.helper.isUserSignedIn()) {
       this.signedIn = true;
@@ -46,6 +47,13 @@ export class LoginPage {
 
     }).catch(error => {
     });
+  }
+
+  googleLogin() {
+    var provider = new firebase.auth.GoogleAuthProvider();
+    provider.addScope('profile');
+    provider.addScope('email');
+    firebase.auth().signInWithRedirect(provider);
   }
 
   login() {
@@ -92,6 +100,7 @@ export class LoginPage {
     firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
       .then((result: firebase.User) => {
         loading.dismiss();
+        this.setDefaultSettings(result.uid);
         this.toastCtrl.create({
           message: "Profile created!",
           duration: 2000
@@ -120,5 +129,17 @@ export class LoginPage {
       })
   }
 
+  // all true since we set them by default
+  setDefaultSettings(id: string) {
+    this.userData.updateUserSettings({
+      id: id,
+      eventNotify: true,
+      announcementNotify: true,
+      calendarUpdate: true
+    });
+
+  }
+
 
 }
+

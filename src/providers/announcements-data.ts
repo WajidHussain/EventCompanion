@@ -31,7 +31,7 @@ export class AnnouncementsData {
 
   load(forceRefresh?: boolean): any {
     //this.create();
-   // this.helper.isUserSignedIn();
+    // this.helper.isUserSignedIn();
     if (this.data && !forceRefresh) {
       return Observable.of(this.data);
     } else {
@@ -47,7 +47,7 @@ export class AnnouncementsData {
                 this.data.announcements.push(childSnapshot.val());
                 this.data.announcements[this.data.announcements.length - 1].id = childSnapshot.key;
               });
-              
+
               this.afDB.database.ref(this.announcementSubsTableName).orderByChild("userId").equalTo(uid).once('value', (rsvpSS: any) => {
                 rsvpSS.forEach((rsvpChildSnapshot: any) => {
                   this.data.myAnnouncements.push(rsvpChildSnapshot.val());
@@ -126,7 +126,9 @@ export class AnnouncementsData {
   getAnnouncementDetails(announcementId: string) {
     return this.load().map((items) => {
       let item = this.findAnnouncementById(announcementId);
-      item.timestamp = moment(item.createdAt).from(new Date())
+      if (item) {
+        item.timestamp = moment(item.createdAt).from(new Date())
+      }
       return item;
     });
   }

@@ -22,7 +22,6 @@ import { SupportPage } from '../pages/support/support';
 import { SettingsPage } from '../pages/settings/settings';
 import { AboutPage } from '../pages/about/about';
 import { LoginPage } from '../pages/login/login';
-
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 // Import the AF2 Module
@@ -30,6 +29,7 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { Facebook } from '@ionic-native/facebook';
+import { FCM } from '@ionic-native/fcm';
 
 
 // AF2 Settings
@@ -90,6 +90,7 @@ export const firebaseConfig = {
     Calendar,
     UserData,
     Facebook,
+    FCM,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })

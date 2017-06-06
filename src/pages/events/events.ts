@@ -29,19 +29,34 @@ export class EventsPage {
 
 
   ionViewDidEnter(a: any) {
-    this.updateEventList();
+    // if (this.navParams.get('refresh')) {
+    //   this.navParams.data["refresh"] = undefined;
+    if (this.navParams.get('id')) {
+      this.updateEventList(true);
+      this.goToEventDetail(<Event>{ id: this.navParams.get('id') });
+    } else if (this.navParams.get('refresh')) {
+      this.updateEventList(true);
+    } else {
+      this.updateEventList();
+    }
+    this.navParams.data["id"] = undefined;
+    this.navParams.data["refresh"] = undefined;
   }
 
-  updateEventList() {
-    this.dataLoading = true;
+  updateEventList(refresh = false) {
     let loading = this.loadingCtrl.create({
       content: "Loading.."
     });
-    loading.present();
-    this.eventsData.getEvents(this.category).subscribe((data: any) => {
+    if (!this.eventCollection) {
+      this.dataLoading = true;
+      loading.present();
+    }
+    this.eventsData.getEvents(this.category, refresh).subscribe((data: any) => {
+      if (!this.eventCollection) {
+        loading.dismiss();
+        this.dataLoading = false;
+      }
       this.eventCollection = data;
-      loading.dismiss();
-      this.dataLoading = false;
     }, () => {
       this.dataLoading = false;
       loading.dismiss();
@@ -55,7 +70,7 @@ export class EventsPage {
   doRefresh(refresher) {
     // this should do a hard refresh?? test it when connected to server
     // check if the getEvents call fails
-    this.eventsData.getEvents(this.category).subscribe((data: any) => {
+    this.eventsData.getEvents(this.category, true).subscribe((data: any) => {
       this.eventCollection = data;
       setTimeout(() => {
         refresher.complete();
@@ -74,7 +89,7 @@ export class EventsPage {
       });
     } else {
       this.toastCtrl.create({
-        message: 'Please sign in to continue..',
+        message: 'Please sign from Home tab to continue..',
         duration: 2000
       }).present();
     }

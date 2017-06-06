@@ -3,7 +3,7 @@
     <ion-title>announcement details</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content padding [hidden]="!announcement" class="page-announcement-detail">
+<ion-content padding [hidden]="!announcement" class="page-announcement-detail" *ngIf="announcement">
   <ion-list no-lines>
     <ion-item [hidden]="!announcement.picture">
       <img src="{{announcement.picture}}">

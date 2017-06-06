@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-
 import { Http, Headers } from '@angular/http';
-// import { Observable } from 'rxjs/Observable';
 import { Helper } from './helper';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
@@ -69,7 +67,7 @@ export class HomeData {
 
   processPrayerTimes(data) {
     let todaysDate = moment().date();
-    let thisMonth = moment().format("MMM");
+    let thisMonth = moment().format("MMMM");
     this.data = data.json();
     let times = this.data.find((element) => {
       if (element.day === todaysDate && element.month === thisMonth) {

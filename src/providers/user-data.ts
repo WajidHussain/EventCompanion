@@ -11,6 +11,7 @@ import { AngularFireDatabase } from 'angularfire2/database';
 @Injectable()
 export class UserData {
   data: any;
+  pusher: any;
   azureClient: any;
   userSettingsTable: any;
   private userSettingsTableName = 'user_settings';
@@ -53,12 +54,12 @@ export class UserData {
     // this.data.settings = this.data && this.data.settings;
   }
 
-  processData(data: any) {
+  processData(data?: any) {
     if (!data || data.length === 0) {
       return this.data = {
-        eventNotify: false,
-        announcementNotify: false,
-        calendarUpdate: false
+        eventNotify: true,
+        announcementNotify: true,
+        calendarUpdate: true
       }
     } else {
       return this.data = data;
@@ -92,6 +93,25 @@ export class UserData {
       })
     }
     this.data = data;
+    this.updatePushSettings();
+  }
+
+  setPushObject(obj: any) {
+    this.pusher = obj;
+  }
+
+  public updatePushSettings() {
+    this.processData();
+    if (this.data.eventNotify) {
+      this.pusher.subscribeToTopic('event');
+    } else {
+      this.pusher.unsubscribeFromTopic("event");
+    }
+    if (this.data.announcementNotify) {
+      this.pusher.subscribeToTopic('announcement');
+    } else {
+      this.pusher.unsubscribeFromTopic("announcement");
+    }
   }
 
   updateSupportQuery(query: string) {

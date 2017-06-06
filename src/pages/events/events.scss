@@ -31,4 +31,10 @@
     font-weight: 200;
 }
 
+page-events {
+    .list-md[inset] {
+        border-radius: 0;
+        margin: 12px 12px 12px 8px;
+    }
+}
 
