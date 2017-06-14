@@ -1,9 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { EventsPage } from '../events/events';
 import { Platform, NavParams } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { AnnouncementsPage } from '../announcements/announcements'
-import { Observable } from 'rxjs/Rx';
 
 
 @Component({
@@ -11,7 +10,6 @@ import { Observable } from 'rxjs/Rx';
 })
 
 export class TabsPage {
-  @ViewChild('tabs') tabRef: any;
   currentIndex: number;
   tabParams: any;
   tab1Root = HomePage;
@@ -19,7 +17,7 @@ export class TabsPage {
   tab3Root = AnnouncementsPage
 
   constructor(private platform: Platform, public navParams: NavParams) {
-    // this.currentIndex = 0;
+    this.currentIndex = 0;
     // this.tabParams = { test: 1 };
     if (this.navParams) {
       this.tabParams = { id: this.navParams.get('id') };

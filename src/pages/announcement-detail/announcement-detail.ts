@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AnnouncementsData } from '../../providers/announcements-data';
+import * as moment from 'moment';
 
 @IonicPage()
 @Component({
@@ -14,6 +15,7 @@ export class AnnouncementDetailPage {
     this.announcementData.getAnnouncementDetails(navParams.data.name).subscribe((data) => {
       if (data) {
         this.announcement = Object.assign({}, data);
+        this.announcement.timestamp = moment(this.announcement.timestamp).from(new Date());
         this.announcementData.updateEventRead(this.announcement.id);
       }
     });

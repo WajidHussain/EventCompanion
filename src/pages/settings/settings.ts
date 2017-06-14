@@ -34,8 +34,7 @@ export class SettingsPage {
   onSettingChange() {
     this.isDirty = true;
   }
-  // If the user enters text in the support question and then navigates
-  // without submitting first, ask if they meant to leave the page
+  
   ionViewCanLeave() {
     // If the support message is empty we should just navigate
     if (this.isDirty) {

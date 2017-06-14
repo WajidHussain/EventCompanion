@@ -77,7 +77,7 @@
     </ion-item>
 
   </ion-list>
-  <p [hidden]="!isDirty" class="text-center">
-    <button color="secondary" ion-button round (click)="submit()">Save</button>
+  <p class="text-center">
+    <button [disabled]="!isDirty" color="secondary" ion-button round (click)="submit()">Save</button>
   </p>
 </ion-content>

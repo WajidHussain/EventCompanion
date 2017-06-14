@@ -9,8 +9,9 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding  *ngIf="prayerData">
-  <ion-item>
+<ion-content *ngIf="prayerData">
+  <ion-list inset>
+    <ion-item>
     <img src="{{homePicture}}">
   </ion-item>
   <ion-item class="text-center header">
@@ -113,4 +114,6 @@
       </ion-row>
     </ion-grid>
   </ion-item>
+  </ion-list>
+  
 </ion-content>

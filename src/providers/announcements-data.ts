@@ -4,7 +4,6 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
 import { Helper } from './helper';
-import * as moment from 'moment';
 import { AngularFireDatabase } from 'angularfire2/database';
 
 
@@ -23,7 +22,7 @@ export class AnnouncementsData {
         "title": "Workshop recording available",
         "location": "ICOR",
         "description": "Recording are available at ..... for the workshop done on 5/20/2017.",
-        "createdAt": "05/10/2017 11:00:00 AM",
+        "timestamp": "05/10/2017 11:00:00 AM",
         "category": "videorecording"
       });
     });
@@ -41,14 +40,18 @@ export class AnnouncementsData {
       } else {
         let prm = new Promise((resolve, reject) => {
           this.helper.getToken().then((uid) => {
-            this.afDB.database.ref(this.announcementsTableName).once('value', (snapshot: any) => {
+            this.afDB.database.ref(this.announcementsTableName).orderByChild('timestamp').limitToLast(50).once('value', (snapshot: any) => {
               this.data = { announcements: [], myAnnouncements: [] };
+              let tempData = [];
               snapshot.forEach((childSnapshot) => {
-                this.data.announcements.push(childSnapshot.val());
-                this.data.announcements[this.data.announcements.length - 1].id = childSnapshot.key;
+                tempData.push({ id: childSnapshot.key, val: childSnapshot.val() });
               });
-
-              this.afDB.database.ref(this.announcementSubsTableName).orderByChild("userId").equalTo(uid).once('value', (rsvpSS: any) => {
+              for (var index = tempData.length - 1; index >= 0; index--) {
+                this.data.announcements.push(tempData[index].val);
+                this.data.announcements[this.data.announcements.length - 1].id = tempData[index].id;
+              }
+              // this.data.announcements.reverse();
+              this.afDB.database.ref(this.announcementSubsTableName).equalTo(uid).orderByChild("userId").once('value', (rsvpSS: any) => {
                 rsvpSS.forEach((rsvpChildSnapshot: any) => {
                   this.data.myAnnouncements.push(rsvpChildSnapshot.val());
                   this.data.myAnnouncements[this.data.myAnnouncements.length - 1].id =
@@ -92,8 +95,8 @@ export class AnnouncementsData {
       let announcements = [];
       this.data.announcements.forEach((item) => {
         announcements.push({
-          title: item.title, location: item.location, read: item.read, id: item.id,
-          timestamp: moment(item.createdAt).from(new Date()),
+          title: item.title, location: item.location, read: item.read, id: item.id, source: item.source,
+          timestamp: item.timestamp,
           fee: item.fee
           , description: item.description, category: item.category, font: item.font
         });
@@ -126,9 +129,7 @@ export class AnnouncementsData {
   getAnnouncementDetails(announcementId: string) {
     return this.load().map((items) => {
       let item = this.findAnnouncementById(announcementId);
-      if (item) {
-        item.timestamp = moment(item.createdAt).from(new Date())
-      }
+      
       return item;
     });
   }

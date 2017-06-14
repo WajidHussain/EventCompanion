@@ -48,14 +48,14 @@ export class EventsData {
       } else {
         let prm = new Promise((resolve, reject) => {
           this.helper.getToken().then((uid) => {
-            this.afDB.database.ref('events').once('value', (snapshot: any) => {
+            this.afDB.database.ref('events').orderByChild('startDateTime').limitToLast(50).once('value', (snapshot: any) => {
               this.data = { events: [], eventSubscriptions: [] };
               snapshot.forEach((childSnapshot) => {
                 this.data.events.push(childSnapshot.val());
                 this.data.events[this.data.events.length - 1].id = childSnapshot.key;
               });
               if (uid) {
-                this.afDB.database.ref('events_rsvp').orderByChild("userId").equalTo(uid).once('value', (rsvpSS: any) => {
+                this.afDB.database.ref('events_rsvp').equalTo(uid).orderByChild("userId").once('value', (rsvpSS: any) => {
                   rsvpSS.forEach((rsvpChildSnapshot: any) => {
                     this.data.eventSubscriptions.push(rsvpChildSnapshot.val());
                     this.data.eventSubscriptions[this.data.eventSubscriptions.length - 1].id =
@@ -75,7 +75,7 @@ export class EventsData {
   }
 
   processData() {
-    if (this.data.eventSubscriptions && this.data.eventSubscriptions.length > 0) {
+    // if (this.data.eventSubscriptions && this.data.eventSubscriptions.length > 0) {
       this.data.events.forEach((event) => {
         // merge subscription with actual event
         // event.read = false;
@@ -89,7 +89,7 @@ export class EventsData {
         event.adultCount = matchedSubscription && matchedSubscription.adultCount || 0;
         event.childCount = matchedSubscription && matchedSubscription.childCount || 0;
       });
-    }
+    // }
     return this.data;
   }
 
@@ -194,6 +194,7 @@ export class EventsData {
       startTime: moment(item.startDateTime).format("hh:mm A"),
       endTime: moment(item.endDateTime).format("hh:mm A"),
       location: item.location,
+      source: item.source,
       category: item.category,
       read: item.read === undefined ? false : item.read,
       font: this.helper.getFont(item.category)

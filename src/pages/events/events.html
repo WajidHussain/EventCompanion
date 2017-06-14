@@ -1,4 +1,3 @@
-
 <ion-header>
 
   <ion-navbar>
@@ -17,32 +16,28 @@
 </ion-header>
 <ion-content class="list-avatar-page">
   <ion-refresher (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content
-      pullingIcon="arrow-dropdown"
-      pullingText="Pull to refresh"
-      refreshingSpinner="circles">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles">
     </ion-refresher-content>
   </ion-refresher>
 
-  <ion-list #eventList [hidden]="eventCollection && eventCollection.length === 0 || dataLoading"
-   *ngFor="let eventGroup of eventCollection">
-      <ion-item-divider sticky>
-        <ion-label>
-          {{eventGroup.header}}
-        </ion-label>
-      </ion-item-divider>
-      <h6 class="no-content-text" [hidden]="eventGroup.events.length > 0">No Events</h6>
-      <ion-list *ngFor="let event of eventGroup.events" inset>
-        <ion-item (click)="goToEventDetail(event)" [attr.read]="event.read" [attr.category]="event.category | lowercase">
-          <ion-avatar item-left>
-            <i class="fa" ngClass="{{event.font}}" aria-hidden="true"></i>
-          </ion-avatar>
-          <h2>{{event.title}}</h2>
-          <p>{{event.startTime}} - {{event.endTime}}
-          </p>
-          <ion-note item-right>{{event.location}}</ion-note>
-        </ion-item>
-      </ion-list>
+  <ion-list #eventList [hidden]="eventCollection && eventCollection.length === 0 || dataLoading" 
+    *ngFor="let eventGroup of eventCollection">
+    <ion-item-divider sticky *ngIf="eventGroup.events.length > 0 && category !== 'past'">
+      <ion-label>
+        {{eventGroup.header}}
+      </ion-label>
+    </ion-item-divider>
+    <ion-list inset *ngIf="eventGroup.events.length > 0">
+      <ion-item *ngFor="let event of eventGroup.events" (click)="goToEventDetail(event)" [attr.read]="event.read" [attr.category]="event.category | lowercase">
+        <ion-avatar item-left>
+          <i class="fa" ngClass="{{event.font}}" aria-hidden="true"></i>
+        </ion-avatar>
+        <h2>{{event.title}}</h2>
+        <p>{{event.startTime}} - {{event.endTime}}
+        </p>
+        <ion-note item-right>{{event.source}}</ion-note>
+      </ion-item>
+    </ion-list>
   </ion-list>
 
   <ion-list-header [hidden]="eventCollection && eventCollection.length > 0 || dataLoading">

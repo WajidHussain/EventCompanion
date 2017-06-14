@@ -31,23 +31,23 @@ ion-icon {
 ion-avatar {
     margin: 0;
 }
-.item-md h2.bold-font {
+.item-md h2.bold-font , .item-ios  h2.bold-font {
     font-weight: bold;
     font-weight: 1.7rem;
 }
 
 page-announcements{
 
-      button.item-md {
+      button.item-md, button.item-ios {
         padding-left: 5px;
   }
-  .item-md {
+  .item-md, .item-ios {
         margin: 5px 5px 0 8px;
   }
-    .item-md ion-avatar[item-left] {
+    .item-md, .item-ios ion-avatar[item-left] {
       margin: 5px 8px 5px 0;
     }
-  .label-md {
+  .label-md, .label-ios {
     margin: 8px 0;
   }
 }

@@ -51,9 +51,21 @@ export class LoginPage {
 
   googleLogin() {
     var provider = new firebase.auth.GoogleAuthProvider();
-    provider.addScope('profile');
+    // provider.addScope('profile');
     provider.addScope('email');
-    firebase.auth().signInWithRedirect(provider);
+    provider.addScope('https://www.googleapis.com/auth/plus.login');
+    firebase.auth().signInWithRedirect(provider).catch((error: any) => {
+      this.toastCtrl.create({
+        message: "There is a problem with your sign in, please try again.",
+        duration: 2000
+      }).present();
+    });
+    firebase.auth().getRedirectResult().catch((err) => {
+      this.toastCtrl.create({
+        message: "There is a problem with your sign in, please try again.",
+        duration: 2000
+      }).present();
+    });
   }
 
   login() {

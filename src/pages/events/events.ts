@@ -17,7 +17,7 @@ import { Helper } from '../../providers/helper';
 })
 export class EventsPage {
   @ViewChild('eventList', { read: List }) eventList: List;
-  public eventCollection: EventsData;
+  public eventCollection: any;
   public category: string;
   public dataLoading: boolean;
 
@@ -47,16 +47,12 @@ export class EventsPage {
     let loading = this.loadingCtrl.create({
       content: "Loading.."
     });
-    if (!this.eventCollection) {
       this.dataLoading = true;
       loading.present();
-    }
     this.eventsData.getEvents(this.category, refresh).subscribe((data: any) => {
-      if (!this.eventCollection) {
         loading.dismiss();
         this.dataLoading = false;
-      }
-      this.eventCollection = data;
+        this.eventCollection = data;
     }, () => {
       this.dataLoading = false;
       loading.dismiss();

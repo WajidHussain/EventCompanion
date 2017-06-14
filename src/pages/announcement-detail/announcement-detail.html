@@ -25,5 +25,5 @@
       <ion-label>{{announcement.fee}}</ion-label>
     </ion-item>
   </ion-list>
-  <p class="description-holder">{{announcement.description}}</p>
+  <div [innerHTML]="announcement.description" class="description-holder"></div>
 </ion-content>

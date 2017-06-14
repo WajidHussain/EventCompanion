@@ -16,6 +16,18 @@
     <ion-col></ion-col>
   </ion-row>
   <div class="login-box" *ngIf="!signedIn">
+    <button  round outline ion-button icon-right (click)="googleLogin()">
+      <ion-icon name="logo-googleplus"></ion-icon>
+      Sign in with Google 
+    </button>
+  </div>
+  <br />
+  <br />
+  <div *ngIf="!signedIn" class="login-box">
+    --------------------------OR----------------------------
+  </div>
+  <br />
+  <div class="login-box" *ngIf="!signedIn">
     <form (ngSubmit)="login()" #registerForm="ngForm">
       <ion-row>
         <ion-col>
@@ -34,12 +46,13 @@
 
       <ion-row>
         <ion-col class="signup-col">
-          <button ion-button class="submit-btn" full type="submit" [disabled]="!registerForm.form.valid">Login / Register</button>
+          <button ion-button class="submit-btn" round outline type="submit" [disabled]="!registerForm.form.valid">Login / Register</button>
         </ion-col>
       </ion-row>
 
     </form>
   </div>
+  
   <div *ngIf="signedIn">
     <ion-row class="text-center">
       <div class="text-class">You're logged in!</div>

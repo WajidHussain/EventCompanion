@@ -1,13 +1,24 @@
 page-login {
 
+    ion-icon.icon-person {
+            font-size: 13em;
+    }
+
     ion-icon {
-        font-size: 13em;
+        &[name="logo-googleplus"] {
+            padding-right: 15px;
+            color: green;
+        }
     }
 
     .text-class{
         width: 100%;
         margin: 10px;
         font-size: 1.3em;
+    }
+
+    .login-box {
+        text-align: center;
     }
 
 }
