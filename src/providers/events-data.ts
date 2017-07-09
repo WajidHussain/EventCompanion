@@ -141,7 +141,7 @@ export class EventsData {
       { header: "This week", events: [] }, { header: "Next week", events: [] }, { header: "Future", events: [] }];
       items.events.forEach(item => {
         let subscription = this.findSubscriptionById(item.id);
-        if (subscription && subscription.attending) {
+        if (subscription && subscription.attending && (Date.now() - <any>(new Date(item.endDateTime)) <= 0)) {
           this.categorizeEventsPerDay(item, eventList);
         }
       });

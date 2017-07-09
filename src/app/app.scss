@@ -78,7 +78,7 @@ $categories: (
 event-companion {
   @each $track, $value in auxiliary-categories() {
    ion-item[category=#{$track}] {
-     border-left: 4px solid $value;
+     border-left: 4px solid $value;     
      padding-left: 10px;
         i {
             color: $value;
