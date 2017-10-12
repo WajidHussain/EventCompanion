@@ -1,5 +1,8 @@
 {
   "name": "EventCompanion",
   "app_id": "b2b91a6b",
-  "type": "ionic-angular"
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
 }

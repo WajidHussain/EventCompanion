@@ -36,6 +36,12 @@ ion-avatar {
     font-weight: 1.7rem;
 }
 
+.item-md, .item-ios { 
+  ion-avatar[item-left] {
+    margin: 8px 8px 8px 0;
+  }
+} 
+
 page-announcements{
 
       button.item-md, button.item-ios {
@@ -44,9 +50,7 @@ page-announcements{
   .item-md, .item-ios {
         margin: 5px 5px 0 8px;
   }
-    .item-md, .item-ios ion-avatar[item-left] {
-      margin: 4px 8px 5px 6px;
-    }
+ 
   .label-md, .label-ios {
     margin: 8px 0;
   }

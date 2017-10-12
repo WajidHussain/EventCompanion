@@ -17,7 +17,7 @@ export class HomePage {
     , public loadingCtrl: LoadingController, public toastCtrl: ToastController,
     public userData: UserData) {
     this.homePicture = "http://www.redmondmosque.org/wp-content/uploads/2015/11/Prophet-Muhammad.jpg";
-    this.loadPrayerTimes();
+    // this.loadPrayerTimes();
     // this.userData.load().subscribe();
   }
 

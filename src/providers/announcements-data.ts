@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
 import { Helper } from './helper';
+import { UserData } from "./user-data";
 import { AngularFireDatabase } from 'angularfire2/database';
 
 
@@ -13,23 +14,13 @@ export class AnnouncementsData {
   private announcementsTableName: string = 'announcements';
   private announcementSubsTableName: string = 'announcements_read';
 
-  constructor(public http: Http, public helper: Helper, private afDB: AngularFireDatabase) { }
-
-  create() {
-    this.helper.getToken().then(() => {
-      let k = this.afDB.list('/announcements');
-      k.push({
-        "title": "Workshop recording available",
-        "location": "ICOR",
-        "description": "Recording are available at ..... for the workshop done on 5/20/2017.",
-        "timestamp": "05/10/2017 11:00:00 AM",
-        "category": "videorecording"
-      });
+  constructor(public http: Http, public helper: Helper, private afDB: AngularFireDatabase, private userData: UserData) { 
+    this.userData.mySubject.subscribe((value) => {
+      this.data = undefined;
     });
   }
 
   load(forceRefresh?: boolean): any {
-    //this.create();
     // this.helper.isUserSignedIn();
     if (this.data && !forceRefresh) {
       return Observable.of(this.data);
@@ -40,24 +31,31 @@ export class AnnouncementsData {
       } else {
         let prm = new Promise((resolve, reject) => {
           this.helper.getToken().then((uid) => {
-            this.afDB.database.ref(this.announcementsTableName).orderByChild('timestamp').limitToLast(50).once('value', (snapshot: any) => {
-              this.data = { announcements: [], myAnnouncements: [] };
-              let tempData = [];
-              snapshot.forEach((childSnapshot) => {
-                tempData.push({ id: childSnapshot.key, val: childSnapshot.val() });
-              });
-              for (var index = tempData.length - 1; index >= 0; index--) {
-                this.data.announcements.push(tempData[index].val);
-                this.data.announcements[this.data.announcements.length - 1].id = tempData[index].id;
-              }
-              // this.data.announcements.reverse();
-              this.afDB.database.ref(this.announcementSubsTableName).equalTo(uid).orderByChild("userId").once('value', (rsvpSS: any) => {
-                rsvpSS.forEach((rsvpChildSnapshot: any) => {
-                  this.data.myAnnouncements.push(rsvpChildSnapshot.val());
-                  this.data.myAnnouncements[this.data.myAnnouncements.length - 1].id =
-                    rsvpChildSnapshot.key;
+            this.userData.getUserSettings().subscribe((data) => {
+              let allSources = [];
+              allSources.push(data.settings.homeMasjid);
+              if (data.settings.otherMasjidAnnouncements) {
+                data.settings.otherMasjidAnnouncements.forEach(element => {
+                  allSources.push(element);
                 });
-                resolve();
+              }
+              allSources.sort();
+              this.data = { announcements: [], myAnnouncements: [] };
+              if (allSources.length === 0) {
+                resolve(this.data.announcements);
+              }
+              let index = 0;
+              allSources.forEach((item: string) => {
+                this.runQueryAndReturnResult(item)
+                  .then((snapshot: any) => {
+                    ++index;
+                    if (index === allSources.length) {
+                      this.runMyAnnouncementsQueryAndReturnResult(uid)
+                        .then((subssnapshot: any) => {
+                          resolve(this.data.announcements);
+                        });
+                    }
+                  });
               });
             });
           });
@@ -65,6 +63,46 @@ export class AnnouncementsData {
         return Observable.fromPromise(prm).map(this.processData, this);
       }
     }
+  }
+
+  runQueryAndReturnResult(item: string) {
+    let prom = new Promise((resolve, reject) => {
+      this.afDB.database.ref(this.announcementsTableName).child(item).limitToLast(25)
+        .orderByChild('timestamp').once('value', (snapshot: any) => {
+          let records = snapshot.val();
+          if (records) {
+            for (var key in records) {
+              if (records.hasOwnProperty(key)) {
+                var element = records[key];
+                this.data.announcements.push(element);
+                this.data.announcements[this.data.announcements.length - 1].id = key;
+              }
+            }
+          }
+          resolve(snapshot);
+        });
+    });
+    return prom;
+  }
+
+  runMyAnnouncementsQueryAndReturnResult(item: string) {
+    let prom = new Promise((resolve, reject) => {
+      this.afDB.database.ref(this.announcementSubsTableName).child(item).limitToLast(100)
+        .once('value', (snapshot: any) => {
+          let subs = snapshot.val();
+          if (subs) {
+            for (var key in subs) {
+              if (subs.hasOwnProperty(key)) {
+                var element = subs[key];
+                this.data.myAnnouncements.push(element);
+                // this.data.myAnnouncements[this.data.myAnnouncements.length - 1].id = key;
+              }
+            }
+          }
+          resolve(snapshot);
+        });
+    });
+    return prom;
   }
 
   processData(data: any) {
@@ -110,16 +148,14 @@ export class AnnouncementsData {
     if (!this.findMyAnnouncementById(announcementId)) {
       // insert
       this.helper.getToken().then((uid) => {
-        let k = this.afDB.list(this.announcementSubsTableName);
-        let item = k.push({
+        let pushRef = this.afDB.database.ref(this.announcementSubsTableName).child(uid).push({
           announcementId: announcementId,
-          read: true,
-          userId: uid
+          read: true
         });
         this.data.myAnnouncements.push({
           announcementId: announcementId,
           read: true,
-          id: item.key
+          id: pushRef.key
         });
       });
     }
@@ -128,9 +164,7 @@ export class AnnouncementsData {
 
   getAnnouncementDetails(announcementId: string) {
     return this.load().map((items) => {
-      let item = this.findAnnouncementById(announcementId);
-      
-      return item;
+      return this.findAnnouncementById(announcementId);
     });
   }
 

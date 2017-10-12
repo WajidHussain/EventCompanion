@@ -15,7 +15,6 @@ import { FCM } from '@ionic-native/fcm';
   templateUrl: 'app.html'
 })
 export class MyApp {
-  dataLoaded: boolean;
   @ViewChild('navComponent') navCtrl;
 
   constructor(private platform: Platform, statusBar: StatusBar, private splashScreen: SplashScreen
@@ -35,28 +34,26 @@ export class MyApp {
     // this.appParams = { type: 'event', id: '-Kksm__k61pNY70oV8HJ' };
     if (this.platform.is('cordova')) {
       this.fcm.getToken();
-
-      this.userData.setPushObject(this.fcm);
-      this.userData.updatePushSettings();
-
-      this.fcm.onNotification().subscribe(data => {
-        if (data.wasTapped) {
-          // alert(JSON.stringify(data));
-          Observable.timer(50).subscribe(() => {
-            this.navCtrl.setRoot(TabsPage, { id: data.id, type: data.type });
-          });
-        } else {
-          Observable.timer(50).subscribe(() => {
-            this.navCtrl.setRoot(TabsPage, { type: data.type });
-          });
-          // this.toastCtrl.create({
-          //   message: 'There is a new ' + data.type + ', please refresh the app..',
-          //   duration: 2000
-          // }).present();
-          // alert(JSON.stringify(data));
-          // console.log("Received in foreground");
-        };
-      })
+      this.userData.updatePushSettings(this.fcm, this.navCtrl);
+      this.userData.setFCMSubscription();
+      // this.fcm.onNotification().subscribe(data => {
+      //   if (data.wasTapped) {
+      //     // alert(JSON.stringify(data));
+      //     Observable.timer(50).subscribe(() => {
+      //       this.navCtrl.setRoot(TabsPage, { id: data.id, type: data.type });
+      //     });
+      //   } else {
+      //     Observable.timer(50).subscribe(() => {
+      //       this.navCtrl.setRoot(TabsPage, { type: data.type });
+      //     });
+      //     // this.toastCtrl.create({
+      //     //   message: 'There is a new ' + data.type + ', please refresh the app..',
+      //     //   duration: 2000
+      //     // }).present();
+      //     // alert(JSON.stringify(data));
+      //     // console.log("Received in foreground");
+      //   };
+      // })
 
       this.fcm.onTokenRefresh().subscribe(token => {
       });
@@ -72,15 +69,6 @@ export class MyApp {
         this.helper.setUser(user);
       } else {
         // No user is signed in.
-      }
-      if (!this.dataLoaded) {
-        Observable.timer(10).subscribe(() => {
-          firebase.storage().ref('prayer-data.json').getDownloadURL()
-            .then((data) => {
-              this.homeData.getPrayerTimings(data);
-            });
-          this.splashScreen.hide();
-        });
       }
       Observable.timer(10).subscribe(() => {
         this.setupFCM();

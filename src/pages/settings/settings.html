@@ -6,19 +6,49 @@
 
 
 <ion-content>
-	<ion-item *ngIf="settings">
-		<ion-label>Event Notifications</ion-label>
-		<ion-toggle color="secondary" [(ngModel)]="settings.eventNotify"
-      (ionChange)="onSettingChange()" disabled="{{isDisabled}}"></ion-toggle>
-	</ion-item>
-	<ion-item *ngIf="settings">
-		<ion-label>Announcement Notifications</ion-label>
-		<ion-toggle color="secondary" [(ngModel)]="settings.announcementNotify"
-      (ionChange)="onSettingChange()" disabled="{{isDisabled}}"></ion-toggle>
-	</ion-item>
-	<ion-item *ngIf="settings">
-		<ion-label>Update calendar for Attending Events</ion-label>
-		<ion-toggle color="secondary" [(ngModel)]="settings.calendarUpdate"
-      (ionChange)="onSettingChange()" disabled="{{isDisabled}}"></ion-toggle>
-	</ion-item>
+	<ion-list>
+		<ion-item-divider>
+			Home Masjid
+		</ion-item-divider>
+		<ion-item *ngIf="localMasjids && settings"> 
+			<ion-label>My Home Masjid</ion-label>
+			<ion-select [(ngModel)]="settings.homeMasjid" (ionChange)="onHomeMasjidChange()" disabled="{{isDisabled}}">
+				<ion-option *ngFor="let masjid of localMasjids" value="{{masjid.id}}">{{masjid.val.title}}</ion-option>
+			</ion-select>
+		</ion-item>
+		<ion-item *ngIf="settings">
+			<ion-label>Notifications</ion-label>
+			<ion-toggle color="secondary" [(ngModel)]="settings.homeMasjidNotify" (ionChange)="onSettingChange()" disabled="{{isDisabled}}"></ion-toggle>
+		</ion-item>
+	</ion-list>
+	<ion-list *ngIf="settings && notificationMasjids && settings.homeMasjid">
+		<ion-item-divider>
+			Other Masajids
+		</ion-item-divider>
+		<ion-item>
+			<ion-label>Events</ion-label>
+			<ion-select multiple="true" [(ngModel)]="settings.otherMasjidEvents" (ionChange)="onSettingChange()" disabled="{{isDisabled}}">
+				<ion-option value="{{masjid.id}}" *ngFor="let masjid of notificationMasjids">{{masjid.val.abbr}}</ion-option>
+			</ion-select>
+		</ion-item>
+		<ion-item>
+			<ion-label>Announcements</ion-label>
+			<ion-select multiple="true" [(ngModel)]="settings.otherMasjidAnnouncements" (ionChange)="onSettingChange()" disabled="{{isDisabled}}">
+				<ion-option value="{{masjid.id}}" *ngFor="let masjid of notificationMasjids">{{masjid.val.abbr}}</ion-option>
+			</ion-select>
+		</ion-item>
+		<ion-item>
+			<ion-label>Notifications</ion-label>
+			<ion-toggle color="secondary" [(ngModel)]="settings.otherMasjidNotify" (ionChange)="onSettingChange()" disabled="{{isDisabled}}"></ion-toggle>
+		</ion-item>
+	</ion-list>
+	<ion-list *ngIf="settings && settings.homeMasjid">
+		<ion-item-divider>
+			Calendar
+		</ion-item-divider>
+		<ion-item *ngIf="settings">
+			<ion-label>Update Calendar for Attending Events</ion-label>
+			<ion-toggle color="secondary" [(ngModel)]="settings.calendarUpdate" (ionChange)="onSettingChange()" disabled="{{isDisabled}}"></ion-toggle>
+		</ion-item>
+	</ion-list>
 </ion-content>

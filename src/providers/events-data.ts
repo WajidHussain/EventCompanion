@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Helper } from './helper';
@@ -7,38 +6,24 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/forkJoin';
 import * as moment from 'moment';
+import { UserData } from "./user-data";
 import { AngularFireDatabase } from 'angularfire2/database';
 
 @Injectable()
 export class EventsData {
   data: any;
+  private eventsTableName = "events";
+  private eventSubsTableName = "events_rsvp";
 
-  constructor(public http: Http, public helper: Helper, private afDB: AngularFireDatabase
-  ) { }
-
-
-  create() {
-    this.helper.getToken().then(() => {
-
-      let k = this.afDB.list('/events');
-      k.push({
-        "title": "Open House and community BBQ",
-        "location": "ICOR",
-        "description": "This is an Open house with Barbecue lunch , Graduation cermony , kids activities and Bazaar",
-        "startDateTime": "05/26/2017 11:30:00 AM",
-        "endDateTime": "05/26/2017   5:30:00 PM",
-        "allowRsvp": true,
-        "adultHeadCount": true,
-        "childrenHeadCount": true,
-        "fee": false,
-        "picture": false,
-        "category": "food"
-      });
+  constructor(public http: Http, public helper: Helper, private afDB: AngularFireDatabase, private userData: UserData
+  ) { 
+    this.userData.mySubject.subscribe((value) => {
+      this.data = undefined;
     });
   }
 
+
   load(refresh): any {
-    // this.create();
     if (this.data && !refresh) {
       return Observable.of(this.data);
     } else {
@@ -48,24 +33,31 @@ export class EventsData {
       } else {
         let prm = new Promise((resolve, reject) => {
           this.helper.getToken().then((uid) => {
-            this.afDB.database.ref('events').orderByChild('startDateTime').limitToLast(50).once('value', (snapshot: any) => {
-              this.data = { events: [], eventSubscriptions: [] };
-              snapshot.forEach((childSnapshot) => {
-                this.data.events.push(childSnapshot.val());
-                this.data.events[this.data.events.length - 1].id = childSnapshot.key;
-              });
-              if (uid) {
-                this.afDB.database.ref('events_rsvp').equalTo(uid).orderByChild("userId").once('value', (rsvpSS: any) => {
-                  rsvpSS.forEach((rsvpChildSnapshot: any) => {
-                    this.data.eventSubscriptions.push(rsvpChildSnapshot.val());
-                    this.data.eventSubscriptions[this.data.eventSubscriptions.length - 1].id =
-                      rsvpChildSnapshot.key;
-                  });
-                  resolve();
+            this.userData.getUserSettings().subscribe((data) => {
+              let allSources = [];
+              allSources.push(data.settings.homeMasjid);
+              if (data.settings.otherMasjidEvents) {
+                data.settings.otherMasjidEvents.forEach(element => {
+                  allSources.push(element);
                 });
-              } else {
-                resolve();
               }
+              this.data = { events: [], eventSubscriptions: [] };
+              if (allSources.length === 0) {
+                resolve(this.data.events);
+              }
+              let index = 0;
+              allSources.forEach((item: string) => {
+                this.runQueryAndReturnResult(item)
+                  .then((snapshot: any) => {
+                    ++index;
+                    if (index === allSources.length) {
+                      this.runMyEventsQueryAndReturnResult(uid)
+                        .then((subssnapshot: any) => {
+                          resolve(this.data.announcements);
+                        });
+                    }
+                  });
+              });
             });
           });
         });
@@ -74,21 +66,62 @@ export class EventsData {
     }
   }
 
+  
+  runQueryAndReturnResult(item: string) {
+    let prom = new Promise((resolve, reject) => {
+      this.afDB.database.ref(this.eventsTableName).child(item).limitToLast(25)
+        .orderByChild('timestamp').once('value', (snapshot: any) => {
+          let records = snapshot.val();
+          if (records) {
+            for (var key in records) {
+              if (records.hasOwnProperty(key)) {
+                var element = records[key];
+                this.data.events.push(element);
+                this.data.events[this.data.events.length - 1].id = key;
+              }
+            }
+          }
+          resolve(snapshot);
+        });
+    });
+    return prom;
+  }
+
+  runMyEventsQueryAndReturnResult(item: string) {
+    let prom = new Promise((resolve, reject) => {
+      this.afDB.database.ref(this.eventSubsTableName).child(item).limitToLast(100)
+        .once('value', (snapshot: any) => {
+          let subs = snapshot.val();
+          if (subs) {
+            for (var key in subs) {
+              if (subs.hasOwnProperty(key)) {
+                var element = subs[key];
+                this.data.eventSubscriptions.push(element);
+                this.data.eventSubscriptions[this.data.eventSubscriptions.length - 1].id = key;
+              }
+            }
+          }
+          resolve(snapshot);
+        });
+    });
+    return prom;
+  }
+
   processData() {
     // if (this.data.eventSubscriptions && this.data.eventSubscriptions.length > 0) {
-      this.data.events.forEach((event) => {
-        // merge subscription with actual event
-        // event.read = false;
-        let matchedSubscription = this.findSubscriptionById(event.id);
-        // if (event.allowRsvp) {
-        //   Object.assign(event, matchedSubscription);
-        // }
-        event.read = matchedSubscription || false;
-        event.attending = matchedSubscription && matchedSubscription.attending || false;
-        event.rsvpStatus = matchedSubscription && matchedSubscription.rsvpStatus;
-        event.adultCount = matchedSubscription && matchedSubscription.adultCount || 0;
-        event.childCount = matchedSubscription && matchedSubscription.childCount || 0;
-      });
+    this.data.events.forEach((event) => {
+      // merge subscription with actual event
+      // event.read = false;
+      let matchedSubscription = this.findSubscriptionById(event.id);
+      // if (event.allowRsvp) {
+      //   Object.assign(event, matchedSubscription);
+      // }
+      event.read = matchedSubscription || false;
+      event.attending = matchedSubscription && matchedSubscription.attending || false;
+      event.rsvpStatus = matchedSubscription && matchedSubscription.rsvpStatus;
+      event.adultCount = matchedSubscription && matchedSubscription.adultCount || 0;
+      event.childCount = matchedSubscription && matchedSubscription.childCount || 0;
+    });
     // }
     return this.data;
   }
@@ -221,16 +254,14 @@ export class EventsData {
     if (!this.findSubscriptionById(eventId)) {
       // insert
       this.helper.getToken().then((uid) => {
-        let k = this.afDB.list('/events_rsvp');
-        let item = k.push({
+        let pushRef = this.afDB.database.ref(this.eventSubsTableName).child(uid).push({
           eventId: eventId,
-          read: true,
-          userId: uid
+          read: true
         });
         this.data.eventSubscriptions.push({
           eventId: eventId,
           read: true,
-          id: item.key
+          id: pushRef.key
         });
       });
     }
@@ -254,8 +285,8 @@ export class EventsData {
       window.setTimeout(() => {
         // database
         let subscription = this.findSubscriptionById(event.id);
-        this.helper.getToken().then(() => {
-          this.afDB.database.ref('events_rsvp').child(subscription.id).update({
+        this.helper.getToken().then((uid: string) => {
+          this.afDB.database.ref(this.eventSubsTableName + "/" + uid).child(subscription.id).update({
             rsvpStatus: event.rsvpStatus || false,
             adultCount: event.adultCount || 0,
             childCount: event.childCount || 0,
