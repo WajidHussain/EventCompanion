@@ -16,7 +16,7 @@ export class EventsData {
   private eventSubsTableName = "events_rsvp";
 
   constructor(public http: Http, public helper: Helper, private afDB: AngularFireDatabase, private userData: UserData
-  ) { 
+  ) {
     this.userData.mySubject.subscribe((value) => {
       this.data = undefined;
     });
@@ -35,15 +35,22 @@ export class EventsData {
           this.helper.getToken().then((uid) => {
             this.userData.getUserSettings().subscribe((data) => {
               let allSources = [];
-              allSources.push(data.settings.homeMasjid);
+              if (data.settings.homeMasjid)
+                allSources.push(data.settings.homeMasjid);
               if (data.settings.otherMasjidEvents) {
                 data.settings.otherMasjidEvents.forEach(element => {
                   allSources.push(element);
                 });
               }
               this.data = { events: [], eventSubscriptions: [] };
+              if (data.settings.isMock || !uid) {
+                this.getMockData()
+                resolve(this.data.events);
+                return;
+              }
               if (allSources.length === 0) {
                 resolve(this.data.events);
+                return;
               }
               let index = 0;
               allSources.forEach((item: string) => {
@@ -51,9 +58,10 @@ export class EventsData {
                   .then((snapshot: any) => {
                     ++index;
                     if (index === allSources.length) {
-                      this.runMyEventsQueryAndReturnResult(uid)
+                      this.runMyEventsQueryAndReturnResult(uid, allSources)
                         .then((subssnapshot: any) => {
-                          resolve(this.data.announcements);
+                          resolve(this.data.eventSubscriptions);
+                          return;
                         });
                     }
                   });
@@ -66,16 +74,17 @@ export class EventsData {
     }
   }
 
-  
+
   runQueryAndReturnResult(item: string) {
     let prom = new Promise((resolve, reject) => {
-      this.afDB.database.ref(this.eventsTableName).child(item).limitToLast(25)
-        .orderByChild('timestamp').once('value', (snapshot: any) => {
+      this.afDB.database.ref(this.eventsTableName).child(item).limitToLast(40)
+        .orderByChild('startDateTime').once('value', (snapshot: any) => {
           let records = snapshot.val();
           if (records) {
             for (var key in records) {
               if (records.hasOwnProperty(key)) {
                 var element = records[key];
+                element.sourceMasjid = item;
                 this.data.events.push(element);
                 this.data.events[this.data.events.length - 1].id = key;
               }
@@ -87,22 +96,31 @@ export class EventsData {
     return prom;
   }
 
-  runMyEventsQueryAndReturnResult(item: string) {
+  runMyEventsQueryAndReturnResult(uid: string, sourceMasjids: string[]) {
+    let index = 0;
     let prom = new Promise((resolve, reject) => {
-      this.afDB.database.ref(this.eventSubsTableName).child(item).limitToLast(100)
-        .once('value', (snapshot: any) => {
-          let subs = snapshot.val();
-          if (subs) {
-            for (var key in subs) {
-              if (subs.hasOwnProperty(key)) {
-                var element = subs[key];
-                this.data.eventSubscriptions.push(element);
-                this.data.eventSubscriptions[this.data.eventSubscriptions.length - 1].id = key;
+      sourceMasjids.forEach((value: string) => {
+        this.afDB.database.ref(this.eventSubsTableName + "/" + value).child(uid).limitToLast(40)
+          .once('value', (snapshot: any) => {
+            let subs = snapshot.val();
+            if (subs) {
+              for (var key in subs) {
+                if (subs.hasOwnProperty(key)) {
+                  var element = subs[key];
+                  if (element) {
+                    element.sourceMasjid = value;
+                    this.data.eventSubscriptions.push(element);
+                    this.data.eventSubscriptions[this.data.eventSubscriptions.length - 1].id = key;
+                  }
+                }
               }
             }
-          }
-          resolve(snapshot);
-        });
+            ++index;
+            if (index === sourceMasjids.length) {
+              resolve(snapshot);
+            }
+          });
+      });
     });
     return prom;
   }
@@ -252,15 +270,17 @@ export class EventsData {
   updateEventRead(eventId: string) {
     // database
     if (!this.findSubscriptionById(eventId)) {
+      let event = this.findEventById(eventId);
       // insert
       this.helper.getToken().then((uid) => {
-        let pushRef = this.afDB.database.ref(this.eventSubsTableName).child(uid).push({
+        let pushRef = this.afDB.database.ref(this.eventSubsTableName + "/" + event.sourceMasjid).child(uid).push({
           eventId: eventId,
           read: true
         });
         this.data.eventSubscriptions.push({
           eventId: eventId,
           read: true,
+          sourceMasjid: event.sourceMasjid,
           id: pushRef.key
         });
       });
@@ -286,7 +306,7 @@ export class EventsData {
         // database
         let subscription = this.findSubscriptionById(event.id);
         this.helper.getToken().then((uid: string) => {
-          this.afDB.database.ref(this.eventSubsTableName + "/" + uid).child(subscription.id).update({
+          this.afDB.database.ref(this.eventSubsTableName + "/" + subscription.sourceMasjid + "/" + uid).child(subscription.id).update({
             rsvpStatus: event.rsvpStatus || false,
             adultCount: event.adultCount || 0,
             childCount: event.childCount || 0,
@@ -311,6 +331,42 @@ export class EventsData {
         });
       }, 200);
     })
+  }
+
+  getMockData() {
+    this.data.events = [
+      {
+        "id": "-KmhxONju4zP1IpirWlL",
+        "adultHeadCount": true,
+        "allowRsvp": true,
+        "category": "potluck",
+        "childrenHeadCount": true,
+        "description": "ICOR invites everyone to join for community iftaar and dinner. Arrangements are available for sisters and children as well. Please RSVP to help us serve you better.",
+        "endDateTime": moment().add(4.5, "days"),
+        "fee": "Free",
+        "location": "Islamic Center Of Redmond.",
+        "picture": "http://www.kleiner-kalender.de/images/teaser/694px/ramadan.jpg",
+        "source": "ICOR",
+        "startDateTime": moment().add(4.5, "days"),
+        "title": "Halaqa & Potluck"
+      },
+      {
+        "id": "-KwYRZfhCuuKFuk7oo3D",
+        "adultHeadCount": true,
+        "allowRsvp": true,
+        "category": "service",
+        "childrenHeadCount": true,
+        "description": "1111",
+        "endDateTime": moment().add(4, "days"),
+        "fee": "$111",
+        "location": "asdsd",
+        "picture": "",
+        "source": "Madeena Masjid",
+        "startDateTime": moment().add(4, "days"),
+        "title": "Sisters Social"
+      }
+    ];
+
   }
 
 }

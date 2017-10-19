@@ -1,6 +1,4 @@
 // http://ionicframework.com/docs/v2/theming/
-
-
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These
@@ -14,7 +12,6 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
-
 .description-holder {
     padding: 0 20px 20px 15px;
     font-size: 1.6rem;
@@ -29,7 +26,8 @@ img {
     color: steelblue;
 }
 
-.icon-person, .icon-people {
+.icon-person,
+.icon-people {
     color: grey;
 }
 
@@ -50,53 +48,31 @@ img {
     background: #f0f0ed;
 }
 
-$categories: (
- potluck: #5c4a7a,
- halaqa: #8E8D93,
- visitingscholar: #FE4C52,
- fundraiser: #69BB7B,
- food: #3BC7C4,
- workshop: #FD8B2D,
- ceremony: #28a394,
- sports: #FED035,
- service: #B16BE3,
- clinic: #ef4545,
- women: #2992c6,
- missing: #AC282B,
- school: #6600CC,
- videorecording: #e268a5,
- moonsight: #6c6f70,
- volunteer: #999895,
- timechange: #8c8c8c,
- info: #282222
-);
-
+$categories: ( potluck: #43355a, halaqa: #295366, visitingscholar: #FE4C52, fundraiser: #69BB7B, food: #3BC7C4, workshop: #FD8B2D, ceremony: #28a394, sports: #2c1a49, service: #B16BE3, clinic: #ef4545, women: #d15ca0, missing: #AC282B, school: #6600CC, videorecording: #e268a5, moonsight: #141414, volunteer: #28f5e4, timechange: #494848, info: #1334c9);
 @function auxiliary-categories() {
-  @return map-remove($categories);
+    @return map-remove($categories);
 }
 
 event-companion {
-  @each $track, $value in auxiliary-categories() {
-   ion-item[category=#{$track}] {
-     border-left: 4px solid $value;     
-     padding-left: 10px;
-        i {
-            color: $value;
-            padding-top: 6px;
+    @each $track,
+    $value in auxiliary-categories() {
+        ion-item[category=#{$track}] {
+            border-left: 3px solid $value;
+            padding-left: 10px;
+            i {
+                color: $value;
+                padding-top: 6px;
+            }
         }
-   }
-  }
-
-  .text-center {
+    }
+    .text-center {
         text-align: center;
     }
-
     ion-label {
         h2 {
             text-overflow: ellipsis;
-    word-break: normal;
-    overflow: hidden;
-        }
-        // white-space: normal;
+            word-break: normal;
+            overflow: hidden;
+        } // white-space: normal;
     }
 }

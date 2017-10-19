@@ -53,6 +53,12 @@ export class UserData {
                 if (snapshot && snapshot.val()) {
                   this.data.settings = snapshot.val()[Object.keys(snapshot.val())[0]];
                   this.data.id = Object.keys(snapshot.val())[0];
+                } else { // user not signed in or has not selected anything
+                  if (!this.helper.isUserSignedIn()) {
+                    this.data.settings = { isMock: true };
+                  } else {
+                    this.data.settings = {};
+                  }
                 }
                 resolve(this.data);
               });
@@ -122,7 +128,7 @@ export class UserData {
     this.data.settings = data;
     this.mySubject.next(this.data.settings);
   }
-  
+
   updateTopicSubs(data: any) {
     if (this.platform.is('cordova')) {
       // unsubs from all

@@ -44,7 +44,7 @@ export class LoginPage {
         duration: 2000
       }).present();
       this.navCtrl.popToRoot();
-
+      this.userData.mySubject.next(undefined);
     }).catch(error => {
     });
   }
@@ -65,6 +65,8 @@ export class LoginPage {
         message: "There is a problem with your sign in, please try again.",
         duration: 2000
       }).present();
+    }).then(() => {
+      this.userData.mySubject.next(undefined);
     });
   }
 
@@ -82,6 +84,7 @@ export class LoginPage {
           duration: 2000
         }).present();
         this.navCtrl.popToRoot();
+        this.userData.mySubject.next(undefined);
         loading.dismiss();
       })
       .catch((error: any) => {
