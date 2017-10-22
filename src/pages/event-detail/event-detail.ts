@@ -14,7 +14,6 @@ export class EventDetailPage {
   event: any;
   events: EventsData;
   isDirty: boolean;
-  // event: any;
   selectOptions: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private calendar: Calendar,
@@ -85,7 +84,7 @@ export class EventDetailPage {
 
   updateCalendar() {
     this.userData.getUserSettings().subscribe((data) => {
-      if (data.calendarUpdate) {
+      if (data.settings && data.settings.calendarUpdate) {
         this.calendar.hasReadWritePermission().then((result) => {
           if (result) {
             this.handleCreateOrRemove();

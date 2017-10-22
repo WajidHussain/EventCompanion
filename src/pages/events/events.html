@@ -20,8 +20,7 @@
     </ion-refresher-content>
   </ion-refresher>
 
-  <ion-list #eventList [hidden]="eventCollection && eventCollection.length === 0 || dataLoading" 
-    *ngFor="let eventGroup of eventCollection">
+  <ion-list #eventList [hidden]="eventCollection && eventCollection.length === 0 || dataLoading" *ngFor="let eventGroup of eventCollection">
     <ion-item-divider sticky *ngIf="eventGroup.events.length > 0 && category !== 'past'">
       <ion-label>
         {{eventGroup.header}}
@@ -39,8 +38,7 @@
       </ion-item>
     </ion-list>
   </ion-list>
-
   <ion-list-header [hidden]="eventCollection && eventCollection.length > 0 || dataLoading">
-    No events available
+    No events to show. Are you sure there is a "Home Masjid" selected on your Settings?
   </ion-list-header>
 </ion-content>

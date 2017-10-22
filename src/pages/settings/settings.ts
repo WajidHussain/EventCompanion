@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, NavController, ToastController } from 'ionic-angular';
+import { AlertController, NavController, ToastController, LoadingController } from 'ionic-angular';
 import { UserData } from '../../providers/user-data';
 import { Helper } from '../../providers/helper';
 
@@ -19,7 +19,7 @@ export class SettingsPage {
   constructor(
     public navCtrl: NavController,
     public alertCtrl: AlertController,
-    public toastCtrl: ToastController, public userData: UserData, public helper: Helper) {
+    public toastCtrl: ToastController, public userData: UserData, public helper: Helper, public loadingCtrl: LoadingController) {
     userData.getUserSettings().subscribe((data) => {
       if (data) {
         this.settings = data.settings ? Object.assign({}, data.settings) : {};
@@ -55,7 +55,7 @@ export class SettingsPage {
     this.onSettingChange();
     // resetting these for now..
     this.settings.otherMasjidEvents = [];
-    this.settings.otherMasjidAnnouncements = [];    
+    this.settings.otherMasjidAnnouncements = [];
   }
 
   setModels() {
@@ -74,10 +74,33 @@ export class SettingsPage {
     this.isDirty = true;
   }
 
-  ionViewCanLeave() {
+  submit() {
     // If the support message is empty we should just navigate
     if (this.isDirty) {
-      this.userData.updateUserSettings(this.settings);
+      let loading = this.loadingCtrl.create({
+        content: "Updating your settings.."
+      });
+      loading.present();
+      this.userData.updateUserSettings(this.settings).then(() => {
+        loading.dismiss();
+        this.presentToast('Settings saved!');
+        this.isDirty = false;
+        this.navCtrl.pop();
+      }, () => {
+        loading.dismiss();
+        this.presentToast('There was a problem reaching server. Please try again!');
+      });
+      ;
     }
   }
+
+  presentToast(message: string, duration = 2000) {
+    this.toastCtrl.create({
+      message: message,
+      duration: duration
+    }).present();
+  }
+
+  // ionViewCanLeave() {
+  // }
 }

@@ -96,37 +96,40 @@ export class UserData {
   }
 
   updateUserSettings(data) {
-    data.id = this.data.id;
-    this.helper.getToken().then((uid) => {
-      if (!this.data.id) {
-        let k = this.afDB.list(this.userSettingsTableName);
-        let item = k.push({
-          otherMasjidEvents: data.otherMasjidEvents ? data.otherMasjidEvents.sort() : "",
-          otherMasjidAnnouncements: data.otherMasjidAnnouncements ? data.otherMasjidAnnouncements.sort() : "",
-          calendarUpdate: data.calendarUpdate || false,
-          homeMasjid: data.homeMasjid,
-          homeMasjidNotify: data.homeMasjidNotify || false,
-          otherMasjidNotify: data.otherMasjidNotify || false,
-          userId: uid
-        });
-        this.data.id = item.key;
-      } else {
-        // first unsubs from existing topics, then update the db, then subscribe to new topics
-        // update database
-        this.afDB.database.ref(this.userSettingsTableName).child(data.id).update({
-          otherMasjidEvents: data.otherMasjidEvents ? data.otherMasjidEvents.sort() : "",
-          otherMasjidAnnouncements: data.otherMasjidAnnouncements ? data.otherMasjidAnnouncements.sort() : "",
-          calendarUpdate: data.calendarUpdate || false,
-          homeMasjidNotify: data.homeMasjidNotify || false,
-          otherMasjidNotify: data.otherMasjidNotify || false,
-          homeMasjid: data.homeMasjid,
-        });
-        // reset all local data so that new data can be loaded when user navigates to tab
-      }
+    return new Promise((resolve, reject) => {
+      data.id = this.data.id;
+      this.helper.getToken().then((uid) => {
+        if (!this.data.id) {
+          let k = this.afDB.list(this.userSettingsTableName);
+          let item = k.push({
+            otherMasjidEvents: data.otherMasjidEvents ? data.otherMasjidEvents.sort() : "",
+            otherMasjidAnnouncements: data.otherMasjidAnnouncements ? data.otherMasjidAnnouncements.sort() : "",
+            calendarUpdate: data.calendarUpdate || false,
+            homeMasjid: data.homeMasjid,
+            homeMasjidNotify: data.homeMasjidNotify || false,
+            otherMasjidNotify: data.otherMasjidNotify || false,
+            userId: uid
+          });
+          this.data.id = item.key;
+        } else {
+          // first unsubs from existing topics, then update the db, then subscribe to new topics
+          // update database
+          this.afDB.database.ref(this.userSettingsTableName).child(data.id).update({
+            otherMasjidEvents: data.otherMasjidEvents ? data.otherMasjidEvents.sort() : "",
+            otherMasjidAnnouncements: data.otherMasjidAnnouncements ? data.otherMasjidAnnouncements.sort() : "",
+            calendarUpdate: data.calendarUpdate || false,
+            homeMasjidNotify: data.homeMasjidNotify || false,
+            otherMasjidNotify: data.otherMasjidNotify || false,
+            homeMasjid: data.homeMasjid,
+          });
+          // reset all local data so that new data can be loaded when user navigates to tab
+        }
+      });
+      this.updateTopicSubs(data);
+      this.data.settings = data;
+      this.mySubject.next(this.data.settings);
+      resolve();
     });
-    this.updateTopicSubs(data);
-    this.data.settings = data;
-    this.mySubject.next(this.data.settings);
   }
 
   updateTopicSubs(data: any) {
@@ -165,12 +168,16 @@ export class UserData {
       if (this.data.otherMasjidNotify) {
         if (this.data.otherMasjidEvents) {
           this.data.otherMasjidEvents.forEach(element => {
-            this.pusher.subscribeToTopic('event_' + element);
+            Observable.timer(50).subscribe(() => {
+              this.pusher.subscribeToTopic('event_' + element);
+            });
           });
         }
         if (this.data.otherMasjidAnnouncements) {
           this.data.otherMasjidAnnouncements.forEach(element => {
-            this.pusher.subscribeToTopic('announcement_' + element);
+            Observable.timer(50).subscribe(() => {
+              this.pusher.subscribeToTopic('announcement_' + element);
+            });
           });
         }
       }

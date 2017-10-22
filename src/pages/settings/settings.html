@@ -10,7 +10,7 @@
 		<ion-item-divider>
 			Home Masjid
 		</ion-item-divider>
-		<ion-item *ngIf="localMasjids && settings"> 
+		<ion-item *ngIf="localMasjids && settings">
 			<ion-label>My Home Masjid</ion-label>
 			<ion-select [(ngModel)]="settings.homeMasjid" (ionChange)="onHomeMasjidChange()" disabled="{{isDisabled}}">
 				<ion-option *ngFor="let masjid of localMasjids" value="{{masjid.id}}">{{masjid.val.title}}</ion-option>
@@ -51,4 +51,7 @@
 			<ion-toggle color="secondary" [(ngModel)]="settings.calendarUpdate" (ionChange)="onSettingChange()" disabled="{{isDisabled}}"></ion-toggle>
 		</ion-item>
 	</ion-list>
+	<p class="text-center">
+		<button [disabled]="!isDirty" color="secondary" ion-button round (click)="submit()">Save</button>
+	</p>
 </ion-content>
