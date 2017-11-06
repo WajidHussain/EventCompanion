@@ -29,9 +29,9 @@ export class TabsPage {
         this.currentIndex = 2;
         this.tabParams.refresh = true;        
       }
-      this.navParams.data['type'] = undefined;
-      this.navParams.data['id'] = undefined;
-      this.navParams.data['refresh'] = undefined;
+      // this.navParams.data['type'] = undefined;
+      // this.navParams.data['id'] = undefined;
+      // this.navParams.data['refresh'] = undefined;
     }
   }
 

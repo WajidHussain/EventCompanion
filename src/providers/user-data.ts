@@ -142,21 +142,29 @@ export class UserData {
       // now subs to other msjids
       if (data.otherMasjidNotify) {
         if (data.otherMasjidEvents) {
-          data.otherMasjidEvents.forEach(element => {
-            this.pusher.subscribeToTopic('event_' + element);
+          Observable.timer(500).subscribe(() => {
+            data.otherMasjidEvents.forEach(element => {
+              this.pusher.subscribeToTopic('event_' + element);
+            });
           });
         }
         if (data.otherMasjidAnnouncements) {
-          data.otherMasjidAnnouncements.forEach(element => {
-            this.pusher.subscribeToTopic('announcement_' + element);
+          Observable.timer(1500).subscribe(() => {
+            data.otherMasjidAnnouncements.forEach(element => {
+              this.pusher.subscribeToTopic('announcement_' + element);
+            });
           });
         }
       }
       if (data.homeMasjidNotify && data.homeMasjid) {
-        this.pusher.subscribeToTopic('event_' + data.homeMasjid);
-        this.pusher.subscribeToTopic('announcement_' + data.homeMasjid);
+        Observable.timer(3000).subscribe(() => {
+          this.pusher.subscribeToTopic('event_' + data.homeMasjid);
+          this.pusher.subscribeToTopic('announcement_' + data.homeMasjid);
+        });
       }
-      this.setFCMSubscription();
+      Observable.timer(6500).subscribe(() => {
+        this.setFCMSubscription();
+      });
     }
   }
 

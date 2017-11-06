@@ -55,13 +55,20 @@
   
   <div *ngIf="signedIn">
     <ion-row class="text-center">
-      <div class="text-class">You're logged in!</div>
+      <div class="text-class">Welcome, {{profile.displayName || profile.email}}</div>
     </ion-row>
     <ion-row>
       <ion-col class="signup-col">
         <button ion-button class="submit-btn" full (click)="logout()">Logout</button>
       </ion-col>
     </ion-row>
+    <!-- <ion-row>
+      <div>
+        <i>
+          Your sign in info is not persisted in any of our databases.
+        </i>
+      </div>
+    </ion-row> -->
   </div>
 
 </ion-content>

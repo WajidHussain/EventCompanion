@@ -52,6 +52,10 @@ export class Helper {
     this.loggedInUser = undefined;
   }
 
+  getLoggedInUser() {
+    return this.loggedInUser;
+  }
+
 
   getToken(): any {
     return new Promise((resolve) => {

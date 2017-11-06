@@ -21,10 +21,14 @@ export class LoginPage {
   private email: string;
   private password: string;
   private errorMsg: string;
+  private profile: any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private userData: UserData,
     private helper: Helper, public loadingCtrl: LoadingController, public toastCtrl: ToastController) {
     if (this.helper.isUserSignedIn()) {
       this.signedIn = true;
+      this.profile = this.helper.getLoggedInUser();
+
     } else {
       this.signedIn = false;
     }
