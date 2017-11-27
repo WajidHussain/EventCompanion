@@ -5,7 +5,7 @@ import { UserData } from '../../providers/user-data';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Pipe, PipeTransform } from '@angular/core';
 import { PopoverPage } from '../home-popover/home-popover';
-
+import { Observable } from 'rxjs/Observable';
 
 @Pipe({ name: 'safe' })
 export class SafePipe implements PipeTransform {
@@ -33,6 +33,10 @@ export class HomePage {
 
   loadData() {
     let url = "";
+    let loading = this.loadingCtrl.create({
+      content: "Loading.."
+    });
+    loading.present();
     this.userData.getUserSettings().subscribe((data) => {
       if (data.masjids && data.settings && data.settings.homeMasjid) {
         let masjid = data.masjids.find(item => item.id === data.settings.homeMasjid);
@@ -44,7 +48,10 @@ export class HomePage {
       if (!url) {
         url = "http://www.redmondmosque.org";
       }
-      this.homePageUrl = url;
+      Observable.timer(700).subscribe(() => {
+        this.homePageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+        loading.dismiss();
+      });
     });
   }
 

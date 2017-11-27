@@ -21,6 +21,7 @@ import { PopoverPage } from '../pages/home-popover/home-popover';
 import { SupportPage } from '../pages/support/support';
 import { SettingsPage } from '../pages/settings/settings';
 import { AboutPage } from '../pages/about/about';
+import { TutorialPage } from '../pages/tutorial/tutorial';
 import { LoginPage } from '../pages/login/login';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -29,8 +30,8 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { Facebook } from '@ionic-native/facebook';
-import { FCM } from '@ionic-native/fcm';
-
+import { Push } from '@ionic-native/push';
+import { IonicStorageModule } from '@ionic/storage';
 
 // AF2 Settings
 export const firebaseConfig = {
@@ -56,6 +57,7 @@ export const firebaseConfig = {
     SettingsPage,
     AboutPage,
     LoginPage,
+    TutorialPage,
     SafePipe
   ],
   imports: [
@@ -64,6 +66,7 @@ export const firebaseConfig = {
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
+    IonicStorageModule.forRoot(),
     AngularFireAuthModule
   ],
   bootstrap: [IonicApp],
@@ -76,6 +79,7 @@ export const firebaseConfig = {
     AnnouncementsPage,
     AnnouncementDetailPage,
     PopoverPage,
+    TutorialPage,
     SupportPage,
     SettingsPage,
     AboutPage,
@@ -91,7 +95,7 @@ export const firebaseConfig = {
     Calendar,
     UserData,
     Facebook,
-    FCM,
+    Push,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })

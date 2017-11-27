@@ -62,8 +62,10 @@ event-companion {
     @each $track,
     $value in auxiliary-categories() {
         ion-item[category=#{$track}] {
-            border-left: 3px solid $value;
-            padding-left: 10px;
+            button {
+                border-left: 3px solid $value;
+            }
+            padding-left: 4px;
             i {
                 color: $value;
                 padding-top: 6px;
@@ -80,4 +82,20 @@ event-companion {
             overflow: hidden;
         } // white-space: normal;
     }
+
+    // .list-md, .list-ios {
+    //     .item-block {
+    //         .item-inner {
+    //             border-bottom: 1px solid #dedede;
+    //         }
+    //     }
+    // }
+    // .item-md, .item-ios {
+    //     .item-block {
+    //         .item-inner {
+    //             border-bottom: 1px solid #dedede;
+    //         }
+    //     }
+    // }
+
 }

@@ -8,7 +8,7 @@ import 'rxjs/add/observable/fromPromise';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { TabsPage } from '../pages/tabs/tabs';
-import { Platform } from "ionic-angular";
+import { Platform, ToastController } from "ionic-angular";
 
 
 @Injectable()
@@ -24,7 +24,8 @@ export class UserData {
   public mySubject: BehaviorSubject<any> = new BehaviorSubject<any>(0);
 
 
-  constructor(public http: Http, private helper: Helper, private afDB: AngularFireDatabase, private platform: Platform) {
+  constructor(public http: Http, private helper: Helper
+    , public toastCtrl: ToastController, private afDB: AngularFireDatabase, private platform: Platform) {
   }
 
 
@@ -89,10 +90,27 @@ export class UserData {
     }
   }
 
+  triggerNotification() {
+    Observable.timer(5000).subscribe(() => {
+      this.onNotification({
+        additionalData: {
+          id: "-KmK6KqglNYDj7CaZp0x",
+          type: "event",
+          foreground: true
+        }
+      });
+    });
+  }
+
   getUserSettings() {
     return this.load().map((data) => {
       return data;
     });
+  }
+
+  setNavCtrl(navCtrl: any) {
+    this.navCtrl = navCtrl;
+
   }
 
   updateUserSettings(data) {
@@ -135,86 +153,99 @@ export class UserData {
   updateTopicSubs(data: any) {
     if (this.platform.is('cordova')) {
       // unsubs from all
-      this.data.masjids.forEach(element => {
-        this.pusher.unsubscribeFromTopic('event_' + element.id);
-        this.pusher.unsubscribeFromTopic('announcement_' + element.id);
+      this.pusher.unregister(() => {
+      }, () => {
       });
       // now subs to other msjids
       if (data.otherMasjidNotify) {
         if (data.otherMasjidEvents) {
           Observable.timer(500).subscribe(() => {
             data.otherMasjidEvents.forEach(element => {
-              this.pusher.subscribeToTopic('event_' + element);
+              this.pusher.subscribe('event_' + element, () => {
+              }, () => {
+              });
             });
           });
         }
         if (data.otherMasjidAnnouncements) {
           Observable.timer(1500).subscribe(() => {
             data.otherMasjidAnnouncements.forEach(element => {
-              this.pusher.subscribeToTopic('announcement_' + element);
+              this.pusher.subscribe('announcement_' + element, () => {
+              }, () => {
+              });
             });
           });
         }
       }
       if (data.homeMasjidNotify && data.homeMasjid) {
         Observable.timer(3000).subscribe(() => {
-          this.pusher.subscribeToTopic('event_' + data.homeMasjid);
-          this.pusher.subscribeToTopic('announcement_' + data.homeMasjid);
+          this.pusher.subscribe('event_' + data.homeMasjid, () => {
+          }, () => {
+          });
+          this.pusher.subscribe('announcement_' + data.homeMasjid, () => {
+          }, () => {
+          });
         });
       }
       Observable.timer(6500).subscribe(() => {
         this.setFCMSubscription();
       });
     }
+
   }
 
 
-  public updatePushSettings(obj: any, navCtrl: any) {
-    this.pusher = obj;
-    this.navCtrl = navCtrl;
-    this.getUserSettings().subscribe(data => {
-      if (this.data.otherMasjidNotify) {
-        if (this.data.otherMasjidEvents) {
-          this.data.otherMasjidEvents.forEach(element => {
-            Observable.timer(50).subscribe(() => {
-              this.pusher.subscribeToTopic('event_' + element);
+  public updatePushSettings() {
+    Observable.timer(3500).subscribe(() => {
+      this.getUserSettings().subscribe(data => {
+        if (this.data.settings.otherMasjidNotify) {
+          if (this.data.settings.otherMasjidEvents) {
+            this.data.settings.otherMasjidEvents.forEach(element => {
+              Observable.timer(50).subscribe(() => {
+                this.pusher.subscribe('event_' + element, () => {
+                }, (e) => {
+                });
+              });
             });
+          }
+          if (this.data.settings.otherMasjidAnnouncements) {
+            this.data.settings.otherMasjidAnnouncements.forEach(element => {
+              Observable.timer(50).subscribe(() => {
+                this.pusher.subscribe('announcement_' + element, () => {
+                }, () => {
+                });
+              });
+            });
+          }
+        }
+        if (this.data.settings.homeMasjidNotify && this.data.settings.homeMasjid) {
+          this.pusher.subscribe('event_' + this.data.settings.homeMasjid, () => {
+          }, () => {
+          });
+          this.pusher.subscribe('announcement_' + this.data.settings.homeMasjid, () => {
+          }, () => {
           });
         }
-        if (this.data.otherMasjidAnnouncements) {
-          this.data.otherMasjidAnnouncements.forEach(element => {
-            Observable.timer(50).subscribe(() => {
-              this.pusher.subscribeToTopic('announcement_' + element);
-            });
-          });
-        }
-      }
-      if (this.data.homeMasjidNotify && this.data.homeMasjid) {
-        this.pusher.subscribeToTopic('event_' + this.data.homeMasjid);
-        this.pusher.subscribeToTopic('announcement_' + this.data.homeMasjid);
-      }
+      });
     });
   }
 
-  public setFCMSubscription() {
-    this.pusher.onNotification().subscribe(data => {
-      if (data.wasTapped) {
-        // alert(JSON.stringify(data));
-        Observable.timer(50).subscribe(() => {
-          this.navCtrl.setRoot(TabsPage, { id: data.id, type: data.type });
-        });
-      } else {
-        Observable.timer(50).subscribe(() => {
-          this.navCtrl.setRoot(TabsPage, { type: data.type });
-        });
-        // this.toastCtrl.create({
-        //   message: 'There is a new ' + data.type + ', please refresh the app..',
-        //   duration: 2000
-        // }).present();
-        // alert(JSON.stringify(data));
-        // console.log("Received in foreground");
-      };
-    })
+  public setFCMSubscription(obj?: any) {
+    if (obj) {
+      this.pusher = obj;
+    }    
+  }
+
+
+  onNotification(data: any) {
+    this.mySubject.next(undefined);
+    if (data.additionalData && !data.additionalData.foreground) {
+      this.navCtrl.setRoot(TabsPage, { id: data.additionalData.id, type: data.additionalData.type });
+      return;
+    }
+    // opened in foreground
+    if (data.additionalData.foreground) {
+    }
   }
 
   updateSupportQuery(query: string) {

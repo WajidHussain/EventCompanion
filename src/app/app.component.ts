@@ -8,7 +8,21 @@ import { Helper } from '../providers/helper';
 import { HomeData } from '../providers/home-data';
 import { UserData } from '../providers/user-data';
 import { Observable } from 'rxjs/Rx';
-import { FCM } from '@ionic-native/fcm';
+import { Storage } from '@ionic/storage';
+import { TutorialPage } from '../pages/tutorial/tutorial';
+import { Push, PushObject, PushOptions, AndroidPushOptions } from '@ionic-native/push';
+
+const options: PushOptions = {
+  android: <AndroidPushOptions>{
+    senderID: "861672505274"
+  },
+  ios: {
+    alert: 'true',
+    badge: true,
+    sound: 'false'
+  },
+  windows: {}
+};
 
 @Component({
   selector: 'event-companion',
@@ -17,9 +31,10 @@ import { FCM } from '@ionic-native/fcm';
 export class MyApp {
   @ViewChild('navComponent') navCtrl;
 
+  private pushObject: PushObject;
   constructor(private platform: Platform, statusBar: StatusBar, private splashScreen: SplashScreen
     , private helper: Helper, private homeData: HomeData, private userData: UserData, public toastCtrl: ToastController
-    , private fcm: FCM) {
+    , private push: Push, public storage: Storage, ) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -31,36 +46,47 @@ export class MyApp {
   }
 
   setupFCM() {
-    // this.appParams = { type: 'event', id: '-Kksm__k61pNY70oV8HJ' };
+    this.userData.setNavCtrl(this.navCtrl);
+    // this.userData.triggerNotification();
     if (this.platform.is('cordova')) {
-      this.fcm.getToken();
-      this.userData.updatePushSettings(this.fcm, this.navCtrl);
-      this.userData.setFCMSubscription();
-      // this.fcm.onNotification().subscribe(data => {
-      //   if (data.wasTapped) {
-      //     // alert(JSON.stringify(data));
-      //     Observable.timer(50).subscribe(() => {
-      //       this.navCtrl.setRoot(TabsPage, { id: data.id, type: data.type });
-      //     });
-      //   } else {
-      //     Observable.timer(50).subscribe(() => {
-      //       this.navCtrl.setRoot(TabsPage, { type: data.type });
-      //     });
-      //     // this.toastCtrl.create({
-      //     //   message: 'There is a new ' + data.type + ', please refresh the app..',
-      //     //   duration: 2000
-      //     // }).present();
-      //     // alert(JSON.stringify(data));
-      //     // console.log("Received in foreground");
-      //   };
-      // })
+      // to check if we have permission
+      this.push.hasPermission()
+        .then((res: any) => {
+          if (res.isEnabled) {
+            this.pushObject = this.push.init(options);
+            this.pushObject.on('registration').subscribe((registration: any) => {
+              this.userData.setFCMSubscription(this.pushObject);
+              this.userData.updatePushSettings();
+              alert('registered');
+            });
+            this.pushObject.on('notification').subscribe((notification: any) => {
+              alert(JSON.stringify(notification));
+              this.pushObject.clearAllNotifications().then(() => {
+              }).catch(() => {
+              });
+              this.userData.onNotification(notification);
+              alert('Processed a notification');
+            }, (error: any) => alert('error in notification' + JSON.stringify(error)));
+            this.pushObject.on('error').subscribe(error => alert('Error with Push plugin ' + JSON.stringify(error)));
+          } else {
+            // alert('No permission');
+          }
 
-      this.fcm.onTokenRefresh().subscribe(token => {
-      });
+        });
+
     }
-    // Observable.timer(0).subscribe(() => {
-    this.navCtrl.setRoot(TabsPage);
-    // });
+    this.loadPage();
+  }
+
+  loadPage() {
+    this.storage.get('hasSeenTutorial')
+      .then((hasSeenTutorial) => {
+        if (hasSeenTutorial) {
+          this.navCtrl.setRoot(TabsPage);
+        } else {
+          this.navCtrl.setRoot(TutorialPage);
+        }
+      });
   }
 
   subscribe() {

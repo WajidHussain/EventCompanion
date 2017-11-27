@@ -29,30 +29,25 @@ export class EventsPage {
 
 
   ionViewDidEnter(a: any) {
-    // if (this.navParams.get('refresh')) {
-    //   this.navParams.data["refresh"] = undefined;
     if (this.navParams.get('id')) {
-      this.updateEventList(true);
+      // this.updateEventList(true);
       this.goToEventDetail(<Event>{ id: this.navParams.get('id') });
-    } else if (this.navParams.get('refresh')) {
-      this.updateEventList(true);
     } else {
       this.updateEventList();
     }
     this.navParams.data["id"] = undefined;
-    this.navParams.data["refresh"] = undefined;
   }
 
   updateEventList(refresh = false) {
     let loading = this.loadingCtrl.create({
       content: "Loading.."
     });
-      this.dataLoading = true;
-      loading.present();
+    this.dataLoading = true;
+    loading.present();
     this.eventsData.getEvents(this.category, refresh).subscribe((data: any) => {
-        loading.dismiss();
-        this.dataLoading = false;
-        this.eventCollection = data;
+      loading.dismiss();
+      this.dataLoading = false;
+      this.eventCollection = data;
     }, () => {
       this.dataLoading = false;
       loading.dismiss();

@@ -28,13 +28,17 @@
     </ion-item-divider>
     <ion-list inset *ngIf="eventGroup.events.length > 0">
       <ion-item *ngFor="let event of eventGroup.events" (click)="goToEventDetail(event)" [attr.read]="event.read" [attr.category]="event.category | lowercase">
-        <ion-avatar item-left>
-          <i class="fa" ngClass="{{event.font}}" aria-hidden="true"></i>
-        </ion-avatar>
-        <h2>{{event.title}}</h2>
-        <p>{{event.startTime}} - {{event.endTime}}
-        </p>
-        <ion-note item-right>{{event.source}}</ion-note>
+        <button ion-item>
+          <ion-avatar item-left>
+            <i class="fa" ngClass="{{event.font}}" aria-hidden="true"></i>
+          </ion-avatar>
+          <div>
+            <h2>{{event.title}}</h2>
+            <p>{{event.startTime}} - {{event.endTime}}
+            </p>
+          </div>
+          <ion-note item-right>{{event.source}}</ion-note>
+        </button>
       </ion-item>
     </ion-list>
   </ion-list>

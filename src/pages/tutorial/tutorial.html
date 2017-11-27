@@ -1,0 +1,38 @@
+<ion-header no-border>
+  <ion-navbar>
+    <ion-buttons end *ngIf="showSkip">
+      <button ion-button (click)="startApp(true)" color="primary">Skip</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-bounce>
+  <ion-slides #slides (ionSlideWillChange)="onSlideChangeStart($event)" pager>
+    <ion-slide>
+      <img src="assets/img/popover.gif" class="slide-image"/>
+      <h2 class="slide-title">
+        Choose to sign in
+      </h2>
+      <p>
+        Help us keep track of your settings by signing in. We'll remember your settings when you sign out or change your phone.
+      </p>
+    </ion-slide>
+
+    <ion-slide>
+      <img src="assets/img/signin.gif" class="slide-image"/>
+      <h2 class="slide-title" >Sign in</h2>
+      <p>We don't store any of your data when you sign in with your google account. Otherwise, choose to sign in with a Username and Password.</p>
+    </ion-slide>
+
+    <ion-slide>
+      <img src="assets/img/othermasjids.gif" class="slide-image"/>
+      <h2 class="slide-title">Other Masajids</h2>
+      <p><b>Other Massjids</b> are those of whom you're interested in. You may select one or more and opt in if you need notifications on your device.</p>
+      <button ion-button icon-end large clear (click)="startApp()">
+        Continue
+        <ion-icon name="arrow-forward"></ion-icon>
+      </button>
+    </ion-slide>
+
+  </ion-slides>
+</ion-content>

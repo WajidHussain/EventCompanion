@@ -19,6 +19,7 @@ export class EventsData {
   ) {
     this.userData.mySubject.subscribe((value) => {
       this.data = undefined;
+      // this.load(true);
     });
   }
 
@@ -252,8 +253,8 @@ export class EventsData {
     };
   }
 
-  getEventDetails(eventId: string) {
-    return this.load(false).map((items) => {
+  getEventDetails(eventId: string, forceRefresh?: boolean) {
+    return this.load(forceRefresh).map((items) => {
       let matchedEvent = this.findEventById(eventId);
       if (moment(matchedEvent.startDateTime).format("D") === moment(matchedEvent.endDateTime).format("D")) {
         matchedEvent.startTime = moment(matchedEvent.startDateTime).format("ddd MMM Do hh:mm A");

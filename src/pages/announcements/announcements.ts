@@ -21,19 +21,13 @@ export class AnnouncementsPage {
   }
 
   ionViewDidEnter() {
-    // if (this.navParams.get('refresh')) {
-    //   this.navParams.data["refresh"] = undefined;
     if (this.navParams.get('id')) {
-      this.updateList(true);
       this.goToAnnouncementDetail({ id: this.navParams.get('id') });
-    } else if (this.navParams.get('refresh')) {
-      this.updateList(true);
     }
     else {
       this.updateList();
     }
     this.navParams.data["id"] = undefined;
-    this.navParams.data["refresh"] = undefined;
   }
 
   updateList(defaultRefresh = false) {

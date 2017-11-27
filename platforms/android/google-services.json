@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "861672505274",
+    "firebase_url": "https://masjid-companion.firebaseio.com",
+    "project_id": "masjid-companion",
+    "storage_bucket": "masjid-companion.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:861672505274:android:7aa1b4045b53b67b",
+        "android_client_info": {
+          "package_name": "com.ionicframework.masjidcompanion333585"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "861672505274-5bmg4tulcbjpacdjov3cpe0tb138bplt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVSNejXltAyt7Z1vT23vryrDflS_UKszg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
