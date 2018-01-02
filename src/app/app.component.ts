@@ -19,7 +19,7 @@ const options: PushOptions = {
   ios: {
     alert: 'true',
     badge: true,
-    sound: 'false'
+    sound: 'true'
   },
   windows: {}
 };
@@ -57,17 +57,14 @@ export class MyApp {
             this.pushObject.on('registration').subscribe((registration: any) => {
               this.userData.setFCMSubscription(this.pushObject);
               this.userData.updatePushSettings();
-              alert('registered');
             });
             this.pushObject.on('notification').subscribe((notification: any) => {
-              alert(JSON.stringify(notification));
               this.pushObject.clearAllNotifications().then(() => {
               }).catch(() => {
               });
               this.userData.onNotification(notification);
-              alert('Processed a notification');
-            }, (error: any) => alert('error in notification' + JSON.stringify(error)));
-            this.pushObject.on('error').subscribe(error => alert('Error with Push plugin ' + JSON.stringify(error)));
+            }, (error: any) => alert('error in notification' + alert(error)));
+            this.pushObject.on('error').subscribe(error => alert('Error with Push plugin ' + error.message));
           } else {
             // alert('No permission');
           }

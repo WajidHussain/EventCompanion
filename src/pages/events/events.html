@@ -42,10 +42,10 @@
       </ion-item>
     </ion-list>
   </ion-list>
-  <ion-list-header [hidden]="(category == 'upcoming' || category == 'past') || (eventCollection && eventCollection.length > 0) || dataLoading">
+  <ion-list-header [hidden]="(category == 'upcoming') || (eventCollection && eventCollection.length > 0) || dataLoading">
     No events to show.
   </ion-list-header>
-  <ion-list-header [hidden]="category == 'attending' || (eventCollection && eventCollection.length > 0) || dataLoading">
-    No events to show. Are you sure there is a "Home Masjid" selected on your Settings?
+  <ion-list-header [hidden]="category == 'attending' || category == 'past' || (eventCollection && eventCollection.length > 0) || dataLoading">
+    No events to show. Are you sure there is a Masjid selected on your Settings?
   </ion-list-header>
 </ion-content>

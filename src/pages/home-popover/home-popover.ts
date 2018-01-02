@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-
 import { App, NavController, ModalController, ViewController } from 'ionic-angular';
 import { SupportPage } from '../support/support';
 import { SettingsPage } from '../settings/settings';
 import { AboutPage } from '../about/about';
 import { LoginPage } from '../login/login';
+import { TutorialPage } from "../tutorial/tutorial";
 
 @Component({
   selector: 'home-popover',
@@ -27,6 +27,11 @@ export class PopoverPage {
 
   openSettings(pageName) {
     this.app.getRootNav().push(SettingsPage);
+    this.viewCtrl.dismiss();
+  }
+
+  openHowto() {
+    this.app.getRootNav().push(TutorialPage);
     this.viewCtrl.dismiss();
   }
 

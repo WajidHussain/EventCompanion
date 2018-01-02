@@ -1,18 +1,22 @@
 <ion-list no-border class="pop-over">
-	<ion-item (click)="openLogin()">
+	<button ion-item (click)="openLogin()">
 		<ion-icon name='ios-person-outline' item-start></ion-icon>
-		<ion-note item-end>Account</ion-note>
-	</ion-item>
-	<ion-item (click)="openAbout()">
-		<ion-icon name='ios-information-circle-outline' item-start></ion-icon>
-		<ion-note item-end>About</ion-note>
-	</ion-item>
-	<ion-item (click)="openSettings()">
+		Account
+	</button>
+	<button ion-item (click)="openSettings()">
 		<ion-icon name='ios-settings-outline' item-start></ion-icon>
-		<ion-note item-end>Settings</ion-note>
-	</ion-item>
-	<ion-item (click)="openSupport()">
+		Settings
+	</button>
+	<button ion-item (click)="openHowto()">
+		<ion-icon name='ios-help-outline' item-start></ion-icon>
+		How to
+	</button>
+	<button ion-item (click)="openSupport()">
 		<ion-icon name='ios-mail-outline' item-start></ion-icon>
-		<ion-note item-end>Contact us</ion-note>
-	</ion-item>
+		Support
+	</button>
+	<button ion-item (click)="openAbout()">
+		<ion-icon name='ios-information-circle-outline' item-start></ion-icon>
+		About
+	</button>
 </ion-list>

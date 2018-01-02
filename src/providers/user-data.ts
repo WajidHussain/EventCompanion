@@ -22,10 +22,18 @@ export class UserData {
   private userQueryTableName = 'user_query';
   private masajidsTableName = 'masjids';
   public mySubject: BehaviorSubject<any> = new BehaviorSubject<any>(0);
+  private announcementKey = "";
+  private eventKey = "";
 
 
   constructor(public http: Http, private helper: Helper
     , public toastCtrl: ToastController, private afDB: AngularFireDatabase, private platform: Platform) {
+    this.mySubject.subscribe((value) => {
+      this.data = undefined;
+      let platform = this.platform.is("ios") ? "ios" : "android";
+      this.announcementKey = platform + "_announcement_";
+      this.eventKey = platform + "_event_"; 
+    });
   }
 
 
@@ -142,26 +150,32 @@ export class UserData {
           });
           // reset all local data so that new data can be loaded when user navigates to tab
         }
+        this.updateTopicSubs(data);
+        this.data.settings = data;
+        this.mySubject.next(this.data.settings);
+        resolve();
       });
-      this.updateTopicSubs(data);
-      this.data.settings = data;
-      this.mySubject.next(this.data.settings);
-      resolve();
     });
+  }
+
+  unregisterNotifications() {
+    // unsubs from all
+    if (this.platform.is('cordova')) {
+      this.pusher.unregister(() => {
+      }, () => {
+      });
+    }
   }
 
   updateTopicSubs(data: any) {
     if (this.platform.is('cordova')) {
-      // unsubs from all
-      this.pusher.unregister(() => {
-      }, () => {
-      });
+      this.unregisterNotifications();
       // now subs to other msjids
       if (data.otherMasjidNotify) {
         if (data.otherMasjidEvents) {
           Observable.timer(500).subscribe(() => {
             data.otherMasjidEvents.forEach(element => {
-              this.pusher.subscribe('event_' + element, () => {
+              this.pusher.subscribe(this.eventKey + element, () => {
               }, () => {
               });
             });
@@ -170,7 +184,7 @@ export class UserData {
         if (data.otherMasjidAnnouncements) {
           Observable.timer(1500).subscribe(() => {
             data.otherMasjidAnnouncements.forEach(element => {
-              this.pusher.subscribe('announcement_' + element, () => {
+              this.pusher.subscribe(this.announcementKey + element, () => {
               }, () => {
               });
             });
@@ -179,10 +193,10 @@ export class UserData {
       }
       if (data.homeMasjidNotify && data.homeMasjid) {
         Observable.timer(3000).subscribe(() => {
-          this.pusher.subscribe('event_' + data.homeMasjid, () => {
+          this.pusher.subscribe(this.eventKey + data.homeMasjid, () => {
           }, () => {
           });
-          this.pusher.subscribe('announcement_' + data.homeMasjid, () => {
+          this.pusher.subscribe(this.announcementKey + data.homeMasjid, () => {
           }, () => {
           });
         });
@@ -202,7 +216,7 @@ export class UserData {
           if (this.data.settings.otherMasjidEvents) {
             this.data.settings.otherMasjidEvents.forEach(element => {
               Observable.timer(50).subscribe(() => {
-                this.pusher.subscribe('event_' + element, () => {
+                this.pusher.subscribe(this.eventKey + element, () => {
                 }, (e) => {
                 });
               });
@@ -211,7 +225,7 @@ export class UserData {
           if (this.data.settings.otherMasjidAnnouncements) {
             this.data.settings.otherMasjidAnnouncements.forEach(element => {
               Observable.timer(50).subscribe(() => {
-                this.pusher.subscribe('announcement_' + element, () => {
+                this.pusher.subscribe(this.announcementKey + element, () => {
                 }, () => {
                 });
               });
@@ -219,10 +233,10 @@ export class UserData {
           }
         }
         if (this.data.settings.homeMasjidNotify && this.data.settings.homeMasjid) {
-          this.pusher.subscribe('event_' + this.data.settings.homeMasjid, () => {
+          this.pusher.subscribe(this.eventKey + this.data.settings.homeMasjid, () => {
           }, () => {
           });
-          this.pusher.subscribe('announcement_' + this.data.settings.homeMasjid, () => {
+          this.pusher.subscribe(this.announcementKey + this.data.settings.homeMasjid, () => {
           }, () => {
           });
         }
@@ -233,7 +247,7 @@ export class UserData {
   public setFCMSubscription(obj?: any) {
     if (obj) {
       this.pusher = obj;
-    }    
+    }
   }
 
 

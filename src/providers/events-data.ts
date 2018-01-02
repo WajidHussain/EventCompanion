@@ -19,7 +19,6 @@ export class EventsData {
   ) {
     this.userData.mySubject.subscribe((value) => {
       this.data = undefined;
-      // this.load(true);
     });
   }
 
@@ -183,6 +182,9 @@ export class EventsData {
           eventList[0].events.push(this.createEventListItem(item));
         }
       });
+      if (eventList[0].events.length === 0) {
+        return [];
+      }
       return eventList;
     });
   }

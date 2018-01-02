@@ -43,7 +43,7 @@ export class AnnouncementsPage {
         loading.dismiss();
         this.dataLoading = false;
       }
-      this.announcementList = data;
+      this.sortAndSet(data);
     }, () => {
       this.dataLoading = false;
       loading.dismiss();
@@ -51,6 +51,12 @@ export class AnnouncementsPage {
         message: 'There was a problem loading data, please try again!',
         duration: 2000
       }).present();
+    });
+  }
+
+  sortAndSet(data: any) {
+    this.announcementList = data.sort((a: any, b: any) => {
+      return <any>(new Date(<number>(b.timestamp))) - <any>(new Date(a.timestamp));
     });
   }
 
@@ -69,7 +75,7 @@ export class AnnouncementsPage {
 
   doRefresh(refresher) {
     this.announcementsData.getAnnouncements(true).subscribe((data: any) => {
-      this.announcementList = data;
+      this.sortAndSet(data);
       setTimeout(() => {
         refresher.complete();
       }, 500);

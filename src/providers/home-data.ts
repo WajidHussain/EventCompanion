@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Http } from '@angular/http';
 import { Helper } from './helper';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
 import * as moment from 'moment';
-// import * as storage from 'firebase/storage';
 import { Observable } from 'rxjs/Rx';
 
 
@@ -45,25 +44,6 @@ export class HomeData {
     }
   }
 
-  public getPrayerTimings(url) {
-    this.getter = this.http.get(url)
-      .map(this.processPrayerTimes, this).subscribe();
-  }
-
-  loadPrayerTimes(): any {
-    let headers = new Headers();
-    headers.append("Access-Control-Allow-Origin", "*");
-    if (this.data) {
-      return Observable.of(this.data);
-    } else {
-      return this.http.get('http://www.redmondmosque.org/jsonEncode.php?masjid=icoe&getData=5',
-        {
-          headers: headers
-        }
-      )
-        .map(this.processPrayerTimes, this);
-    }
-  }
 
   processPrayerTimes(data) {
     let todaysDate = moment().date();

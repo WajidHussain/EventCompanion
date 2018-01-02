@@ -41,6 +41,7 @@ export class LoginPage {
     loading.present();
     firebase.auth().signOut().then(() => {
       this.signedIn = false;
+      this.userData.unregisterNotifications();
       this.helper.unsetuser();
       loading.dismiss();
       this.toastCtrl.create({

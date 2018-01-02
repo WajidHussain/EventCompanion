@@ -1,7 +1,18 @@
 home-popover {
-    .list-md {
+    .list-md,
+    .list-ios {
         margin: 0;
     }
+
+    ion-icon {
+        margin-right: 15px;
+        vertical-align: sub;
+    }
+    
+    .item-inner {
+        background-image: none;
+    }
+     
     .note-md {
         vertical-align: super;
         color: black;

@@ -39,7 +39,7 @@
 		</ion-item>
 		<ion-item>
 			<ion-label>Notifications</ion-label>
-			<ion-toggle color="secondary" [(ngModel)]="settings.otherMasjidNotify" (ionChange)="onSettingChange()" disabled="{{isDisabled}}"></ion-toggle>
+			<ion-toggle color="secondary" [(ngModel)]="settings.otherMasjidNotify" (ionChange)="onSettingChange()" disabled="{{isDisabled}} || (settings.otherMasjidAnnouncements.length == 0 && settings.otherMasjidEvents.length == 0)"></ion-toggle>
 		</ion-item>
 	</ion-list>
 	<ion-list *ngIf="settings && settings.homeMasjid">
