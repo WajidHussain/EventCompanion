@@ -28,7 +28,7 @@
     "@ionic-native/status-bar": "3.6.1",
     "@ionic/storage": "^2.1.3",
     "angularfire2": "4.0.0-rc.0",
-    "cordova-android": "^6.2.3",
+    "cordova-android": "^6.3.0",
     "cordova-browser": "~5.0.1",
     "cordova-js": "^4.2.1",
     "cordova-plugin-browsertab": "^0.2.0",
@@ -91,9 +91,9 @@
       "cordova-sqlite-storage": {}
     },
     "platforms": [
-      "android",
       "windows",
-      "browser"
+      "browser",
+      "android"
     ]
   }
 }

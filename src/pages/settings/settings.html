@@ -16,7 +16,7 @@
 				<ion-option *ngFor="let masjid of localMasjids" value="{{masjid.id}}">{{masjid.val.title}}</ion-option>
 			</ion-select>
 		</ion-item>
-		<ion-item *ngIf="settings">
+		<ion-item *ngIf="settings && settings.homeMasjid">
 			<ion-label>Notifications</ion-label>
 			<ion-toggle color="secondary" [(ngModel)]="settings.homeMasjidNotify" (ionChange)="onSettingChange()" disabled="{{isDisabled}}"></ion-toggle>
 		</ion-item>
@@ -37,9 +37,10 @@
 				<ion-option value="{{masjid.id}}" *ngFor="let masjid of notificationMasjids">{{masjid.val.abbr}}</ion-option>
 			</ion-select>
 		</ion-item>
-		<ion-item>
+		<ion-item [hidden]="settings && settings.otherMasjidAnnouncements.length == 0 && settings.otherMasjidEvents.length == 0">
 			<ion-label>Notifications</ion-label>
-			<ion-toggle color="secondary" [(ngModel)]="settings.otherMasjidNotify" (ionChange)="onSettingChange()" disabled="{{isDisabled}} || (settings.otherMasjidAnnouncements.length == 0 && settings.otherMasjidEvents.length == 0)"></ion-toggle>
+			<ion-toggle color="secondary"
+			 [(ngModel)]="settings.otherMasjidNotify" (ionChange)="onSettingChange()" disabled="{{isDisabled}}"></ion-toggle>
 		</ion-item>
 	</ion-list>
 	<ion-list *ngIf="settings && settings.homeMasjid">

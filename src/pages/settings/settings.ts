@@ -81,6 +81,12 @@ export class SettingsPage {
         content: "Updating your settings.."
       });
       loading.present();
+      if (this.settings.otherMasjidAnnouncements.length == 0 && this.settings.otherMasjidEvents.length == 0) {
+        this.settings.otherMasjidNotify = false;
+      }
+      if (!this.settings.homeMasjid) {
+        this.settings.homeMasjidNotify = false;
+      }
       this.userData.updateUserSettings(this.settings).then(() => {
         loading.dismiss();
         this.presentToast('Settings saved!');
