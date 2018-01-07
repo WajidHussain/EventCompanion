@@ -178,7 +178,7 @@ export class EventsData {
     return this.load(refresh).map((items) => {
       let eventList = [{ header: "", events: [] }];
       items.events.forEach(item => {
-        if (Date.now() - <any>(new Date(item.endDateTime)) > 0) {
+        if (Date.now() - <any>(new Date(item.endDateTime.replace(/-/g,"/"))) > 0) {
           eventList[0].events.push(this.createEventListItem(item));
         }
       });
@@ -195,7 +195,7 @@ export class EventsData {
       { header: "This week", events: [] }, { header: "Next week", events: [] }, { header: "Future", events: [] }];
       items.events.forEach(item => {
         let subscription = this.findSubscriptionById(item.id);
-        if (subscription && subscription.attending && (Date.now() - <any>(new Date(item.endDateTime)) <= 0)) {
+        if (subscription && subscription.attending && (Date.now() - <any>(new Date(item.endDateTime.replace(/-/g,"/"))) <= 0)) {
           this.categorizeEventsPerDay(item, eventList);
         }
       });
@@ -212,7 +212,7 @@ export class EventsData {
       { header: "This week", events: [] }, { header: "Next week", events: [] }, { header: "Future", events: [] }];
       // assuming events are sorted on server
       items.events.forEach(item => {
-        if (Date.now() - <any>(new Date(item.endDateTime)) <= 0) {
+        if (Date.now() - <any>(new Date(item.endDateTime.replace(/-/g,"/"))) <= 0) {
           this.categorizeEventsPerDay(item, eventList);
         }
       });
@@ -224,10 +224,10 @@ export class EventsData {
   }
 
   categorizeEventsPerDay(item: any, eventList: any) {
-    if (new Date(item.endDateTime).getDate() == new Date().getDate()) {
+    if (new Date(item.endDateTime.replace(/-/g,"/")).getDate() == new Date().getDate()) {
       eventList[0].events.push(this.createEventListItem(item));
     }
-    else if (new Date(item.endDateTime).getDate() - new Date().getDate() == 1) {
+    else if (new Date(item.endDateTime.replace(/-/g,"/")).getDate() - new Date().getDate() == 1) {
       eventList[1].events.push(this.createEventListItem(item));
     }
     else if (moment(item.startDateTime).isoWeek() === moment().isoWeek()) {
@@ -345,7 +345,7 @@ export class EventsData {
         "category": "potluck",
         "childrenHeadCount": true,
         "description": "ICOR invites everyone to join for community iftaar and dinner. Arrangements are available for sisters and children as well. Please RSVP to help us serve you better.",
-        "endDateTime": moment().add(4.5, "days"),
+        "endDateTime": "2050-12-04 10:00",
         "fee": "Free",
         "location": "Islamic Center Of Redmond.",
         "picture": "http://www.kleiner-kalender.de/images/teaser/694px/ramadan.jpg",
@@ -360,7 +360,7 @@ export class EventsData {
         "category": "service",
         "childrenHeadCount": true,
         "description": "1111",
-        "endDateTime": moment().add(4, "days"),
+        "endDateTime": "2040-11-03 10:00",
         "fee": "$111",
         "location": "asdsd",
         "picture": "",
