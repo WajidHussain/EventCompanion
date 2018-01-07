@@ -20,21 +20,8 @@ export class Helper {
 
   constructor(private afAuth: AngularFireAuth, public platform: Platform
     , private fb: Facebook) {
-    // this.subscribe();
-    // this.afAuth.auth()
   }
 
-  subscribe() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.loggedInUser = user;
-      } else {
-        // No user is signed in.
-      }
-  
-    });
-
-  }
 
   isUserSignedIn() {
     if (this.loggedInUser) {

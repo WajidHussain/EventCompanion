@@ -90,6 +90,7 @@ export class MyApp {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.helper.setUser(user);
+        this.userData.mySubject.next(undefined);        
       } else {
         // No user is signed in.
       }

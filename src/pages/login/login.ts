@@ -71,7 +71,6 @@ export class LoginPage {
         duration: 2000
       }).present();
     }).then(() => {
-      this.userData.mySubject.next(undefined);
     });
   }
 
@@ -89,7 +88,6 @@ export class LoginPage {
           duration: 2000
         }).present();
         this.navCtrl.popToRoot();
-        this.userData.mySubject.next(undefined);
         loading.dismiss();
       })
       .catch((error: any) => {
